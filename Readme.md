@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Елена Гонтарева](https://up.htmlacademy.ru/ecmascript/11/user/994847).
-* Наставник: `Неизвестно`.
+* Наставник: [Анна Тюрина](https://up.htmlacademy.ru/ecmascript/11/user/549147).
 
 ---
 
