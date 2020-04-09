@@ -10,7 +10,7 @@ export const createFilmCardTemplate = (card) => {
     commentsCount,
     isAddToWatch
   } = card;
-  const AddToWatchButtonInactiveClass = isAddToWatch ? `film-card__controls-item--active` : `` ;
+  const AddToWatchButtonInactiveClass = isAddToWatch ? `film-card__controls-item--active` : ``;
 
   return `<article class="film-card">
     <h3 class="film-card__title">${title}</h3>

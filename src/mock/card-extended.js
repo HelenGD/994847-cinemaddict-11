@@ -21,12 +21,14 @@ export const generateDetailsOfFilm = () => {
   const MIN_COUNT_GENRES = 1;
   const MAX_COUNT_DESCRIPTION = 8;
   const MIN_COUNT_DESCRIPTION = 3;
+  const MIN_FILM_DURATION = 3600;
+  const MAX_FILM_DURATION = 7200;
 
   return {
     title: randomArrayItem(titles),
     rating,
     description: descriptions.slice().splice(random(0, descriptions.length - MAX_COUNT_DESCRIPTION), random(MIN_COUNT_DESCRIPTION, MAX_COUNT_DESCRIPTION)).join(``),
-    duration: formatDuration(random(3600, 7200)),
+    duration: formatDuration(random(MIN_FILM_DURATION, MAX_FILM_DURATION)),
     directors: randomArrayItem(directors),
     writers: randomArrayItem(writers),
     actors: randomArrayItem(actors),
