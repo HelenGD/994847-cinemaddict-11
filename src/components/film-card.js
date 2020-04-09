@@ -7,10 +7,10 @@ export const createFilmCardTemplate = (card) => {
     duration,
     description,
     genre,
-    comment
+    commentsCount,
+    isAddToWatch
   } = card;
-  // const description = ` Lorem ipsum dolor sit amet, consectetur adipiscing elit`;
-  // const comment = `Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus`;
+  const AddToWatchButtonInactiveClass = isAddToWatch ? `film-card__controls-item--active` : `` ;
 
   return `<article class="film-card">
     <h3 class="film-card__title">${title}</h3>
@@ -22,9 +22,9 @@ export const createFilmCardTemplate = (card) => {
     </p>
     <img src="${poster}" alt="" class="film-card__poster">
     <p class="film-card__description">${description}</p>
-    <a class="film-card__comments">${comment}</a>
+    <a class="film-card__comments">${commentsCount} comment${commentsCount > 1 ? `s` : ``}</a>
     <form class="film-card__controls">
-      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
+      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${AddToWatchButtonInactiveClass}"></button>
       <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
       <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
     </form>
