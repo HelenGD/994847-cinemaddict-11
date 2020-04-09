@@ -14,15 +14,15 @@ import {
   actors
 } from './strings';
 
+const MAX_COUNT_GENRES = 3;
+const MIN_COUNT_GENRES = 1;
+const MAX_COUNT_DESCRIPTION = 8;
+const MIN_COUNT_DESCRIPTION = 3;
+const MIN_FILM_DURATION = 3600;
+const MAX_FILM_DURATION = 7200;
+
 export const generateDetailsOfFilm = () => {
   const rating = decimalRandom(0, 10, 1);
-
-  const MAX_COUNT_GENRES = 3;
-  const MIN_COUNT_GENRES = 1;
-  const MAX_COUNT_DESCRIPTION = 8;
-  const MIN_COUNT_DESCRIPTION = 3;
-  const MIN_FILM_DURATION = 3600;
-  const MAX_FILM_DURATION = 7200;
 
   return {
     title: randomArrayItem(titles),

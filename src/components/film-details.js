@@ -15,6 +15,7 @@ export const createFilmDetailsTemplate = (filmDetails) => {
     comments,
     release,
   } = filmDetails;
+
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">

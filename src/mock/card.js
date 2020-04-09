@@ -22,6 +22,9 @@ const generateCard = () => {
     genre: randomArrayItem(genres),
     description: randomArrayItem(descriptions),
     commentsCount,
+    isAddToWatch: true,
+    isWatched: false,
+    isFavourite: false
   };
 };
 

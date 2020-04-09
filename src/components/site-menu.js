@@ -4,7 +4,7 @@ const createFilterMarkup = (filter) => {
   return (
     `<a href="#watchlist" class="main-navigation__item ${isActive ? `main-navigation__item--active` : ``}">
     ${name} 
-    ${typeof count !== `undefined` ? `<span class="main-navigation__item-count">${count}</span>` : ``}
+    ${count !== undefined ? `<span class="main-navigation__item-count">${count}</span>` : ``}
     </a>`
   );
 };

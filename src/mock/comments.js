@@ -18,7 +18,7 @@ const generateComment = () => {
 };
 
 export const generateComments = () => {
-  return Array(1)
+  return Array(10)
     .fill(``)
     .map(generateComment);
 };
