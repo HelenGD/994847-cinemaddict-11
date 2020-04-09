@@ -7,10 +7,16 @@ import {
 } from './strings';
 
 const COMMENT_COUNT = 5;
+export const MIN_FILM_DURATION = 3600;
+export const MAX_FILM_DURATION = 7200;
+const FIRST_FILM_YEAR = 1900;
+const LAST_FILM_YEAR = 2021;
+export const MAX_COUNT_RATING = 3;
+export const DECIMAL_PLACES = 1;
 
-const generateCard = () => {
+export const generateCard = () => {
   const commentsCount = random(0, COMMENT_COUNT);
-  const year = random(1900, 2021);
+  const year = random(FIRST_FILM_YEAR, LAST_FILM_YEAR);
   const rating = decimalRandom(0, 10, 1);
 
   return {
@@ -18,7 +24,7 @@ const generateCard = () => {
     rating,
     poster: randomArrayItem(posters),
     year,
-    duration: formatDuration(random(3600, 7200)),
+    duration: formatDuration(random(MIN_FILM_DURATION, MAX_FILM_DURATION)),
     genre: randomArrayItem(genres),
     description: randomArrayItem(descriptions),
     commentsCount,
@@ -28,10 +34,8 @@ const generateCard = () => {
   };
 };
 
-const generateCards = (count) => {
+export const generateCards = (count) => {
   return Array(count)
     .fill(``)
     .map(generateCard);
 };
-
-export {generateCard, generateCards};

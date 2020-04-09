@@ -18,7 +18,7 @@ const MAX_LENGTH_SHOWING_COMMENT = 140;
 const siteHeaderEl = document.querySelector(`.header`);
 const siteMainEl = document.querySelector(`.main`);
 
-const filters = generateFilters();
+export const filters = generateFilters();
 
 const cards = generateCards(FILM_CARD_COUNT);
 
@@ -75,5 +75,3 @@ render(document.body, createFilmDetailsTemplate(filmDetails));
 
 const filmPopupEl = document.querySelector(`.film-details`);
 filmPopupEl.classList.add(`visually-hidden`);
-
-export {filters};

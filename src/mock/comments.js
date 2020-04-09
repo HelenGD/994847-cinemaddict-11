@@ -7,6 +7,8 @@ import {
   texts
 } from './strings';
 
+const COMMENTS_COUNT = 10;
+
 const generateComment = () => {
 
   return {
@@ -18,7 +20,7 @@ const generateComment = () => {
 };
 
 export const generateComments = () => {
-  return Array(10)
+  return Array(COMMENTS_COUNT)
     .fill(``)
     .map(generateComment);
 };

@@ -1,5 +1,6 @@
 import format from 'date-fns/format';
 import {random, formatDuration, decimalRandom, randomArrayItem} from '../components/utils';
+import {MIN_FILM_DURATION, MAX_FILM_DURATION, MAX_COUNT_RATING, DECIMAL_PLACES} from '../mock/card';
 import {generateComments} from '../mock/comments';
 import {
   descriptions,
@@ -18,11 +19,9 @@ const MAX_COUNT_GENRES = 3;
 const MIN_COUNT_GENRES = 1;
 const MAX_COUNT_DESCRIPTION = 8;
 const MIN_COUNT_DESCRIPTION = 3;
-const MIN_FILM_DURATION = 3600;
-const MAX_FILM_DURATION = 7200;
 
 export const generateDetailsOfFilm = () => {
-  const rating = decimalRandom(0, 10, 1);
+  const rating = decimalRandom(0, MAX_COUNT_RATING, DECIMAL_PLACES);
 
   return {
     title: randomArrayItem(titles),
