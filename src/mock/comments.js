@@ -7,20 +7,20 @@ import {
   texts
 } from './strings';
 
-const COMMENTS_COUNT = 10;
+const EMOTIONS_ROOT = `./images/emoji/`;
 
 const generateComment = () => {
 
   return {
     text: randomArrayItem(texts),
-    emotion: randomArrayItem(emotions),
+    emotion: `${EMOTIONS_ROOT}${randomArrayItem(emotions)}`,
     author: randomArrayItem(authors),
     date: format(Date.now(), `yyyy/M/d h:m`)
   };
 };
 
-export const generateComments = () => {
-  return Array(COMMENTS_COUNT)
+export const generateComments = (count) => {
+  return Array(count)
     .fill(``)
     .map(generateComment);
 };

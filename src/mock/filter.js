@@ -1,10 +1,9 @@
 import {random} from '../components/utils';
+import {
+  filterNames
+} from './strings';
 
 const ALL_MOVIES_COUNT = 15;
-
-const filterNames = [
-  `All movies`, `Watchlist`, `History`, `Favorites`
-];
 
 export const generateFilters = () => {
   return filterNames.map((it, index) => {

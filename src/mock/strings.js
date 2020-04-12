@@ -30,11 +30,11 @@ export const titles = [
 ];
 
 export const posters = [
-  `./images/posters/the-dance-of-life.jpg`,
-  `./images/posters/sagebrush-trail.jpg`,
-  `./images/posters/santa-claus-conquers-the-martians.jpg`,
-  `./images/posters/the-great-flamarion.jpg`,
-  `./images/posters/the-man-with-the-golden-arm.jpg`
+  `the-dance-of-life.jpg`,
+  `sagebrush-trail.jpg`,
+  `santa-claus-conquers-the-martians.jpg`,
+  `the-great-flamarion.jpg`,
+  `the-man-with-the-golden-arm.jpg`
 ];
 
 export const genres = [
@@ -154,10 +154,10 @@ export const actors = [
 ];
 
 export const emotions = [
-  `./images/emoji/smile.png`,
-  `./images/emoji/angry.png`,
-  `./images/emoji/puke.png`,
-  `./images/emoji/sleeping.png`,
+  `smile.png`,
+  `angry.png`,
+  `puke.png`,
+  `sleeping.png`,
 ];
 
 export const authors = [
@@ -175,4 +175,8 @@ export const texts = [
   `Видел в таком жанре и получше`,
   `Мечтаю о продолжении`,
   `Актерская игра на высоте`
+];
+
+export const filterNames = [
+  `All movies`, `Watchlist`, `History`, `Favorites`
 ];

@@ -5,8 +5,7 @@ import {createFilmCardTemplate} from './components/film-card';
 import {createShowMoreButtonTemplate} from './components/show-more-button';
 import {createFilmDetailsTemplate} from './components/film-details';
 import {render} from './components/utils';
-import {generateCards} from './mock/card.js';
-import {generateDetailsOfFilm} from './mock/card-extended';
+import {generateDetailsOfFilm, generateCards} from './mock/card';
 import {generateFilters} from './mock/filter';
 
 const FILM_CARD_COUNT = 15;
@@ -18,9 +17,10 @@ const MAX_LENGTH_SHOWING_COMMENT = 140;
 const siteHeaderEl = document.querySelector(`.header`);
 const siteMainEl = document.querySelector(`.main`);
 
-export const filters = generateFilters();
+const filters = generateFilters();
 
 const cards = generateCards(FILM_CARD_COUNT);
+const filmsCount = cards.length;
 
 render(siteHeaderEl, createUserRankTemplate());
 render(siteMainEl, createSiteMenuTemplate(filters));
@@ -29,10 +29,8 @@ render(siteMainEl, createPopularFilmsTemplate());
 const filmsListMainEl = siteMainEl.querySelector(`.films .films-list`);
 const filmsListMainContainerEl = filmsListMainEl.querySelector(`.films-list__container`);
 
-let showingCardsCount = SHOWING_CARDS_COUNT_ON_START;
-
 cards
-  .slice(0, showingCardsCount)
+  .slice(0, SHOWING_CARDS_COUNT_ON_START)
   .forEach((card) => render(filmsListMainContainerEl, createFilmCardTemplate(card)));
 
 document
@@ -51,8 +49,8 @@ render(filmsListMainEl, createShowMoreButtonTemplate());
 const showMoreButton = filmsListMainEl.querySelector(`.films-list__show-more`);
 
 showMoreButton.addEventListener(`click`, () => {
-  const prevCardsCount = showingCardsCount;
-  showingCardsCount = showingCardsCount + SHOWING_CARDS_COUNT_BY_BUTTON;
+  const prevCardsCount = filmsListMainContainerEl.children.length;
+  const showingCardsCount = prevCardsCount + SHOWING_CARDS_COUNT_BY_BUTTON;
 
   cards
     .slice(prevCardsCount, showingCardsCount)
@@ -65,13 +63,17 @@ showMoreButton.addEventListener(`click`, () => {
 
 const filmsListContainersEl = siteMainEl.querySelectorAll(`.films-list--extra .films-list__container`);
 filmsListContainersEl.forEach((containerEl) => {
-  for (let i = 0; i < FILM_CARD_EXTRA_COUNT; i++) {
-    render(containerEl, createFilmCardTemplate(cards[i]));
-  }
+  cards
+    .slice(0, FILM_CARD_EXTRA_COUNT)
+    .forEach((card) => {
+      render(containerEl, createFilmCardTemplate(card));
+    });
 });
 
 const filmDetails = generateDetailsOfFilm();
 render(document.body, createFilmDetailsTemplate(filmDetails));
+
+document.querySelector(`.footer__statistics`).textContent = filmsCount;
 
 const filmPopupEl = document.querySelector(`.film-details`);
 filmPopupEl.classList.add(`visually-hidden`);
