@@ -1,5 +1,17 @@
-export const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
+export const renderElement = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
 };
 
 export const random = (min, max) => {
@@ -34,3 +46,24 @@ export const decimalRandom = (min, max, decimalPlaces) => {
 };
 
 export const randomArrayItem = (array) => array[random(0, array.length - 1)];
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
+export const onOutsideClick = (element, callback) => {
+  const handleClick = (evt) => {
+    const isClickInside = element.contains(evt.target);
+
+    if (!isClickInside) {
+      callback(() => document.removeEventListener(`click`, handleClick));
+    }
+  };
+
+  document.addEventListener(`click`, handleClick);
+
+  return () => document.removeEventListener(`click`, handleClick);
+};

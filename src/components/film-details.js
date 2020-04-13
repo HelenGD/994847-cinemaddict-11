@@ -1,4 +1,6 @@
-export const createFilmDetailsTemplate = (filmDetails) => {
+import {createElement} from "./utils.js";
+
+const createfilmDataTemplate = (filmData) => {
   const {
     title,
     genres,
@@ -14,7 +16,7 @@ export const createFilmDetailsTemplate = (filmDetails) => {
     poster,
     comments,
     release,
-  } = filmDetails;
+  } = filmData;
 
   return (
     `<section class="film-details">
@@ -136,3 +138,39 @@ export const createFilmDetailsTemplate = (filmDetails) => {
     </section>`
   );
 };
+
+export default class FilmCardDetails {
+  constructor(filmData) {
+    this._document = document;
+    this._filmData = filmData;
+    this._element = null;
+    this._closeElement = null;
+  }
+
+  getTemplate() {
+    return createfilmDataTemplate(this._filmData);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  getCloseButtonElement() {
+    if (!this._closeElement) {
+      this._closeElement = this._element.querySelector(`.film-details__close-btn`);
+    }
+
+    return this._closeElement;
+  }
+
+  removeElement() {
+    this._element.remove();
+    this._element = null;
+  }
+}
+
+

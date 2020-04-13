@@ -1,11 +1,11 @@
-import {createUserRankTemplate} from './components/user-rank';
-import {createSiteMenuTemplate} from './components/site-menu';
-import {createPopularFilmsTemplate} from './components/popular-films';
-import {createFilmCardTemplate} from './components/film-card';
-import {createShowMoreButtonTemplate} from './components/show-more-button';
-import {createFilmDetailsTemplate} from './components/film-details';
-import {render} from './components/utils';
-import {generateDetailsOfFilm, generateCards} from './mock/card';
+import UserRank from './components/user-rank';
+import SiteMenu from './components/site-menu';
+import PopularFilms from './components/popular-films';
+import FilmCard from './components/film-card';
+import ShowMoreButton from './components/show-more-button';
+import FilmCardDetails from './components/film-details';
+import {renderElement, RenderPosition, onOutsideClick} from './components/utils';
+import {generateCards} from './mock/card';
 import {generateFilters} from './mock/filter';
 
 const FILM_CARD_COUNT = 15;
@@ -22,16 +22,56 @@ const filters = generateFilters();
 const cards = generateCards(FILM_CARD_COUNT);
 const filmsCount = cards.length;
 
-render(siteHeaderEl, createUserRankTemplate());
-render(siteMainEl, createSiteMenuTemplate(filters));
-render(siteMainEl, createPopularFilmsTemplate());
+const renderFilmCardDetails = (filmCard) => filmCard
+.getElement()
+.addEventListener(`click`, (evt) => {
+  evt.stopPropagation();
+  const filmCardDetails = new FilmCardDetails(filmCard.getCard());
+  renderElement(document.body, filmCardDetails.getElement(), RenderPosition.BEFOREEND);
+
+  const handleOutsideClick = (offOutsideClick) => {
+    filmCardDetails.removeElement();
+    offOutsideClick();
+  };
+  const offOutsideClick = onOutsideClick(filmCardDetails.getElement(), handleOutsideClick);
+
+  const handleClose = () => {
+    offOutsideClick();
+    filmCardDetails.removeElement();
+  };
+  filmCardDetails
+    .getCloseButtonElement()
+    .addEventListener(`click`, handleClose);
+});
+
+renderElement(
+    siteHeaderEl,
+    new UserRank().getElement(),
+    RenderPosition.BEFOREEND
+);
+
+renderElement(
+    siteMainEl,
+    new SiteMenu(filters).getElement(),
+    RenderPosition.BEFOREEND
+);
+
+renderElement(
+    siteMainEl,
+    new PopularFilms().getElement(),
+    RenderPosition.BEFOREEND
+);
 
 const filmsListMainEl = siteMainEl.querySelector(`.films .films-list`);
 const filmsListMainContainerEl = filmsListMainEl.querySelector(`.films-list__container`);
 
 cards
   .slice(0, SHOWING_CARDS_COUNT_ON_START)
-  .forEach((card) => render(filmsListMainContainerEl, createFilmCardTemplate(card)));
+  .forEach((card) => {
+    const filmCard = new FilmCard(card);
+    renderElement(filmsListMainContainerEl, filmCard.getElement(), RenderPosition.BEFOREEND);
+    renderFilmCardDetails(filmCard);
+  });
 
 document
   .querySelectorAll(`.film-card__description`)
@@ -44,7 +84,11 @@ document
     filmCardDescriptionEl.textContent = cutDescription;
   });
 
-render(filmsListMainEl, createShowMoreButtonTemplate());
+renderElement(
+    filmsListMainEl,
+    new ShowMoreButton().getElement(),
+    RenderPosition.BEFOREEND
+);
 
 const showMoreButton = filmsListMainEl.querySelector(`.films-list__show-more`);
 
@@ -54,7 +98,11 @@ showMoreButton.addEventListener(`click`, () => {
 
   cards
     .slice(prevCardsCount, showingCardsCount)
-    .forEach((card) => render(filmsListMainContainerEl, createFilmCardTemplate(card)));
+    .forEach((card) => {
+      const filmCard = new FilmCard(card);
+      renderElement(filmsListMainContainerEl, filmCard.getElement(), RenderPosition.BEFOREEND);
+      renderFilmCardDetails(filmCard);
+    });
 
   if (showingCardsCount >= cards.length) {
     showMoreButton.remove();
@@ -66,14 +114,11 @@ filmsListContainersEl.forEach((containerEl) => {
   cards
     .slice(0, FILM_CARD_EXTRA_COUNT)
     .forEach((card) => {
-      render(containerEl, createFilmCardTemplate(card));
+      const filmCard = new FilmCard(card);
+      renderElement(containerEl, filmCard.getElement(), RenderPosition.BEFOREEND);
+      renderFilmCardDetails(filmCard);
     });
 });
 
-const filmDetails = generateDetailsOfFilm();
-render(document.body, createFilmDetailsTemplate(filmDetails));
+document.querySelector(`.footer__statistics`).textContent = `${filmsCount} movies inside`;
 
-document.querySelector(`.footer__statistics`).textContent = filmsCount;
-
-const filmPopupEl = document.querySelector(`.film-details`);
-filmPopupEl.classList.add(`visually-hidden`);
