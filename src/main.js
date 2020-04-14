@@ -4,7 +4,7 @@ import PopularFilms from './components/popular-films';
 import FilmCard from './components/film-card';
 import ShowMoreButton from './components/show-more-button';
 import FilmCardDetails from './components/film-details';
-import {renderElement, RenderPosition, onOutsideClick} from './components/utils';
+import {renderElement, RenderPosition, onOutsideClick, isEscPress} from './components/utils';
 import {generateCards} from './mock/card';
 import {generateFilters} from './mock/filter';
 
@@ -39,9 +39,20 @@ const renderFilmCardDetails = (filmCard) => filmCard
     offOutsideClick();
     filmCardDetails.removeElement();
   };
+
+  const onClosePopup = () => {
+    filmCardDetails.removeElement();
+  };
+  const onPopupEscPress = (event) => {
+    isEscPress(event, onClosePopup);
+    document.removeEventListener(`keydown`, onPopupEscPress);
+  };
+
   filmCardDetails
     .getCloseButtonElement()
     .addEventListener(`click`, handleClose);
+
+  document.addEventListener(`keydown`, onPopupEscPress);
 });
 
 renderElement(
@@ -121,4 +132,5 @@ filmsListContainersEl.forEach((containerEl) => {
 });
 
 document.querySelector(`.footer__statistics`).textContent = `${filmsCount} movies inside`;
+
 
