@@ -1,5 +1,5 @@
 import format from 'date-fns/format';
-import {randomArrayItem, createElement} from '../components/utils';
+import {randomArrayItem} from '../components/utils';
 
 import {
   emotions,

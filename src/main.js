@@ -4,6 +4,7 @@ import PopularFilms from './components/popular-films';
 import FilmCard from './components/film-card';
 import ShowMoreButton from './components/show-more-button';
 import FilmCardDetails from './components/film-details';
+import NoCards from './components/no-cards';
 import {renderElement, RenderPosition, onOutsideClick, isEscPress} from './components/utils';
 import {generateCards} from './mock/card';
 import {generateFilters} from './mock/filter';
@@ -29,20 +30,17 @@ const renderFilmCardDetails = (filmCard) => filmCard
   const filmCardDetails = new FilmCardDetails(filmCard.getCard());
   renderElement(document.body, filmCardDetails.getElement(), RenderPosition.BEFOREEND);
 
-  const handleOutsideClick = (offOutsideClick) => {
+  const onOutsidePress = (offOutsideClick) => {
     filmCardDetails.removeElement();
     offOutsideClick();
   };
-  const offOutsideClick = onOutsideClick(filmCardDetails.getElement(), handleOutsideClick);
-
-  const handleClose = () => {
-    offOutsideClick();
-    filmCardDetails.removeElement();
-  };
+  const offOutsideClick = onOutsideClick(filmCardDetails.getElement(), onOutsidePress);
 
   const onClosePopup = () => {
+    offOutsideClick();
     filmCardDetails.removeElement();
   };
+
   const onPopupEscPress = (event) => {
     isEscPress(event, onClosePopup);
     document.removeEventListener(`keydown`, onPopupEscPress);
@@ -50,7 +48,7 @@ const renderFilmCardDetails = (filmCard) => filmCard
 
   filmCardDetails
     .getCloseButtonElement()
-    .addEventListener(`click`, handleClose);
+    .addEventListener(`click`, onClosePopup);
 
   document.addEventListener(`keydown`, onPopupEscPress);
 });
@@ -76,6 +74,11 @@ renderElement(
 const filmsListMainEl = siteMainEl.querySelector(`.films .films-list`);
 const filmsListMainContainerEl = filmsListMainEl.querySelector(`.films-list__container`);
 
+if (!cards.length) {
+  const noCards = new NoCards();
+  renderElement(filmsListMainContainerEl, noCards.getElement(), RenderPosition.BEFOREEND);
+}
+
 cards
   .slice(0, SHOWING_CARDS_COUNT_ON_START)
   .forEach((card) => {
@@ -83,7 +86,6 @@ cards
     renderElement(filmsListMainContainerEl, filmCard.getElement(), RenderPosition.BEFOREEND);
     renderFilmCardDetails(filmCard);
   });
-
 document
   .querySelectorAll(`.film-card__description`)
   .forEach((filmCardDescriptionEl) => {
@@ -95,19 +97,18 @@ document
     filmCardDescriptionEl.textContent = cutDescription;
   });
 
-renderElement(
-    filmsListMainEl,
-    new ShowMoreButton().getElement(),
-    RenderPosition.BEFOREEND
-);
+if (cards.length) {
+  renderElement(
+      filmsListMainEl,
+      new ShowMoreButton().getElement(),
+      RenderPosition.BEFOREEND
+  );
+  const showMoreButton = filmsListMainEl.querySelector(`.films-list__show-more`);
+  showMoreButton.addEventListener(`click`, () => {
+    const prevCardsCount = filmsListMainContainerEl.children.length;
+    const showingCardsCount = prevCardsCount + SHOWING_CARDS_COUNT_BY_BUTTON;
 
-const showMoreButton = filmsListMainEl.querySelector(`.films-list__show-more`);
-
-showMoreButton.addEventListener(`click`, () => {
-  const prevCardsCount = filmsListMainContainerEl.children.length;
-  const showingCardsCount = prevCardsCount + SHOWING_CARDS_COUNT_BY_BUTTON;
-
-  cards
+    cards
     .slice(prevCardsCount, showingCardsCount)
     .forEach((card) => {
       const filmCard = new FilmCard(card);
@@ -115,10 +116,11 @@ showMoreButton.addEventListener(`click`, () => {
       renderFilmCardDetails(filmCard);
     });
 
-  if (showingCardsCount >= cards.length) {
-    showMoreButton.remove();
-  }
-});
+    if (showingCardsCount >= cards.length) {
+      showMoreButton.remove();
+    }
+  });
+}
 
 const filmsListContainersEl = siteMainEl.querySelectorAll(`.films-list--extra .films-list__container`);
 filmsListContainersEl.forEach((containerEl) => {
@@ -132,5 +134,3 @@ filmsListContainersEl.forEach((containerEl) => {
 });
 
 document.querySelector(`.footer__statistics`).textContent = `${filmsCount} movies inside`;
-
-

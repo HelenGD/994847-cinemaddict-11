@@ -57,19 +57,18 @@ export const createElement = (template) => {
 };
 
 export const onOutsideClick = (element, callback) => {
-  const handleClick = (evt) => {
+  const onOutsidePress = (evt) => {
     const isClickInside = element.contains(evt.target);
 
     if (!isClickInside) {
-      callback(() => document.removeEventListener(`click`, handleClick));
+      callback(() => document.removeEventListener(`click`, onOutsidePress));
     }
   };
 
-  document.addEventListener(`click`, handleClick);
+  document.addEventListener(`click`, onOutsidePress);
 
-  return () => document.removeEventListener(`click`, handleClick);
+  return () => document.removeEventListener(`click`, onOutsidePress);
 };
-
 
 export const isEscPress = (evt, action) => {
   if (evt.keyCode === ESC_KEYCODE) {
