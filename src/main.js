@@ -1,11 +1,13 @@
 import UserRank from './components/user-rank';
-import SiteMenu from './components/site-menu';
+import FilmFilter from './components/filter';
+import FilmSort from './components/sort';
 import PopularFilms from './components/popular-films';
 import FilmCard from './components/film-card';
 import ShowMoreButton from './components/show-more-button';
 import FilmCardDetails from './components/film-details';
+import FilmStatistics from './components/statistics';
 import NoCards from './components/no-cards';
-import {renderElement, RenderPosition, onOutsideClick, isEscPress} from './components/utils';
+import {renderElement, onOutsideClick, checkEscPress} from './components/utils';
 import {generateCards} from './mock/card';
 import {generateFilters} from './mock/filter';
 
@@ -28,7 +30,7 @@ const renderFilmCardDetails = (filmCard) => filmCard
 .addEventListener(`click`, (evt) => {
   evt.stopPropagation();
   const filmCardDetails = new FilmCardDetails(filmCard.getCard());
-  renderElement(document.body, filmCardDetails.getElement(), RenderPosition.BEFOREEND);
+  renderElement(document.body, filmCardDetails.getElement());
 
   const onOutsidePress = (offOutsideClick) => {
     filmCardDetails.removeElement();
@@ -39,10 +41,11 @@ const renderFilmCardDetails = (filmCard) => filmCard
   const onClosePopup = () => {
     offOutsideClick();
     filmCardDetails.removeElement();
+    document.removeEventListener(`keydown`, onPopupEscPress);
   };
 
   const onPopupEscPress = (event) => {
-    isEscPress(event, onClosePopup);
+    checkEscPress(event, onClosePopup);
     document.removeEventListener(`keydown`, onPopupEscPress);
   };
 
@@ -55,20 +58,22 @@ const renderFilmCardDetails = (filmCard) => filmCard
 
 renderElement(
     siteHeaderEl,
-    new UserRank().getElement(),
-    RenderPosition.BEFOREEND
+    new UserRank().getElement()
 );
 
 renderElement(
     siteMainEl,
-    new SiteMenu(filters).getElement(),
-    RenderPosition.BEFOREEND
+    new FilmFilter(filters).getElement()
 );
 
 renderElement(
     siteMainEl,
-    new PopularFilms().getElement(),
-    RenderPosition.BEFOREEND
+    new FilmSort().getElement()
+);
+
+renderElement(
+    siteMainEl,
+    new PopularFilms().getElement()
 );
 
 const filmsListMainEl = siteMainEl.querySelector(`.films .films-list`);
@@ -76,14 +81,14 @@ const filmsListMainContainerEl = filmsListMainEl.querySelector(`.films-list__con
 
 if (!cards.length) {
   const noCards = new NoCards();
-  renderElement(filmsListMainContainerEl, noCards.getElement(), RenderPosition.BEFOREEND);
+  renderElement(filmsListMainContainerEl, noCards.getElement());
 }
 
 cards
   .slice(0, SHOWING_CARDS_COUNT_ON_START)
   .forEach((card) => {
     const filmCard = new FilmCard(card);
-    renderElement(filmsListMainContainerEl, filmCard.getElement(), RenderPosition.BEFOREEND);
+    renderElement(filmsListMainContainerEl, filmCard.getElement());
     renderFilmCardDetails(filmCard);
   });
 document
@@ -97,11 +102,10 @@ document
     filmCardDescriptionEl.textContent = cutDescription;
   });
 
-if (cards.length) {
+if (cards.length > SHOWING_CARDS_COUNT_ON_START) {
   renderElement(
       filmsListMainEl,
-      new ShowMoreButton().getElement(),
-      RenderPosition.BEFOREEND
+      new ShowMoreButton().getElement()
   );
   const showMoreButton = filmsListMainEl.querySelector(`.films-list__show-more`);
   showMoreButton.addEventListener(`click`, () => {
@@ -112,7 +116,7 @@ if (cards.length) {
     .slice(prevCardsCount, showingCardsCount)
     .forEach((card) => {
       const filmCard = new FilmCard(card);
-      renderElement(filmsListMainContainerEl, filmCard.getElement(), RenderPosition.BEFOREEND);
+      renderElement(filmsListMainContainerEl, filmCard.getElement());
       renderFilmCardDetails(filmCard);
     });
 
@@ -128,9 +132,15 @@ filmsListContainersEl.forEach((containerEl) => {
     .slice(0, FILM_CARD_EXTRA_COUNT)
     .forEach((card) => {
       const filmCard = new FilmCard(card);
-      renderElement(containerEl, filmCard.getElement(), RenderPosition.BEFOREEND);
+      renderElement(containerEl, filmCard.getElement());
       renderFilmCardDetails(filmCard);
     });
 });
 
-document.querySelector(`.footer__statistics`).textContent = `${filmsCount} movies inside`;
+const footerStatisticsEl = document.querySelector(`.footer__statistics`);
+footerStatisticsEl.textContent = `${filmsCount} movies inside`;
+renderElement(
+    footerStatisticsEl,
+    new FilmStatistics(filters).getElement()
+);
+

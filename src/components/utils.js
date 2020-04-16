@@ -5,7 +5,7 @@ export const RenderPosition = {
 
 const ESC_KEYCODE = 27;
 
-export const renderElement = (container, element, place) => {
+export const renderElement = (container, element, place = RenderPosition.BEFOREEND) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(element);
@@ -70,7 +70,7 @@ export const onOutsideClick = (element, callback) => {
   return () => document.removeEventListener(`click`, onOutsidePress);
 };
 
-export const isEscPress = (evt, action) => {
+export const checkEscPress = (evt, action) => {
   if (evt.keyCode === ESC_KEYCODE) {
     action();
   }

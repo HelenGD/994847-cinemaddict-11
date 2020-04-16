@@ -1,5 +1,7 @@
 import {createElement} from "./utils.js";
 
+const ACTIVE_CLASS_NAME = `film-card__controls-item--active`;
+
 const createFilmCardTemplate = (card) => {
   const {
     title,
@@ -14,9 +16,21 @@ const createFilmCardTemplate = (card) => {
     isWatched,
     isFavourite
   } = card;
-  const addToWatchButtonActiveClass = isAddToWatch ? `film-card__controls-item--active` : ``;
-  const watchedButtonActiveClass = isWatched ? `film-card__controls-item--active` : ``;
-  const favouriteButtonActiveClass = isFavourite ? `film-card__controls-item--active` : ``;
+
+  const buttons = [
+    {
+      isActive: isAddToWatch,
+      icon: `add-to-watchlist`,
+    },
+    {
+      isActive: isWatched,
+      icon: `mark-as-watched`,
+    },
+    {
+      isActive: isFavourite,
+      icon: `favorite`
+    }
+  ];
 
   return `<article class="film-card">
     <h3 class="film-card__title">${title}</h3>
@@ -30,9 +44,9 @@ const createFilmCardTemplate = (card) => {
     <p class="film-card__description">${descriptionShort}</p>
     <a class="film-card__comments">${comments.length} comment${comments.length !== 1 ? `s` : ``}</a>
     <form class="film-card__controls">
-      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${addToWatchButtonActiveClass}"></button>
-      <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">${watchedButtonActiveClass}</button>
-      <button class="film-card__controls-item button film-card__controls-item--favorite">${favouriteButtonActiveClass}</button>
+      ${buttons
+        .map((button) => `<button class="film-card__controls-item button film-card__controls-item--${button.icon} ${button.isActive ? ACTIVE_CLASS_NAME : ``}"></button>`)
+        .join(``)}
     </form>
   </article>`;
 };

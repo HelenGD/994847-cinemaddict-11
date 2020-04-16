@@ -1,5 +1,7 @@
 import {createElement} from "./utils.js";
 
+const EMOJI_SRC = `./images/emoji/`;
+
 const createfilmDataTemplate = (filmData) => {
   const {
     title,
@@ -17,6 +19,25 @@ const createfilmDataTemplate = (filmData) => {
     comments,
     release,
   } = filmData;
+
+  const emojiList = [
+    {
+      name: `smile`,
+      src: `smile.png`
+    },
+    {
+      name: `sleeping`,
+      src: `sleeping.png`
+    },
+    {
+      name: `gpuke`,
+      src: `puke.png`
+    },
+    {
+      name: `angry`,
+      src: `angry.png`
+    }
+  ];
 
   return (
     `<section class="film-details">
@@ -114,22 +135,12 @@ const createfilmDataTemplate = (filmData) => {
                 <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
               </label>
               <div class="film-details__emoji-list">
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="sleeping">
-                <label class="film-details__emoji-label" for="emoji-smile">
-                  <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-                </label>
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="neutral-face">
-                <label class="film-details__emoji-label" for="emoji-sleeping">
-                  <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-                </label>
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-gpuke" value="grinning">
-                <label class="film-details__emoji-label" for="emoji-gpuke">
-                  <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-                </label>
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="grinning">
-                <label class="film-details__emoji-label" for="emoji-angry">
-                  <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-                </label>
+                ${emojiList.map((emoji) => `
+                  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji.name}" value="${emoji.name}">
+                  <label class="film-details__emoji-label" for="emoji-${emoji.name}">
+                    <img src="${EMOJI_SRC}${emoji.src}" width="30" height="30" alt="emoji">
+                  </label>
+                `).join(``)}
               </div>
             </div>
           </section>
