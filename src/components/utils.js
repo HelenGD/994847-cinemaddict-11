@@ -1,5 +1,19 @@
-export const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
+const ESC_KEYCODE = 27;
+
+export const renderElement = (container, element, place = RenderPosition.BEFOREEND) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
 };
 
 export const random = (min, max) => {
@@ -34,3 +48,30 @@ export const decimalRandom = (min, max, decimalPlaces) => {
 };
 
 export const randomArrayItem = (array) => array[random(0, array.length - 1)];
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
+export const onOutsideClick = (element, callback) => {
+  const onOutsidePress = (evt) => {
+    const isClickInside = element.contains(evt.target);
+
+    if (!isClickInside) {
+      callback(() => document.removeEventListener(`click`, onOutsidePress));
+    }
+  };
+
+  document.addEventListener(`click`, onOutsidePress);
+
+  return () => document.removeEventListener(`click`, onOutsidePress);
+};
+
+export const checkEscPress = (evt, action) => {
+  if (evt.keyCode === ESC_KEYCODE) {
+    action();
+  }
+};

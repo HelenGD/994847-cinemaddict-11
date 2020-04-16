@@ -1,4 +1,8 @@
-export const createFilmDetailsTemplate = (filmDetails) => {
+import {createElement} from "./utils.js";
+
+const EMOJI_SRC = `./images/emoji/`;
+
+const createfilmDataTemplate = (filmData) => {
   const {
     title,
     genres,
@@ -14,7 +18,26 @@ export const createFilmDetailsTemplate = (filmDetails) => {
     poster,
     comments,
     release,
-  } = filmDetails;
+  } = filmData;
+
+  const emojiList = [
+    {
+      name: `smile`,
+      src: `smile.png`
+    },
+    {
+      name: `sleeping`,
+      src: `sleeping.png`
+    },
+    {
+      name: `gpuke`,
+      src: `puke.png`
+    },
+    {
+      name: `angry`,
+      src: `angry.png`
+    }
+  ];
 
   return (
     `<section class="film-details">
@@ -112,22 +135,12 @@ export const createFilmDetailsTemplate = (filmDetails) => {
                 <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
               </label>
               <div class="film-details__emoji-list">
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="sleeping">
-                <label class="film-details__emoji-label" for="emoji-smile">
-                  <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-                </label>
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="neutral-face">
-                <label class="film-details__emoji-label" for="emoji-sleeping">
-                  <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-                </label>
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-gpuke" value="grinning">
-                <label class="film-details__emoji-label" for="emoji-gpuke">
-                  <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-                </label>
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="grinning">
-                <label class="film-details__emoji-label" for="emoji-angry">
-                  <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-                </label>
+                ${emojiList.map((emoji) => `
+                  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji.name}" value="${emoji.name}">
+                  <label class="film-details__emoji-label" for="emoji-${emoji.name}">
+                    <img src="${EMOJI_SRC}${emoji.src}" width="30" height="30" alt="emoji">
+                  </label>
+                `).join(``)}
               </div>
             </div>
           </section>
@@ -136,3 +149,39 @@ export const createFilmDetailsTemplate = (filmDetails) => {
     </section>`
   );
 };
+
+export default class FilmCardDetails {
+  constructor(filmData) {
+    this._document = document;
+    this._filmData = filmData;
+    this._element = null;
+    this._closeElement = null;
+  }
+
+  getTemplate() {
+    return createfilmDataTemplate(this._filmData);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  getCloseButtonElement() {
+    if (!this._closeElement) {
+      this._closeElement = this._element.querySelector(`.film-details__close-btn`);
+    }
+
+    return this._closeElement;
+  }
+
+  removeElement() {
+    this._element.remove();
+    this._element = null;
+  }
+}
+
+

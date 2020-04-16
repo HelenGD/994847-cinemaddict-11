@@ -1,4 +1,8 @@
-export const createFilmCardTemplate = (card) => {
+import {createElement} from "./utils.js";
+
+const ACTIVE_CLASS_NAME = `film-card__controls-item--active`;
+
+const createFilmCardTemplate = (card) => {
   const {
     title,
     rating,
@@ -12,9 +16,21 @@ export const createFilmCardTemplate = (card) => {
     isWatched,
     isFavourite
   } = card;
-  const addToWatchButtonActiveClass = isAddToWatch ? `film-card__controls-item--active` : ``;
-  const watchedButtonActiveClass = isWatched ? `film-card__controls-item--active` : ``;
-  const favouriteButtonActiveClass = isFavourite ? `film-card__controls-item--active` : ``;
+
+  const buttons = [
+    {
+      isActive: isAddToWatch,
+      icon: `add-to-watchlist`,
+    },
+    {
+      isActive: isWatched,
+      icon: `mark-as-watched`,
+    },
+    {
+      isActive: isFavourite,
+      icon: `favorite`
+    }
+  ];
 
   return `<article class="film-card">
     <h3 class="film-card__title">${title}</h3>
@@ -28,9 +44,36 @@ export const createFilmCardTemplate = (card) => {
     <p class="film-card__description">${descriptionShort}</p>
     <a class="film-card__comments">${comments.length} comment${comments.length !== 1 ? `s` : ``}</a>
     <form class="film-card__controls">
-      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${addToWatchButtonActiveClass}"></button>
-      <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">${watchedButtonActiveClass}</button>
-      <button class="film-card__controls-item button film-card__controls-item--favorite">${favouriteButtonActiveClass}</button>
+      ${buttons
+        .map((button) => `<button class="film-card__controls-item button film-card__controls-item--${button.icon} ${button.isActive ? ACTIVE_CLASS_NAME : ``}"></button>`)
+        .join(``)}
     </form>
   </article>`;
 };
+
+export default class FilmCard {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmCardTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+  getCard() {
+    return this._card;
+  }
+}

@@ -1,4 +1,6 @@
-export const createPopularFilmsTemplate = () => (
+import {createElement} from "./utils.js";
+
+const createPopularFilmsTemplate = () => (
   `<section class="films">
     <section class="films-list">
       <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
@@ -14,3 +16,25 @@ export const createPopularFilmsTemplate = () => (
     </section>
   </section>`
 );
+
+export default class PopularFilms {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createPopularFilmsTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
