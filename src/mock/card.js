@@ -1,5 +1,5 @@
 import format from 'date-fns/format';
-import {random, formatDuration, decimalRandom, randomArrayItem} from '../components/utils';
+import {random, formatDuration, decimalRandom, randomArrayItem} from '../utils/common';
 import {generateComments} from './comments';
 import {
   descriptions,

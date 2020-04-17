@@ -7,7 +7,8 @@ import ShowMoreButton from './components/show-more-button';
 import FilmCardDetails from './components/film-details';
 import FilmStatistics from './components/statistics';
 import NoCards from './components/no-cards';
-import {renderElement, onOutsideClick, checkEscPress} from './components/utils';
+import {onOutsideClick, checkEscPress} from './utils/common';
+import {renderElement, remove} from './utils/render';
 import {generateCards} from './mock/card';
 import {generateFilters} from './mock/filter';
 
@@ -30,7 +31,7 @@ const renderFilmCardDetails = (filmCard) => filmCard
 .addEventListener(`click`, (evt) => {
   evt.stopPropagation();
   const filmCardDetails = new FilmCardDetails(filmCard.getCard());
-  renderElement(document.body, filmCardDetails.getElement());
+  renderElement(document.body, filmCardDetails);
 
   const onOutsidePress = (offOutsideClick) => {
     filmCardDetails.removeElement();
@@ -49,31 +50,29 @@ const renderFilmCardDetails = (filmCard) => filmCard
     document.removeEventListener(`keydown`, onPopupEscPress);
   };
 
-  filmCardDetails
-    .getCloseButtonElement()
-    .addEventListener(`click`, onClosePopup);
+  filmCardDetails.setEscClickHandler(onClosePopup);
 
   document.addEventListener(`keydown`, onPopupEscPress);
 });
 
 renderElement(
     siteHeaderEl,
-    new UserRank().getElement()
+    new UserRank()
 );
 
 renderElement(
     siteMainEl,
-    new FilmFilter(filters).getElement()
+    new FilmFilter(filters)
 );
 
 renderElement(
     siteMainEl,
-    new FilmSort().getElement()
+    new FilmSort()
 );
 
 renderElement(
     siteMainEl,
-    new PopularFilms().getElement()
+    new PopularFilms()
 );
 
 const filmsListMainEl = siteMainEl.querySelector(`.films .films-list`);
@@ -81,14 +80,14 @@ const filmsListMainContainerEl = filmsListMainEl.querySelector(`.films-list__con
 
 if (!cards.length) {
   const noCards = new NoCards();
-  renderElement(filmsListMainContainerEl, noCards.getElement());
+  renderElement(filmsListMainContainerEl, noCards);
 }
 
 cards
   .slice(0, SHOWING_CARDS_COUNT_ON_START)
   .forEach((card) => {
     const filmCard = new FilmCard(card);
-    renderElement(filmsListMainContainerEl, filmCard.getElement());
+    renderElement(filmsListMainContainerEl, filmCard);
     renderFilmCardDetails(filmCard);
   });
 document
@@ -103,12 +102,12 @@ document
   });
 
 if (cards.length > SHOWING_CARDS_COUNT_ON_START) {
+  const showMoreButton = new ShowMoreButton();
   renderElement(
       filmsListMainEl,
-      new ShowMoreButton().getElement()
+      showMoreButton
   );
-  const showMoreButton = filmsListMainEl.querySelector(`.films-list__show-more`);
-  showMoreButton.addEventListener(`click`, () => {
+  showMoreButton.setClickHandler(() => {
     const prevCardsCount = filmsListMainContainerEl.children.length;
     const showingCardsCount = prevCardsCount + SHOWING_CARDS_COUNT_BY_BUTTON;
 
@@ -116,12 +115,12 @@ if (cards.length > SHOWING_CARDS_COUNT_ON_START) {
     .slice(prevCardsCount, showingCardsCount)
     .forEach((card) => {
       const filmCard = new FilmCard(card);
-      renderElement(filmsListMainContainerEl, filmCard.getElement());
+      renderElement(filmsListMainContainerEl, filmCard);
       renderFilmCardDetails(filmCard);
     });
 
     if (showingCardsCount >= cards.length) {
-      showMoreButton.remove();
+      remove(showMoreButton);
     }
   });
 }
@@ -132,7 +131,7 @@ filmsListContainersEl.forEach((containerEl) => {
     .slice(0, FILM_CARD_EXTRA_COUNT)
     .forEach((card) => {
       const filmCard = new FilmCard(card);
-      renderElement(containerEl, filmCard.getElement());
+      renderElement(containerEl, filmCard);
       renderFilmCardDetails(filmCard);
     });
 });
@@ -141,6 +140,6 @@ const footerStatisticsEl = document.querySelector(`.footer__statistics`);
 footerStatisticsEl.textContent = `${filmsCount} movies inside`;
 renderElement(
     footerStatisticsEl,
-    new FilmStatistics(filters).getElement()
+    new FilmStatistics(filters)
 );
 

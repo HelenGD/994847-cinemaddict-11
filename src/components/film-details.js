@@ -1,4 +1,4 @@
-import {createElement} from "./utils.js";
+import AbstractComponent from "./abstract-component.js";
 
 const EMOJI_SRC = `./images/emoji/`;
 
@@ -150,8 +150,9 @@ const createfilmDataTemplate = (filmData) => {
   );
 };
 
-export default class FilmCardDetails {
+export default class FilmCardDetails extends AbstractComponent {
   constructor(filmData) {
+    super();
     this._document = document;
     this._filmData = filmData;
     this._element = null;
@@ -160,14 +161,6 @@ export default class FilmCardDetails {
 
   getTemplate() {
     return createfilmDataTemplate(this._filmData);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 
   getCloseButtonElement() {
@@ -180,7 +173,13 @@ export default class FilmCardDetails {
 
   removeElement() {
     this._element.remove();
-    this._element = null;
+  }
+  setEscClickHandler(handler) {
+    this.getCloseButtonElement().addEventListener(`click`, handler);
+  }
+
+  setOutsideClickHandler(handler) {
+    this.getElement().addEventListener(`click`, handler);
   }
 }
 

@@ -1,4 +1,4 @@
-import {random} from '../components/utils';
+import {random} from '../utils/common';
 import {
   filterNames
 } from './strings';
