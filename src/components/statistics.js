@@ -8,7 +8,7 @@ const createStatisticsTemplate = () => {
   );
 };
 
-export default class FilmStatistics extends AbstractComponent {
+export default class FilmStatisticsComponent extends AbstractComponent {
   getTemplate() {
     return createStatisticsTemplate();
   }

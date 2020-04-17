@@ -24,7 +24,7 @@ export const createFilterTemplate = (filters) => {
   );
 };
 
-export default class FilmFilter extends AbstractComponent {
+export default class FilmFilterComponent extends AbstractComponent {
   constructor(filters) {
     super();
 

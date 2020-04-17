@@ -7,7 +7,7 @@ const createUserRankTemplate = () => (
   </section>`
 );
 
-export default class UserRank extends AbstractComponent {
+export default class UserRankComponent extends AbstractComponent {
   getTemplate() {
     return createUserRankTemplate();
   }

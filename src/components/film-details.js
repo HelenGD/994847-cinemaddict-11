@@ -150,13 +150,27 @@ const createfilmDataTemplate = (filmData) => {
   );
 };
 
-export default class FilmCardDetails extends AbstractComponent {
-  constructor(filmData) {
+export default class FilmCardDetailsComponent extends AbstractComponent {
+  constructor() {
     super();
-    this._document = document;
-    this._filmData = filmData;
+    this.isOpened = false;
+    this._filmData = null;
     this._element = null;
     this._closeElement = null;
+  }
+
+  show(filmData) {
+    this.isOpened = true;
+    this._element = null;
+    this._filmData = filmData;
+    return this;
+  }
+
+  hide() {
+    this.isOpened = false;
+    this._filmData = null;
+    this._closeElement = null;
+    this.removeElement();
   }
 
   getTemplate() {
@@ -173,13 +187,11 @@ export default class FilmCardDetails extends AbstractComponent {
 
   removeElement() {
     this._element.remove();
-  }
-  setEscClickHandler(handler) {
-    this.getCloseButtonElement().addEventListener(`click`, handler);
+    this._element = null;
   }
 
-  setOutsideClickHandler(handler) {
-    this.getElement().addEventListener(`click`, handler);
+  setCloseClickHandler(handler) {
+    this.getCloseButtonElement().addEventListener(`click`, handler);
   }
 }
 

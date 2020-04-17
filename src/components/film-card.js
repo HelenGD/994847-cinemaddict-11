@@ -51,7 +51,7 @@ const createFilmCardTemplate = (card) => {
   </article>`;
 };
 
-export default class FilmCard extends AbstractComponent {
+export default class FilmCardComponent extends AbstractComponent {
   constructor(card) {
     super();
 
@@ -65,5 +65,9 @@ export default class FilmCard extends AbstractComponent {
 
   getCard() {
     return this._card;
+  }
+
+  setClickHandler(handler) {
+    this.getElement().addEventListener(`click`, handler);
   }
 }

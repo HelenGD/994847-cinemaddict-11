@@ -38,7 +38,7 @@ export const onOutsideClick = (element, callback) => {
     const isClickInside = element.contains(evt.target);
 
     if (!isClickInside) {
-      callback(() => document.removeEventListener(`click`, onOutsidePress));
+      callback(evt);
     }
   };
 
