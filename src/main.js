@@ -1,7 +1,4 @@
 import UserRankComponent from './components/user-rank';
-import FilmFilterComponent from './components/filter';
-import FilmSortComponent from './components/sort';
-import PopularFilmsComponent from './components/films-list-extra';
 import FilmStatisticsComponent from './components/statistics';
 import {renderElement} from './utils/render';
 import {generateCards} from './mock/card';

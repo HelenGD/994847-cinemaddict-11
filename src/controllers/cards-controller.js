@@ -1,13 +1,10 @@
 import FilmCardComponent from "../components/film-card";
-import {renderElement, remove} from "../utils/render";
+import {renderElement} from "../utils/render";
 import NoCardsComponent from "../components/no-cards";
 import {checkEscPress} from "../utils/common";
 import FilmCardDetailsComponent from "../components/film-details";
-import ShowMoreButtonComponent from "../components/show-more-button";
 
-const FILM_CARD_EXTRA_COUNT = 2;
 const MAX_LENGTH_SHOWING_COMMENT = 140;
-const SHOWING_CARDS_COUNT_ON_START = 5;
 
 const filmCardDetails = new FilmCardDetailsComponent();
 

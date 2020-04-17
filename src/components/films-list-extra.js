@@ -13,7 +13,7 @@ export default class FilmsListExtraComponent extends AbstractComponent {
 
     this._props = props;
   }
-  
+
   getTemplate() {
     return createTemplate(this._props);
   }
