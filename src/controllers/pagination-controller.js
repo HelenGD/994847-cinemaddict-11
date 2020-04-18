@@ -11,12 +11,12 @@ export default class PaginationController {
   }
 
   slice(cards, callback) {
-    const nextCards = cards.slice(0, this._currentCardsCount);
+    const nextCards = cards.current.slice(0, this._currentCardsCount);
     callback(nextCards);
   }
 
   render(cards, callback) {
-    if (cards.length <= SHOWING_CARDS_COUNT_ON_START) {
+    if (cards.current.length <= SHOWING_CARDS_COUNT_ON_START) {
       return;
     }
 
@@ -29,10 +29,9 @@ export default class PaginationController {
     showMoreButton.setClickHandler(() => {
       this._currentCardsCount += SHOWING_CARDS_COUNT_BY_BUTTON;
 
-      if (this._currentCardsCount >= cards.length) {
+      if (this._currentCardsCount >= cards.current.length) {
         remove(showMoreButton);
       }
-
       this.slice(cards, callback);
     });
 

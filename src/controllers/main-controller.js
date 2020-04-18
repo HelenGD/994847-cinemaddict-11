@@ -14,6 +14,8 @@ export default class MainController {
   }
 
   render({cards, filters}) {
+    this._cards = {current: cards};
+
     renderElement(
         this._container,
         new FilmFilterComponent(filters)
@@ -25,8 +27,8 @@ export default class MainController {
         filmSortComponent
     );
     filmSortComponent.setSortTypeChangeHandler((sortType) => {
-      const sortedCards = cardsSort(cards, sortType);
-      paginationController.slice(sortedCards, (nextCards) => {
+      this._cards.current = cardsSort(cards, sortType);
+      paginationController.slice(this._cards, (nextCards) => {
         cardsController.render(nextCards);
       });
     });
@@ -64,7 +66,7 @@ export default class MainController {
     const cardsController = new CardsController(filmsListComponent.getContainer());
 
     const paginationController = new PaginationController(filmsListComponent.getElement());
-    paginationController.render(cards, (nextCards) => {
+    paginationController.render(this._cards, (nextCards) => {
       cardsController.render(nextCards);
     });
   }
