@@ -10,6 +10,11 @@ export default class PaginationController {
     this._currentCardsCount = SHOWING_CARDS_COUNT_ON_START;
   }
 
+  reset(cards, callback) {
+    this._currentCardsCount = SHOWING_CARDS_COUNT_ON_START;
+    this.slice(cards, callback);
+  }
+
   slice(cards, callback) {
     const nextCards = cards.current.slice(0, this._currentCardsCount);
     callback(nextCards);

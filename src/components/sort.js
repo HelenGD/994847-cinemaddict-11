@@ -17,6 +17,7 @@ export default class FilmSortComponent extends AbstractComponent {
     super();
 
     this._currenSortType = SortType.DEFAULT;
+    this._sortType = null;
   }
 
   getTemplate() {
@@ -34,12 +35,10 @@ export default class FilmSortComponent extends AbstractComponent {
       .forEach((sortButtonEl, index, sortButtonEls) => {
         sortButtonEl.addEventListener(`click`, (evt) => {
           evt.preventDefault();
-
           sortButtonEls.forEach((item) => item.classList.remove(activeClassName));
           evt.target.classList.add(activeClassName);
 
           const sortType = evt.target.dataset.sortType;
-
           handler(sortType);
         });
       });
