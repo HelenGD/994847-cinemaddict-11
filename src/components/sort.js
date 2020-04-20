@@ -17,7 +17,6 @@ export default class FilmSortComponent extends AbstractComponent {
     super();
 
     this._currenSortType = SortType.DEFAULT;
-    this._sortType = null;
   }
 
   getTemplate() {
