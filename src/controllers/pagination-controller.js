@@ -6,13 +6,14 @@ const SHOWING_CARDS_COUNT_ON_START = 5;
 
 export default class PaginationController {
   constructor(container) {
+    this._isNextShowing = false;
     this._container = container;
     this._currentCardsCount = SHOWING_CARDS_COUNT_ON_START;
   }
 
   reset(cards, callback) {
     this._currentCardsCount = SHOWING_CARDS_COUNT_ON_START;
-    this.slice(cards, callback);
+    this.render(cards, callback);
   }
 
   slice(cards, callback) {
@@ -25,20 +26,23 @@ export default class PaginationController {
       return;
     }
 
-    const showMoreButton = new ShowMoreButtonComponent();
-    renderElement(
-        this._container,
-        showMoreButton
-    );
+    if (!this._isNextShowing) {
+      const showMoreButton = new ShowMoreButtonComponent();
+      renderElement(
+          this._container,
+          showMoreButton
+      );
+      this._isNextShowing = true;
 
-    showMoreButton.setClickHandler(() => {
-      this._currentCardsCount += SHOWING_CARDS_COUNT_BY_BUTTON;
-
-      if (this._currentCardsCount >= cards.current.length) {
-        remove(showMoreButton);
-      }
-      this.slice(cards, callback);
-    });
+      showMoreButton.setClickHandler(() => {
+        this._currentCardsCount += SHOWING_CARDS_COUNT_BY_BUTTON;
+        if (this._currentCardsCount >= cards.current.length) {
+          remove(showMoreButton);
+          this._isNextShowing = false;
+        }
+        this.slice(cards, callback);
+      });
+    }
 
     this.slice(cards, callback);
   }
