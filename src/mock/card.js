@@ -1,5 +1,5 @@
 import format from 'date-fns/format';
-import {random, formatDuration, decimalRandom, randomArrayItem} from '../components/utils';
+import {random, formatDuration, decimalRandom, randomArrayItem} from '../utils/common';
 import {generateComments} from './comments';
 import {
   descriptions,
@@ -26,6 +26,9 @@ const MAX_FILM_DURATION = 7200;
 const POSTERS_ROOT = `./images/posters/`;
 
 export const generateDetailsOfFilm = () => {
+  const randomYear = random(1900, 2021);
+  const date = Date.parse(randomYear);
+
   return {
     title: randomArrayItem(titles),
     rating: decimalRandom(0, MAX_COUNT_RATING, DECIMAL_PLACES),
@@ -35,8 +38,9 @@ export const generateDetailsOfFilm = () => {
     directors: randomArrayItem(directors),
     writers: randomArrayItem(writers),
     actors: randomArrayItem(actors),
-    release: format(Date.now(), `d MMMM yyyy`),
-    releaseYear: format(Date.now(), `yyyy`),
+    date,
+    release: format(date, `d MMMM yyyy`),
+    releaseYear: format(date, `yyyy`),
     countries: randomArrayItem(countries),
     genres: genres.slice().splice(random(0, genres.length - MAX_COUNT_GENRES), random(MIN_COUNT_GENRES, MAX_COUNT_GENRES)),
     originalTitle: randomArrayItem(originalTitles),
