@@ -28,7 +28,7 @@ export default class MainController {
     );
     filmSortComponent.setSortTypeChangeHandler((sortType) => {
       this._cards.current = cardsSort(cards, sortType);
-      paginationController.slice(this._cards, (nextCards) => {
+      paginationController.reset(this._cards, (nextCards) => {
         cardsController.render(nextCards);
       });
     });
