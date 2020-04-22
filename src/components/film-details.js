@@ -1,6 +1,4 @@
-import AbstractComponent from "./abstract-component.js";
-
-const EMOJI_SRC = `./images/emoji/`;
+import AbstractComponent from "./abstract-component";
 
 const createfilmDataTemplate = (filmData) => {
   const {
@@ -19,25 +17,6 @@ const createfilmDataTemplate = (filmData) => {
     comments,
     release,
   } = filmData;
-
-  const emojiList = [
-    {
-      name: `smile`,
-      src: `smile.png`
-    },
-    {
-      name: `sleeping`,
-      src: `sleeping.png`
-    },
-    {
-      name: `gpuke`,
-      src: `puke.png`
-    },
-    {
-      name: `angry`,
-      src: `angry.png`
-    }
-  ];
 
   return (
     `<section class="film-details">
@@ -129,20 +108,6 @@ const createfilmDataTemplate = (filmData) => {
               </li>
               `).join(``)}
             </ul>
-            <div class="film-details__new-comment">
-              <div for="add-emoji" class="film-details__add-emoji-label"></div>
-              <label class="film-details__comment-label">
-                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
-              </label>
-              <div class="film-details__emoji-list">
-                ${emojiList.map((emoji) => `
-                  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji.name}" value="${emoji.name}">
-                  <label class="film-details__emoji-label" for="emoji-${emoji.name}">
-                    <img src="${EMOJI_SRC}${emoji.src}" width="30" height="30" alt="emoji">
-                  </label>
-                `).join(``)}
-              </div>
-            </div>
           </section>
         </div>
       </form>
@@ -173,6 +138,10 @@ export default class FilmCardDetailsComponent extends AbstractComponent {
     this.removeElement();
   }
 
+  recoveryListeners() {
+
+  }
+
   getTemplate() {
     return createfilmDataTemplate(this._filmData);
   }
@@ -190,9 +159,11 @@ export default class FilmCardDetailsComponent extends AbstractComponent {
     this._element = null;
   }
 
+  getCommentsContainerElement() {
+    return this.getElement().querySelector(`.film-details__comments-wrap`);
+  }
+
   setCloseClickHandler(handler) {
     this.getCloseButtonElement().addEventListener(`click`, handler);
   }
 }
-
-

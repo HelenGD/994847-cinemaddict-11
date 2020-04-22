@@ -26,6 +26,7 @@ export default class MainController {
         this._container,
         filmSortComponent
     );
+
     filmSortComponent.setSortTypeChangeHandler((sortType) => {
       this._cards.current = cardsSort(cards, sortType);
       paginationController.reset(this._cards, (nextCards) => {
@@ -57,13 +58,76 @@ export default class MainController {
         filmsListMostCommentedComponent
     );
 
-    const topRatedCardsController = new CardsController(filmsListTopRatedComponent.getContainer());
+    const topRatedCardsController = new CardsController(
+        filmsListTopRatedComponent.getContainer(),
+        {
+          onWatchlistClick: (card) => {
+            card.isAddToWatch = !card.isAddToWatch;
+
+            topRatedCardsController.render(cards.slice(0, 2));
+          },
+          onWatchedClick: (card) => {
+            card.isWatched = !card.isWatched;
+
+            topRatedCardsController.render(cards.slice(0, 2));
+          },
+          onFavoritesClick: (card) => {
+            card.isFavourite = !card.isFavourite;
+
+            topRatedCardsController.render(cards.slice(0, 2));
+          }
+        }
+    );
     topRatedCardsController.render(cards.slice(0, 2));
 
-    const mostCommentedCardsController = new CardsController(filmsListMostCommentedComponent.getContainer());
+    const mostCommentedCardsController = new CardsController(
+        filmsListMostCommentedComponent.getContainer(),
+        {
+          onWatchlistClick: (card) => {
+            card.isAddToWatch = !card.isAddToWatch;
+
+            mostCommentedCardsController.render(cards.slice(0, 2));
+          },
+          onWatchedClick: (card) => {
+            card.isWatched = !card.isWatched;
+
+            mostCommentedCardsController.render(cards.slice(0, 2));
+          },
+          onFavoritesClick: (card) => {
+            card.isFavourite = !card.isFavourite;
+
+            mostCommentedCardsController.render(cards.slice(0, 2));
+          }
+        }
+    );
     mostCommentedCardsController.render(cards.slice(0, 2));
 
-    const cardsController = new CardsController(filmsListComponent.getContainer());
+    const cardsController = new CardsController(
+        filmsListComponent.getContainer(),
+        {
+          onWatchlistClick: (card) => {
+            card.isAddToWatch = !card.isAddToWatch;
+
+            paginationController.slice(this._cards, (nextCards) => {
+              cardsController.render(nextCards);
+            });
+          },
+          onWatchedClick: (card) => {
+            card.isWatched = !card.isWatched;
+
+            paginationController.slice(this._cards, (nextCards) => {
+              cardsController.render(nextCards);
+            });
+          },
+          onFavoritesClick: (card) => {
+            card.isFavourite = !card.isFavourite;
+
+            paginationController.slice(this._cards, (nextCards) => {
+              cardsController.render(nextCards);
+            });
+          }
+        }
+    );
 
     const paginationController = new PaginationController(filmsListComponent.getElement());
     paginationController.render(this._cards, (nextCards) => {

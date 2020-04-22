@@ -1,4 +1,4 @@
-import format from 'date-fns/format';
+import formatDistance from 'date-fns/formatDistance';
 import {randomArrayItem} from '../utils/common';
 
 import {
@@ -15,7 +15,11 @@ const generateComment = () => {
     text: randomArrayItem(texts),
     emotion: `${EMOTIONS_ROOT}${randomArrayItem(emotions)}`,
     author: randomArrayItem(authors),
-    date: format(Date.now(), `yyyy/M/d h:m`)
+    date: formatDistance(
+        Date.now(),
+        Date.parse(`2023-10-24`),
+        {includeSeconds: true}
+    )
   };
 };
 
