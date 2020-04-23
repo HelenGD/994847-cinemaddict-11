@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract-component";
+import AbstractSmartComponent from "./abstract-smart-component";
 
 const createfilmDataTemplate = (filmData) => {
   const {
@@ -115,7 +115,7 @@ const createfilmDataTemplate = (filmData) => {
   );
 };
 
-export default class FilmCardDetailsComponent extends AbstractComponent {
+export default class FilmCardDetailsComponent extends AbstractSmartComponent {
   constructor() {
     super();
     this.isOpened = false;
@@ -139,7 +139,7 @@ export default class FilmCardDetailsComponent extends AbstractComponent {
   }
 
   recoveryListeners() {
-
+    this.setCloseClickHandler();
   }
 
   getTemplate() {

@@ -1,4 +1,5 @@
 import AbstractComponent from "./abstract-component.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 import {renderElement} from "../utils/render.js";
 
 const EMOJI_SRC = `./images/emoji/`;
@@ -52,9 +53,13 @@ class EmojiPreviewComponent extends AbstractComponent {
   }
 }
 
-export default class EmojiesComponent extends AbstractComponent {
+export default class EmojiesComponent extends AbstractSmartComponent {
   getTemplate() {
     return createEmojiesTemplate();
+  }
+
+  recoveryListeners() {
+    this.setClickOnEmoji();
   }
 
   getEmojiPreviewContainerElement() {

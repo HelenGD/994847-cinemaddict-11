@@ -7,12 +7,12 @@ const MAX_LENGTH_SHOWING_COMMENT = 140;
 export default class CardsController {
   constructor(
       container,
-      {onWatchlistClick, onWatchedClick, onFavoritesClick}
+      {onButtonClick}
   ) {
     this._container = container;
     this._movieController = new MovieController(
         container,
-        {onWatchlistClick, onWatchedClick, onFavoritesClick}
+        {onButtonClick}
     );
   }
 

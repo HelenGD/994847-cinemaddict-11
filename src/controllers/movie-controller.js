@@ -29,13 +29,11 @@ const renderFilmCardDetails = (evt, filmCard) => {
 };
 
 export default class MovieController {
-  constructor(container, {onWatchlistClick, onWatchedClick, onFavoritesClick}) {
+  constructor(container, {onButtonClick}) {
     this._container = container;
     this._filmCardComponent = null;
     this._emojiesComponent = null;
-    this._onWatchlistClick = onWatchlistClick;
-    this._onWatchedClick = onWatchedClick;
-    this._onFavoritesClick = onFavoritesClick;
+    this._onButtonClick = onButtonClick;
   }
 
   render(card) {
@@ -50,9 +48,7 @@ export default class MovieController {
       );
       this._emojiesComponent.setClickOnEmoji();
     });
-    this._filmCardComponent.setWatchlistButtonClickHandler(this._onWatchlistClick);
-    this._filmCardComponent.setWatchedButtonClickHandler(this._onWatchedClick);
-    this._filmCardComponent.setFavoritesButtonClickHandler(this._onFavoritesClick);
+    this._filmCardComponent.setActionHandler(this._onButtonClick);
   }
 }
 

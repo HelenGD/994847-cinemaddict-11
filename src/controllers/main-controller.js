@@ -61,18 +61,8 @@ export default class MainController {
     const topRatedCardsController = new CardsController(
         filmsListTopRatedComponent.getContainer(),
         {
-          onWatchlistClick: (card) => {
-            card.isAddToWatch = !card.isAddToWatch;
-
-            topRatedCardsController.render(cards.slice(0, 2));
-          },
-          onWatchedClick: (card) => {
-            card.isWatched = !card.isWatched;
-
-            topRatedCardsController.render(cards.slice(0, 2));
-          },
-          onFavoritesClick: (card) => {
-            card.isFavourite = !card.isFavourite;
+          onButtonClick: (card, buttonType) => {
+            changeButtonType(card, buttonType);
 
             topRatedCardsController.render(cards.slice(0, 2));
           }
@@ -83,18 +73,8 @@ export default class MainController {
     const mostCommentedCardsController = new CardsController(
         filmsListMostCommentedComponent.getContainer(),
         {
-          onWatchlistClick: (card) => {
-            card.isAddToWatch = !card.isAddToWatch;
-
-            mostCommentedCardsController.render(cards.slice(0, 2));
-          },
-          onWatchedClick: (card) => {
-            card.isWatched = !card.isWatched;
-
-            mostCommentedCardsController.render(cards.slice(0, 2));
-          },
-          onFavoritesClick: (card) => {
-            card.isFavourite = !card.isFavourite;
+          onButtonClick: (card, buttonType) => {
+            changeButtonType(card, buttonType);
 
             mostCommentedCardsController.render(cards.slice(0, 2));
           }
@@ -105,22 +85,8 @@ export default class MainController {
     const cardsController = new CardsController(
         filmsListComponent.getContainer(),
         {
-          onWatchlistClick: (card) => {
-            card.isAddToWatch = !card.isAddToWatch;
-
-            paginationController.slice(this._cards, (nextCards) => {
-              cardsController.render(nextCards);
-            });
-          },
-          onWatchedClick: (card) => {
-            card.isWatched = !card.isWatched;
-
-            paginationController.slice(this._cards, (nextCards) => {
-              cardsController.render(nextCards);
-            });
-          },
-          onFavoritesClick: (card) => {
-            card.isFavourite = !card.isFavourite;
+          onButtonClick: (card, buttonType) => {
+            changeButtonType(card, buttonType);
 
             paginationController.slice(this._cards, (nextCards) => {
               cardsController.render(nextCards);
@@ -133,5 +99,16 @@ export default class MainController {
     paginationController.render(this._cards, (nextCards) => {
       cardsController.render(nextCards);
     });
+
+    const changeButtonType = function (card, buttonType) {
+      if (buttonType === `watchlist`) {
+        card.isAddToWatch = !card.isAddToWatch;
+      } else if (buttonType === `watched`) {
+        card.isWatched = !card.isWatched;
+      } else if (buttonType === `favorite`) {
+        card.isFavourite = !card.isFavourite;
+      }
+    };
   }
 }
+
