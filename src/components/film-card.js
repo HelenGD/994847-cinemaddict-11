@@ -19,14 +19,17 @@ const createFilmCardTemplate = (card) => {
 
   const buttons = [
     {
+      type: `watchlist`,
       isActive: isAddToWatch,
       icon: `add-to-watchlist`,
     },
     {
+      type: `watched`,
       isActive: isWatched,
       icon: `mark-as-watched`,
     },
     {
+      type: `favorite`,
       isActive: isFavourite,
       icon: `favorite`
     }
@@ -45,7 +48,7 @@ const createFilmCardTemplate = (card) => {
     <a class="film-card__comments">${comments.length} comment${comments.length !== 1 ? `s` : ``}</a>
     <form class="film-card__controls">
       ${buttons
-        .map((button) => `<button class="film-card__controls-item button film-card__controls-item--${button.icon} ${button.isActive ? ACTIVE_CLASS_NAME : ``}"></button>`)
+        .map((button) => `<button data-type="${button.type}" class="film-card__controls-item button film-card__controls-item--${button.icon} ${button.isActive ? ACTIVE_CLASS_NAME : ``}"></button>`)
         .join(``)}
     </form>
   </article>`;
@@ -69,5 +72,18 @@ export default class FilmCardComponent extends AbstractComponent {
 
   setClickHandler(handler) {
     this.getElement().addEventListener(`click`, handler);
+  }
+
+  _handleActionClick(handler, buttonType) {
+    return (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      handler(this._card, buttonType);
+    };
+  }
+
+  setActionHandler(handler) {
+    const buttons = this.getElement().querySelectorAll(`.film-card__controls-item`);
+    buttons.forEach((it) => it.addEventListener(`click`, this._handleActionClick(handler, it.dataset.type)));
   }
 }

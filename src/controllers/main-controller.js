@@ -26,6 +26,7 @@ export default class MainController {
         this._container,
         filmSortComponent
     );
+
     filmSortComponent.setSortTypeChangeHandler((sortType) => {
       this._cards.current = cardsSort(cards, sortType);
       paginationController.reset(this._cards, (nextCards) => {
@@ -57,17 +58,57 @@ export default class MainController {
         filmsListMostCommentedComponent
     );
 
-    const topRatedCardsController = new CardsController(filmsListTopRatedComponent.getContainer());
+    const topRatedCardsController = new CardsController(
+        filmsListTopRatedComponent.getContainer(),
+        {
+          onButtonClick: (card, buttonType) => {
+            changeButtonType(card, buttonType);
+
+            topRatedCardsController.render(cards.slice(0, 2));
+          }
+        }
+    );
     topRatedCardsController.render(cards.slice(0, 2));
 
-    const mostCommentedCardsController = new CardsController(filmsListMostCommentedComponent.getContainer());
+    const mostCommentedCardsController = new CardsController(
+        filmsListMostCommentedComponent.getContainer(),
+        {
+          onButtonClick: (card, buttonType) => {
+            changeButtonType(card, buttonType);
+
+            mostCommentedCardsController.render(cards.slice(0, 2));
+          }
+        }
+    );
     mostCommentedCardsController.render(cards.slice(0, 2));
 
-    const cardsController = new CardsController(filmsListComponent.getContainer());
+    const cardsController = new CardsController(
+        filmsListComponent.getContainer(),
+        {
+          onButtonClick: (card, buttonType) => {
+            changeButtonType(card, buttonType);
+
+            paginationController.slice(this._cards, (nextCards) => {
+              cardsController.render(nextCards);
+            });
+          }
+        }
+    );
 
     const paginationController = new PaginationController(filmsListComponent.getElement());
     paginationController.render(this._cards, (nextCards) => {
       cardsController.render(nextCards);
     });
+
+    const changeButtonType = function (card, buttonType) {
+      if (buttonType === `watchlist`) {
+        card.isAddToWatch = !card.isAddToWatch;
+      } else if (buttonType === `watched`) {
+        card.isWatched = !card.isWatched;
+      } else if (buttonType === `favorite`) {
+        card.isFavourite = !card.isFavourite;
+      }
+    };
   }
 }
+

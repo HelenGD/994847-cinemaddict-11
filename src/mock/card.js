@@ -47,7 +47,7 @@ export const generateDetailsOfFilm = () => {
     ratingAge: randomArrayItem(ratingAges),
     poster: `${POSTERS_ROOT}${randomArrayItem(posters)}`,
     comments: generateComments(random(0, MAX_COMMENTS_COUNT)),
-    isAddToWatch: true,
+    isAddToWatch: false,
     isWatched: false,
     isFavourite: false
   };

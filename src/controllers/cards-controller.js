@@ -1,38 +1,19 @@
-import FilmCardComponent from "../components/film-card";
 import {renderElement} from "../utils/render";
 import NoCardsComponent from "../components/no-cards";
-import {checkEscPress} from "../utils/common";
-import FilmCardDetailsComponent from "../components/film-details";
+import MovieController from "./movie-controller";
 
 const MAX_LENGTH_SHOWING_COMMENT = 140;
 
-const filmCardDetails = new FilmCardDetailsComponent();
-
-const renderFilmCardDetails = (evt, filmCard) => {
-  if (filmCardDetails.isOpened) {
-    return;
-  }
-
-  renderElement(document.body, filmCardDetails.show(filmCard.getCard()));
-
-  const onClosePopup = () => {
-    filmCardDetails.hide();
-    document.removeEventListener(`keydown`, onPopupEscPress);
-  };
-
-  const onPopupEscPress = (event) => {
-    checkEscPress(event, onClosePopup);
-    document.removeEventListener(`keydown`, onPopupEscPress);
-  };
-
-  filmCardDetails.setCloseClickHandler(onClosePopup);
-
-  document.addEventListener(`keydown`, onPopupEscPress);
-};
-
 export default class CardsController {
-  constructor(container) {
+  constructor(
+      container,
+      {onButtonClick}
+  ) {
     this._container = container;
+    this._movieController = new MovieController(
+        container,
+        {onButtonClick}
+    );
   }
 
   render(cards) {
@@ -45,9 +26,7 @@ export default class CardsController {
 
     cards
       .forEach((card) => {
-        const filmCard = new FilmCardComponent(card);
-        renderElement(this._container, filmCard);
-        filmCard.setClickHandler((evt) => renderFilmCardDetails(evt, filmCard));
+        this._movieController.render(card);
       });
 
     const filmsListContainersEl = document.querySelectorAll(`.films-list--extra .films-list__container`);
