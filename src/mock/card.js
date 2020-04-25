@@ -1,5 +1,5 @@
 import format from 'date-fns/format';
-import {random, formatDuration, decimalRandom, randomArrayItem} from '../utils/common';
+import {random, decimalRandom, randomArrayItem} from '../utils/common';
 import {generateComments} from './comments';
 import {
   descriptions,
@@ -21,8 +21,6 @@ const MIN_COUNT_DESCRIPTION = 3;
 const MAX_COMMENTS_COUNT = 10;
 const MAX_COUNT_RATING = 3;
 const DECIMAL_PLACES = 1;
-const MIN_FILM_DURATION = 3600;
-const MAX_FILM_DURATION = 7200;
 const POSTERS_ROOT = `./images/posters/`;
 
 export const generateDetailsOfFilm = () => {
@@ -34,7 +32,7 @@ export const generateDetailsOfFilm = () => {
     rating: decimalRandom(0, MAX_COUNT_RATING, DECIMAL_PLACES),
     description: descriptions.slice().splice(random(0, descriptions.length - MAX_COUNT_DESCRIPTION), random(MIN_COUNT_DESCRIPTION, MAX_COUNT_DESCRIPTION)).join(``),
     descriptionShort: randomArrayItem(descriptions),
-    duration: formatDuration(random(MIN_FILM_DURATION, MAX_FILM_DURATION)),
+    duration: format(date, `h'h' mm'm'`),
     directors: randomArrayItem(directors),
     writers: randomArrayItem(writers),
     actors: randomArrayItem(actors),
