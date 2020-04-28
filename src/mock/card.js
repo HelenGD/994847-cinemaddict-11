@@ -28,6 +28,7 @@ export const generateDetailsOfFilm = () => {
   const date = Date.parse(randomYear);
 
   return {
+    id: String(new Date() + Math.random()),
     title: randomArrayItem(titles),
     rating: decimalRandom(0, MAX_COUNT_RATING, DECIMAL_PLACES),
     description: descriptions.slice().splice(random(0, descriptions.length - MAX_COUNT_DESCRIPTION), random(MIN_COUNT_DESCRIPTION, MAX_COUNT_DESCRIPTION)).join(``),

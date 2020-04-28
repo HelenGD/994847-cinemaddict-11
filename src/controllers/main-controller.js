@@ -1,25 +1,24 @@
 import {renderElement} from "../utils/render";
 import FilmSortComponent from "../components/sort";
-import FilmFilterComponent from "../components/filter";
 import {cardsSort} from "../utils/cards-sort";
 import CardsController from "./cards-controller";
 import FilmsContainerComponent from "../components/films-container";
 import FilmsListComponent from "../components/films-list";
 import PaginationController from "./pagination-controller";
 import FilmsListExtraComponent from "../components/films-list-extra";
+import FilterController from "./filter-controller";
 
 export default class MainController {
-  constructor(container) {
+  constructor(container, moviesModel) {
     this._container = container;
+    this._moviesModel = moviesModel;
   }
 
-  render({cards, filters}) {
-    this._cards = {current: cards};
+  render() {
+    const movies = this._moviesModel.getMoviesAll();
 
-    renderElement(
-        this._container,
-        new FilmFilterComponent(filters)
-    );
+    const filterController = new FilterController(this._container, this._moviesModel);
+    filterController.render();
 
     const filmSortComponent = new FilmSortComponent();
     renderElement(
@@ -28,9 +27,11 @@ export default class MainController {
     );
 
     filmSortComponent.setSortTypeChangeHandler((sortType) => {
-      this._cards.current = cardsSort(cards, sortType);
-      paginationController.reset(this._cards, (nextCards) => {
-        cardsController.render(nextCards);
+      const sortedMovies = cardsSort(movies, sortType);
+      this._moviesModel.setMovies(sortedMovies);
+      paginationController.reset();
+      paginationController.render((nextMovies) => {
+        cardsController.render(nextMovies);
       });
     });
 
@@ -64,11 +65,11 @@ export default class MainController {
           onButtonClick: (card, buttonType) => {
             changeButtonType(card, buttonType);
 
-            topRatedCardsController.render(cards.slice(0, 2));
+            topRatedCardsController.render(movies.slice(0, 2));
           }
         }
     );
-    topRatedCardsController.render(cards.slice(0, 2));
+    topRatedCardsController.render(movies.slice(0, 2));
 
     const mostCommentedCardsController = new CardsController(
         filmsListMostCommentedComponent.getContainer(),
@@ -76,11 +77,11 @@ export default class MainController {
           onButtonClick: (card, buttonType) => {
             changeButtonType(card, buttonType);
 
-            mostCommentedCardsController.render(cards.slice(0, 2));
+            mostCommentedCardsController.render(movies.slice(0, 2));
           }
         }
     );
-    mostCommentedCardsController.render(cards.slice(0, 2));
+    mostCommentedCardsController.render(movies.slice(0, 2));
 
     const cardsController = new CardsController(
         filmsListComponent.getContainer(),
@@ -88,16 +89,19 @@ export default class MainController {
           onButtonClick: (card, buttonType) => {
             changeButtonType(card, buttonType);
 
-            paginationController.slice(this._cards, (nextCards) => {
-              cardsController.render(nextCards);
+            paginationController.slice((nextMovies) => {
+              cardsController.render(nextMovies);
             });
           }
         }
     );
 
-    const paginationController = new PaginationController(filmsListComponent.getElement());
-    paginationController.render(this._cards, (nextCards) => {
-      cardsController.render(nextCards);
+    const paginationController = new PaginationController(
+        filmsListComponent.getElement(),
+        this._moviesModel
+    );
+    paginationController.render((nextMovies) => {
+      cardsController.render(nextMovies);
     });
 
     const changeButtonType = function (card, buttonType) {

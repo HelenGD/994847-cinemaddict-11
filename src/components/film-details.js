@@ -1,3 +1,4 @@
+import {encode} from 'he';
 import AbstractSmartComponent from "./abstract-smart-component";
 
 const createfilmDataTemplate = (filmData) => {
@@ -98,7 +99,7 @@ const createfilmDataTemplate = (filmData) => {
                   <img src="${comment.emotion}" width="55" height="55" alt="emoji">
                 </span>
                 <div>
-                  <p class="film-details__comment-text">${comment.text}</p>
+                  <p class="film-details__comment-text">${encode(comment.text)}</p>
                   <p class="film-details__comment-info">
                     <span class="film-details__comment-author">${comment.author}</span>
                     <span class="film-details__comment-day">${comment.date}</span>

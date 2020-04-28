@@ -20,6 +20,7 @@
     "node": "10"
   },
   "dependencies": {
-    "date-fns": "^2.11.1"
+    "date-fns": "^2.11.1",
+    "he": "^1.2.0"
   }
 }

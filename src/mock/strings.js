@@ -177,6 +177,24 @@ export const texts = [
   `Актерская игра на высоте`
 ];
 
+/**
+ * @deprecated
+ */
 export const filterNames = [
-  `All movies`, `Watchlist`, `History`, `Favorites`
+  {
+    name: `All movies`,
+    type: `all`
+  },
+  {
+    name: `Watchlist`,
+    type: `watchlist`
+  },
+  {
+    name: `History`,
+    type: `history`
+  },
+  {
+    name: `Favorites`,
+    type: `favorites`
+  }
 ];
