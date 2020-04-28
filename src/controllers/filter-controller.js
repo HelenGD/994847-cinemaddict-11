@@ -2,25 +2,28 @@ import {renderElement} from "../utils/render";
 import FilmFilterComponent from "../components/filter";
 
 export default class FilterController {
-  constructor(container, moviesModel) {
+  constructor(container, moviesModel, filterModel) {
+    this._isRendered = false;
     this._container = container;
     this._moviesModel = moviesModel;
+    this._filterModel = filterModel;
+    this._filterComponent = new FilmFilterComponent(moviesModel, filterModel);
   }
 
   render() {
-    const currentFilter = {
-      activeFilterType: 'all', 
-      all: 69,
-      watchlist: 100,
-    };
-    const filterComponent = new FilmFilterComponent(currentFilter);
-    renderElement(
-        this._container,
-        filterComponent
-    );
+    if (this._isRendered) {
+      this._filterComponent.rerender();
+    } else {
+      renderElement(
+          this._container,
+          this._filterComponent
+      );
+    }
 
-    filterComponent.setClickHandle((filterType) => {
-      this._moviesModel.setFilter(filterType);
+    this._filterComponent.setClickHandle((filterType) => {
+      this._filterModel.setFilter(filterType);
     });
+
+    this._isRendered = true;
   }
 }

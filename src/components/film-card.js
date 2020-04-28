@@ -45,7 +45,7 @@ const createFilmCardTemplate = (card) => {
     </p>
     <img src="${poster}" alt="${title}" class="film-card__poster">
     <p class="film-card__description">${descriptionShort}</p>
-    <a class="film-card__comments">${comments.length} comment${comments.length !== 1 ? `s` : ``}</a>
+    <a class="film-card__comments">${comments.getComments().length} comment${comments.getComments().length !== 1 ? `s` : ``}</a>
     <form class="film-card__controls">
       ${buttons
         .map((button) => `<button data-type="${button.type}" class="film-card__controls-item button film-card__controls-item--${button.icon} ${button.isActive ? ACTIVE_CLASS_NAME : ``}"></button>`)

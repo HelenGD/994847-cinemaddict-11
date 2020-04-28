@@ -10,36 +10,39 @@ export default class PaginationController {
     this._container = container;
     this._currentCardsCount = SHOWING_CARDS_COUNT_ON_START;
     this._moviesModel = moviesModel;
+    this._showMoreButtonComponent = new ShowMoreButtonComponent();
   }
 
   reset() {
+    this._isNextShowing = false;
     this._currentCardsCount = SHOWING_CARDS_COUNT_ON_START;
   }
 
   slice(callback) {
-    const movies = this._moviesModel.getMoviesAll();
+    const movies = this._moviesModel.getMoviesByFilter();
     const nextMovies = movies.slice(0, this._currentCardsCount);
     callback(nextMovies);
   }
 
   render(callback) {
-    const movies = this._moviesModel.getMoviesAll();
+    const movies = this._moviesModel.getMoviesByFilter();
     if (movies.length <= SHOWING_CARDS_COUNT_ON_START) {
+      remove(this._showMoreButtonComponent);
+      this.slice(callback);
       return;
     }
 
     if (!this._isNextShowing) {
-      const showMoreButton = new ShowMoreButtonComponent();
       renderElement(
           this._container,
-          showMoreButton
+          this._showMoreButtonComponent
       );
       this._isNextShowing = true;
 
-      showMoreButton.setClickHandler(() => {
+      this._showMoreButtonComponent.setClickHandler(() => {
         this._currentCardsCount += SHOWING_CARDS_COUNT_BY_BUTTON;
         if (this._currentCardsCount >= movies.length) {
-          remove(showMoreButton);
+          remove(this._showMoreButtonComponent);
           this._isNextShowing = false;
         }
         this.slice(callback);

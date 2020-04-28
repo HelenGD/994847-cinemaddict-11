@@ -1,5 +1,5 @@
-import AbstractComponent from "./abstract-component.js";
 import {SortType} from "../utils/cards-sort.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 
 const activeClassName = `sort__button--active`;
 
@@ -12,11 +12,15 @@ const createSortTemplate = () => (
 </ul>`
 );
 
-export default class FilmSortComponent extends AbstractComponent {
+export default class FilmSortComponent extends AbstractSmartComponent {
   constructor() {
     super();
 
     this._currenSortType = SortType.DEFAULT;
+  }
+
+  recoveryListeners() {
+    this.setSortTypeChangeHandler(this.handler);
   }
 
   getTemplate() {
@@ -27,7 +31,13 @@ export default class FilmSortComponent extends AbstractComponent {
     return this._currenSortType;
   }
 
+  reset() {
+    this._currenSortType = SortType.DEFAULT;
+  }
+
   setSortTypeChangeHandler(handler) {
+    this.handler = handler;
+
     this
       .getElement()
       .querySelectorAll(`.sort__button`)

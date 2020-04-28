@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract-component.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 
 const filters = [
   {
@@ -35,15 +35,25 @@ export const createFilterTemplate = (currentFilter) => {
   );
 };
 
-export default class FilmFilterComponent extends AbstractComponent {
-  constructor(currentFilter) {
+export default class FilmFilterComponent extends AbstractSmartComponent {
+  constructor(moviesModel, filterModel) {
     super();
 
-    this._currentFilter = currentFilter;
+    this._moviesModel = moviesModel;
+    this._filterModel = filterModel;
   }
 
+  recoveryListeners() {}
+
   getTemplate() {
-    return createFilterTemplate(this._currentFilter);
+    const currentFilter = {
+      activeFilterType: this._filterModel.getFilter(),
+      all: this._moviesModel.getMoviesAll().length,
+      watchlist: this._moviesModel.getMoviesByWatchlist().length,
+      history: this._moviesModel.getMoviesByWatched().length,
+      favorites: this._moviesModel.getMoviesByFavorites().length
+    };
+    return createFilterTemplate(currentFilter);
   }
 
   _handleActionClick(handler, filterType) {

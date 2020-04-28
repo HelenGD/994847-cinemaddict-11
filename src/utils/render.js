@@ -12,6 +12,8 @@ export const renderElement = (container, component, place = RenderPosition.BEFOR
       container.append(component.getElement());
       break;
   }
+
+  component.afterRender();
 };
 
 export const createElement = (template) => {

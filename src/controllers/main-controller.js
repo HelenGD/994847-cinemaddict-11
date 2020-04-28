@@ -9,15 +9,20 @@ import FilmsListExtraComponent from "../components/films-list-extra";
 import FilterController from "./filter-controller";
 
 export default class MainController {
-  constructor(container, moviesModel) {
+  constructor(container, moviesModel, filterModel) {
     this._container = container;
     this._moviesModel = moviesModel;
+    this._filterModel = filterModel;
   }
 
   render() {
-    const movies = this._moviesModel.getMoviesAll();
+    const movies = this._moviesModel.getMoviesByFilter();
 
-    const filterController = new FilterController(this._container, this._moviesModel);
+    const filterController = new FilterController(
+        this._container,
+        this._moviesModel,
+        this._filterModel
+    );
     filterController.render();
 
     const filmSortComponent = new FilmSortComponent();
@@ -29,6 +34,24 @@ export default class MainController {
     filmSortComponent.setSortTypeChangeHandler((sortType) => {
       const sortedMovies = cardsSort(movies, sortType);
       this._moviesModel.setMovies(sortedMovies);
+      paginationController.reset();
+      paginationController.render((nextMovies) => {
+        cardsController.render(nextMovies);
+      });
+    });
+
+    this._filterModel.setDataChangeHandler(() => {
+      filmSortComponent.reset();
+      filmSortComponent.rerender();
+      filterController.render();
+      paginationController.reset();
+      paginationController.render((nextMovies) => {
+        cardsController.render(nextMovies);
+      });
+    });
+
+    this._moviesModel.setDataChangeHandler(() => {
+      filterController.render();
       paginationController.reset();
       paginationController.render((nextMovies) => {
         cardsController.render(nextMovies);
@@ -88,7 +111,7 @@ export default class MainController {
         {
           onButtonClick: (card, buttonType) => {
             changeButtonType(card, buttonType);
-
+            filterController.render();
             paginationController.slice((nextMovies) => {
               cardsController.render(nextMovies);
             });
@@ -104,7 +127,7 @@ export default class MainController {
       cardsController.render(nextMovies);
     });
 
-    const changeButtonType = function (card, buttonType) {
+    const changeButtonType = (card, buttonType) => {
       if (buttonType === `watchlist`) {
         card.isAddToWatch = !card.isAddToWatch;
       } else if (buttonType === `watched`) {
