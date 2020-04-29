@@ -23,6 +23,8 @@ export default class AbstractComponent {
     return this._element;
   }
 
+  beforeRemove() {}
+
   removeElement() {
     this._element = null;
   }
