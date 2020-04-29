@@ -6,7 +6,7 @@ import EmojiesComponent from "../components/new-comment";
 
 const filmCardDetails = new FilmCardDetailsComponent();
 
-const renderFilmCardDetails = (evt, filmCard) => {
+const renderFilmCardDetails = (evt, filmCard, emojiesComponent) => {
   if (filmCardDetails.isOpened) {
     return;
   }
@@ -17,6 +17,7 @@ const renderFilmCardDetails = (evt, filmCard) => {
   );
 
   const onClosePopup = () => {
+    emojiesComponent.clearForm();
     filmCardDetails.hide();
     remove(filmCardDetails);
     document.removeEventListener(`keydown`, onPopupEscPress);
@@ -24,7 +25,6 @@ const renderFilmCardDetails = (evt, filmCard) => {
 
   const onPopupEscPress = (event) => {
     checkEscPress(event, onClosePopup);
-    document.removeEventListener(`keydown`, onPopupEscPress);
   };
 
   filmCardDetails.setCloseClickHandler(onClosePopup);
@@ -52,7 +52,7 @@ export default class MovieController {
     this._emojiesComponent = new EmojiesComponent(movie.comments);
     renderElement(this._container, this._filmCardComponent);
     this._filmCardComponent.setClickHandler((evt) => {
-      renderFilmCardDetails(evt, this._filmCardComponent);
+      renderFilmCardDetails(evt, this._filmCardComponent, this._emojiesComponent);
       renderElement(
           filmCardDetails.getCommentsContainerElement(),
           this._emojiesComponent

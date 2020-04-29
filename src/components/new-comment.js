@@ -100,7 +100,9 @@ export default class EmojiesComponent extends AbstractSmartComponent {
     emojies.forEach((it) => {
       it.checked = false;
     });
-    remove(this._emojiPreviewComponent);
+    if (this._emojiPreviewComponent) {
+      remove(this._emojiPreviewComponent);
+    }
   }
 
   _handleKeydown(evt) {
