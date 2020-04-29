@@ -37,6 +37,14 @@ renderElement(
     footerStatisticsEl,
     new FilmStatisticsComponent()
 );
-const statistic = new StatisticComponent();
-renderElement(mainEl, statistic);
-// statistic.hide();
+const statisticComponent = new StatisticComponent();
+renderElement(mainEl, statisticComponent);
+statisticComponent.hide();
+
+filterModel.setDataChangeHandler(() => {
+  if (filterModel.getFilter() === `stats`) {
+    statisticComponent.show();
+  } else {
+    statisticComponent.hide();
+  }
+});
