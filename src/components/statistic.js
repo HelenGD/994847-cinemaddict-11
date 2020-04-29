@@ -1,8 +1,7 @@
 import AbstractComponent from './abstract-component.js';
-// import ChartJs from 'chart.js';
-// import ChartJsDatalabels from 'chartjs-plugin-datalabels';
+import Chart from 'chart.js';
 
-const makeStatisticsTemplate = () => {
+const makeStatisticsTemplate = (moviesModel) => {
   return (
     `<section class="statistic">
       <p class="statistic__rank">
@@ -26,7 +25,7 @@ const makeStatisticsTemplate = () => {
       <ul class="statistic__text-list">
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">You watched</h4>
-          <p class="statistic__item-text">22 <span class="statistic__item-description">movies</span></p>
+          <p class="statistic__item-text">${moviesModel.getMoviesByWatched().length} <span class="statistic__item-description">movies</span></p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Total duration</h4>
@@ -34,7 +33,7 @@ const makeStatisticsTemplate = () => {
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
-          <p class="statistic__item-text">Sci-Fi</p>
+          <p class="statistic__item-text">${moviesModel.getTopGenre()}</p>
         </li>
       </ul>
       <div class="statistic__chart-wrap">
@@ -45,7 +44,46 @@ const makeStatisticsTemplate = () => {
 };
 
 export default class StatisticComponent extends AbstractComponent {
+  constructor(moviesModel) {
+    super();
+    this._moviesModel = moviesModel;
+  }
+
   getTemplate() {
-    return makeStatisticsTemplate();
+    return makeStatisticsTemplate(this._moviesModel);
+  }
+
+  _getContext() {
+    if (this._context) {
+      return this._context;
+    }
+
+    this._context = this.getElement()
+      .querySelector(`.statistic__chart`)
+      .getContext(`2d`);
+
+    return this._context;
+  }
+
+  _renderStatistics() {
+    const genres = this._moviesModel.getGenresStatistics();
+
+    this._chart = new Chart(this._getContext(), {
+      type: `bar`,
+      data: {
+        labels: Object.keys(genres),
+        datasets: [{
+          label: ``,
+          backgroundColor: `#ffe800`,
+          borderColor: `#fff`,
+          data: Object.values(genres)
+        }]
+      },
+      options: {}
+    });
+  }
+
+  afterRender() {
+    this._renderStatistics();
   }
 }

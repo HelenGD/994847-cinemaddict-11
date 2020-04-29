@@ -37,7 +37,7 @@ renderElement(
     footerStatisticsEl,
     new FilmStatisticsComponent()
 );
-const statisticComponent = new StatisticComponent();
+const statisticComponent = new StatisticComponent(moviesModel);
 renderElement(mainEl, statisticComponent);
 statisticComponent.hide();
 

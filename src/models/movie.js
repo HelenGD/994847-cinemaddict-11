@@ -61,4 +61,33 @@ export default class Movie extends Model {
 
     return true;
   }
+
+  getGenresStatistics() {
+    const genres = {};
+
+    this._movies.forEach((movie) => {
+      movie.genres.forEach((genre) => {
+        genres[genre] = genres[genre] === undefined
+          ? 1
+          : genres[genre] + 1;
+      });
+    });
+
+    return genres;
+  }
+
+  getTopGenre() {
+    const genres = this.getGenresStatistics();
+    return Object
+      .keys(genres)
+      .reduce((topGenre, genre) => {
+        if (topGenre === ``) {
+          return genre;
+        }
+
+        return genres[genre] > genres[topGenre]
+          ? genre
+          : topGenre;
+      }, ``);
+  }
 }
