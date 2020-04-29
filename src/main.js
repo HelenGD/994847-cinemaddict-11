@@ -5,6 +5,7 @@ import {generateCards} from './mock/card';
 import MainController from './controllers/main-controller';
 import Movie from './models/movie';
 import Filter from './models/filter';
+import StatisticComponent from './components/statistic';
 
 const FILM_CARD_COUNT = 15;
 
@@ -36,4 +37,6 @@ renderElement(
     footerStatisticsEl,
     new FilmStatisticsComponent()
 );
-
+const statistic = new StatisticComponent();
+renderElement(mainEl, statistic);
+// statistic.hide();

@@ -14,7 +14,6 @@ export default class PaginationController {
   }
 
   reset() {
-    this._isNextShowing = false;
     this._currentCardsCount = SHOWING_CARDS_COUNT_ON_START;
   }
 

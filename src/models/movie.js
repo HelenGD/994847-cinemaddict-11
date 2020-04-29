@@ -41,7 +41,9 @@ export default class Movie extends Model {
   setMovies(movies) {
     this._movies = Array.from(movies);
     this._movies.forEach((movie) => {
-      movie.comments = new Comment(movie.comments);
+      if (!(movie.comments instanceof Comment)) {
+        movie.comments = new Comment(movie.comments);
+      }
     });
     this.callHandlers();
   }

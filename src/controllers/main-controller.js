@@ -15,6 +15,14 @@ export default class MainController {
     this._filterModel = filterModel;
   }
 
+  hide() {
+    this._container.hide();
+  }
+
+  show() {
+    this._container.show();
+  }
+
   render() {
     const movies = this._moviesModel.getMoviesByFilter();
 
@@ -34,10 +42,6 @@ export default class MainController {
     filmSortComponent.setSortTypeChangeHandler((sortType) => {
       const sortedMovies = cardsSort(movies, sortType);
       this._moviesModel.setMovies(sortedMovies);
-      paginationController.reset();
-      paginationController.render((nextMovies) => {
-        cardsController.render(nextMovies);
-      });
     });
 
     this._filterModel.setDataChangeHandler(() => {

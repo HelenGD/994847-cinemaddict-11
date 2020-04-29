@@ -49,7 +49,7 @@ export default class MovieController {
       );
     });
     this._filmCardComponent = new FilmCardComponent(movie);
-    this._emojiesComponent = new EmojiesComponent();
+    this._emojiesComponent = new EmojiesComponent(movie.comments);
     renderElement(this._container, this._filmCardComponent);
     this._filmCardComponent.setClickHandler((evt) => {
       renderFilmCardDetails(evt, this._filmCardComponent);

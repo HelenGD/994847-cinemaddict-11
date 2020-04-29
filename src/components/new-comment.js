@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component.js";
 import AbstractSmartComponent from "./abstract-smart-component.js";
-import {renderElement} from "../utils/render.js";
+import {renderElement, remove} from "../utils/render.js";
 
 const EMOJI_SRC = `./images/emoji/`;
 
@@ -54,6 +54,14 @@ class EmojiPreviewComponent extends AbstractComponent {
 }
 
 export default class EmojiesComponent extends AbstractSmartComponent {
+  constructor(commentModel) {
+    super();
+
+    this._commentModel = commentModel;
+    this._handleKeydown = this._handleKeydown.bind(this);
+    this._handleTextChange = this._handleTextChange.bind(this);
+  }
+
   getTemplate() {
     return createEmojiesTemplate();
   }
@@ -76,10 +84,44 @@ export default class EmojiesComponent extends AbstractSmartComponent {
         this.getEmojiPreviewContainerElement(),
         this._emojiPreviewComponent
     );
+
+    this._newComment.emoji = evt.target.value;
   }
 
   setClickOnEmoji() {
     const emojies = this.getElement().querySelectorAll(`.film-details__emoji-item`);
     emojies.forEach((it) => it.addEventListener(`change`, (evt) => this._setSelectedEmoji(evt)));
+  }
+
+  clearForm() {
+    this._newComment = {};
+    this.getElement().querySelector(`.film-details__comment-input`).value = ``;
+    const emojies = this.getElement().querySelectorAll(`.film-details__emoji-item`);
+    emojies.forEach((it) => {
+      it.checked = false;
+    });
+    remove(this._emojiPreviewComponent);
+  }
+
+  _handleKeydown(evt) {
+    if (evt.keyCode === 13 && evt.ctrlKey) {
+      if (this._newComment.text && this._newComment.emoji) {
+        this._commentModel.addComment(this._newComment);
+        this.clearForm();
+      }
+    }
+  }
+
+  _handleTextChange(evt) {
+    this._newComment.text = evt.target.value;
+  }
+
+  afterRender() {
+    document.addEventListener(`keydown`, this._handleKeydown);
+    this.getElement()
+      .querySelector(`.film-details__comment-input`)
+      .addEventListener(`input`, this._handleTextChange);
+
+    this._newComment = {};
   }
 }

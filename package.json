@@ -20,6 +20,8 @@
     "node": "10"
   },
   "dependencies": {
+    "chart.js": "^2.9.3",
+    "chartsjs-plugin-data-labels": "^0.1.5",
     "date-fns": "^2.11.1",
     "he": "^1.2.0"
   }

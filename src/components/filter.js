@@ -16,6 +16,10 @@ const filters = [
   {
     name: `Favorites`,
     type: `favorites`
+  },
+  {
+    name: `Stats`,
+    type: `stats`
   }
 ];
 
@@ -30,7 +34,6 @@ export const createFilterTemplate = (currentFilter) => {
       </a>`
     ).join(`\n`)}
     </div>
-    <a href="#stats" class="main-navigation__additional">Stats</a>
   </nav>`
   );
 };
@@ -48,7 +51,6 @@ export default class FilmFilterComponent extends AbstractSmartComponent {
   getTemplate() {
     const currentFilter = {
       activeFilterType: this._filterModel.getFilter(),
-      all: this._moviesModel.getMoviesAll().length,
       watchlist: this._moviesModel.getMoviesByWatchlist().length,
       history: this._moviesModel.getMoviesByWatched().length,
       favorites: this._moviesModel.getMoviesByFavorites().length

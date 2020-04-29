@@ -160,9 +160,17 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
     return this.getElement().querySelector(`.film-details__comments-wrap`);
   }
 
+  _handleActionClick(handler) {
+    return (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      handler(this._card);
+    };
+  }
+
   setCloseClickHandler(handler) {
     this._closeHandler = handler;
-    this.getCloseButtonElement().addEventListener(`click`, this._closeHandler);
+    this.getCloseButtonElement().addEventListener(`click`, this._handleActionClick(this._closeHandler));
   }
 
   afterRender() {
