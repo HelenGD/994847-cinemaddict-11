@@ -188,7 +188,6 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
       .forEach((element) => {
         element.addEventListener(`click`, (evt) => {
           evt.preventDefault();
-          
           const commentId = Number(evt.target.dataset.id);
           this._filmData.comments.deleteCommentById(commentId);
         });
