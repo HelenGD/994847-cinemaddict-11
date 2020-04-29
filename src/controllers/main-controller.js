@@ -52,6 +52,18 @@ export default class MainController {
       paginationController.render((nextMovies) => {
         cardsController.render(nextMovies);
       });
+
+      if (this._filterModel.getFilter() === `stats`) {
+        filmsListComponent.hide();
+        filmsListTopRatedComponent.hide();
+        filmsListMostCommentedComponent.hide();
+        filmSortComponent.hide();
+      } else {
+        filmsListComponent.show();
+        filmsListTopRatedComponent.show();
+        filmsListMostCommentedComponent.show();
+        filmSortComponent.show();
+      }
     });
 
     this._moviesModel.setDataChangeHandler(() => {
