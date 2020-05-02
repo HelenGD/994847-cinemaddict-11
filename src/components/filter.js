@@ -1,38 +1,76 @@
-import AbstractComponent from "./abstract-component.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 
-const createFilterMarkup = (filter) => {
-  const {name, count, isActive} = filter;
-  return (
-    `<a href="#watchlist" class="main-navigation__item ${isActive ? `main-navigation__item--active` : ``}">
-    ${name} 
-    ${count !== undefined ? `<span class="main-navigation__item-count">${count}</span>` : ``}
-    </a>`
-  );
-};
+const filters = [
+  {
+    name: `All movies`,
+    type: `all`
+  },
+  {
+    name: `Watchlist`,
+    type: `watchlist`
+  },
+  {
+    name: `History`,
+    type: `history`
+  },
+  {
+    name: `Favorites`,
+    type: `favorites`
+  },
+  {
+    name: `Stats`,
+    type: `stats`
+  }
+];
 
-export const createFilterTemplate = (filters) => {
-  const filterMarkup = filters.map((filter) => createFilterMarkup(filter)).join(`\n`);
-
+export const createFilterTemplate = (currentFilter) => {
   return (
     `<nav class="main-navigation">
     <div class="main-navigation__items">
-    <a href="#all" class="main-navigation__item main-navigation__item--active">${name}</a>
-    ${filterMarkup}
+    ${filters.map((filter) => `
+      <a href="#${filter.type}" data-type="${filter.type}" class="main-navigation__item ${currentFilter.activeFilterType === filter.type ? `main-navigation__item--active` : ``}">
+      ${filter.name} 
+      ${currentFilter[filter.type] !== undefined ? `<span class="main-navigation__item-count">${currentFilter[filter.type]}</span>` : ``}
+      </a>`
+    ).join(`\n`)}
     </div>
-    <a href="#stats" class="main-navigation__additional">Stats</a>
   </nav>`
   );
 };
 
-export default class FilmFilterComponent extends AbstractComponent {
-  constructor(filters) {
+export default class FilmFilterComponent extends AbstractSmartComponent {
+  constructor(moviesModel, filterModel) {
     super();
 
-    this._filters = filters;
+    this._moviesModel = moviesModel;
+    this._filterModel = filterModel;
   }
 
+  recoveryListeners() {}
+
   getTemplate() {
-    return createFilterTemplate(this._filters);
+    const currentFilter = {
+      activeFilterType: this._filterModel.getFilter(),
+      watchlist: this._moviesModel.getMoviesByWatchlist().length,
+      history: this._moviesModel.getMoviesByWatched().length,
+      favorites: this._moviesModel.getMoviesByFavorites().length
+    };
+    return createFilterTemplate(currentFilter);
+  }
+
+  _handleActionClick(handler, filterType) {
+    return (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      handler(filterType);
+    };
+  }
+
+  setClickHandle(handler) {
+    this
+      .getElement()
+      .querySelectorAll(`.main-navigation__item`)
+      .forEach((it) => it.addEventListener(`click`, this._handleActionClick(handler, it.dataset.type)));
   }
 }
 

@@ -1,3 +1,4 @@
+import {encode} from 'he';
 import AbstractSmartComponent from "./abstract-smart-component";
 
 const createfilmDataTemplate = (filmData) => {
@@ -90,19 +91,21 @@ const createfilmDataTemplate = (filmData) => {
         </div>
         <div class="form-details__bottom-container">
           <section class="film-details__comments-wrap">
-            <h3 class="film-details__comments-title">Comment${comments.length > 1 ? `s` : ``} <span class="film-details__comments-count">${comments.length}</span></h3>
+            <h3 class="film-details__comments-title">
+              Comment${comments.getComments().length > 1 ? `s` : ``} <span class="film-details__comments-count">${comments.getComments().length}</span>
+            </h3>
             <ul class="film-details__comments-list">
-              ${comments.map((comment) => `
+              ${comments.getComments().map((comment) => `
                 <li class="film-details__comment">
                 <span class="film-details__comment-emoji">
                   <img src="${comment.emotion}" width="55" height="55" alt="emoji">
                 </span>
                 <div>
-                  <p class="film-details__comment-text">${comment.text}</p>
+                  <p class="film-details__comment-text">${encode(comment.text)}</p>
                   <p class="film-details__comment-info">
                     <span class="film-details__comment-author">${comment.author}</span>
                     <span class="film-details__comment-day">${comment.date}</span>
-                    <button class="film-details__comment-delete">Delete</button>
+                    <button data-id="${comment.id}" class="film-details__comment-delete">Delete</button>
                   </p>
                 </div>
               </li>
@@ -126,20 +129,19 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
 
   show(filmData) {
     this.isOpened = true;
-    this._element = null;
     this._filmData = filmData;
     return this;
   }
 
   hide() {
     this.isOpened = false;
-    this._filmData = null;
     this._closeElement = null;
-    this.removeElement();
+    this._filmData = null;
   }
 
   recoveryListeners() {
-    this.setCloseClickHandler();
+    this.setCloseClickHandler(this._closeHandler);
+    this.setCommentDeleteHandle();
   }
 
   getTemplate() {
@@ -154,16 +156,41 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
     return this._closeElement;
   }
 
-  removeElement() {
-    this._element.remove();
-    this._element = null;
-  }
-
   getCommentsContainerElement() {
     return this.getElement().querySelector(`.film-details__comments-wrap`);
   }
 
+  _handleActionClick(handler) {
+    return (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      handler(this._card);
+    };
+  }
+
   setCloseClickHandler(handler) {
-    this.getCloseButtonElement().addEventListener(`click`, handler);
+    this._closeHandler = handler;
+    this.getCloseButtonElement().addEventListener(`click`, this._handleActionClick(this._closeHandler));
+  }
+
+  afterRender() {
+    this.setCommentDeleteHandle();
+  }
+
+  beforeRerender() {
+    this._closeElement = null;
+  }
+
+  setCommentDeleteHandle() {
+    this
+      .getElement()
+      .querySelectorAll(`.film-details__comment-delete`)
+      .forEach((element) => {
+        element.addEventListener(`click`, (evt) => {
+          evt.preventDefault();
+          const commentId = Number(evt.target.dataset.id);
+          this._filmData.comments.deleteCommentById(commentId);
+        });
+      });
   }
 }

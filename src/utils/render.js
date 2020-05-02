@@ -12,6 +12,8 @@ export const renderElement = (container, component, place = RenderPosition.BEFOR
       container.append(component.getElement());
       break;
   }
+
+  component.afterRender();
 };
 
 export const createElement = (template) => {
@@ -22,6 +24,7 @@ export const createElement = (template) => {
 };
 
 export const remove = (component) => {
+  component.beforeRemove();
   component.getElement().remove();
   component.removeElement();
 };

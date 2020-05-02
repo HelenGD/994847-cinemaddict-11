@@ -12,6 +12,7 @@ const EMOTIONS_ROOT = `./images/emoji/`;
 const generateComment = () => {
 
   return {
+    id: Date.now() + Math.random(),
     text: randomArrayItem(texts),
     emotion: `${EMOTIONS_ROOT}${randomArrayItem(emotions)}`,
     author: randomArrayItem(authors),
