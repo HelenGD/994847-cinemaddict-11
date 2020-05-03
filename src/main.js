@@ -1,23 +1,19 @@
 import UserRankComponent from './components/user-rank';
 import FilmStatisticsComponent from './components/statistics';
 import {renderElement} from './utils/render';
-import {generateCards} from './mock/card';
 import MainController from './controllers/main-controller';
-import Movie from './models/movie';
+import Movies from './models/movies';
 import Filter from './models/filter';
 import StatisticComponent from './components/statistic';
-
-const FILM_CARD_COUNT = 15;
+import {Api} from './api';
 
 const siteHeaderEl = document.querySelector(`.header`);
 const mainEl = document.querySelector(`.main`);
 
-const cards = generateCards(FILM_CARD_COUNT);
-const filmsCount = cards.length;
-
+const api = new Api();
 const filterModel = new Filter();
-const moviesModel = new Movie(filterModel);
-moviesModel.setMovies(cards);
+const moviesModel = new Movies(api, filterModel);
+moviesModel.load();
 
 renderElement(
     siteHeaderEl,
@@ -32,7 +28,10 @@ const mainController = new MainController(
 mainController.render();
 
 const footerStatisticsEl = document.querySelector(`.footer__statistics`);
-footerStatisticsEl.textContent = `${filmsCount} movies inside`;
+moviesModel.setDataChangeHandler(() => {
+  footerStatisticsEl.textContent = `${moviesModel.getMoviesAll().length} movies inside`;
+});
+
 renderElement(
     footerStatisticsEl,
     new FilmStatisticsComponent()
@@ -40,6 +39,10 @@ renderElement(
 const statisticComponent = new StatisticComponent(moviesModel);
 renderElement(mainEl, statisticComponent);
 statisticComponent.hide();
+
+moviesModel.setDataChangeHandler(() => {
+  statisticComponent.rerender();
+});
 
 filterModel.setDataChangeHandler(() => {
   if (filterModel.getFilter() === `stats`) {

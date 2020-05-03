@@ -1,7 +1,7 @@
 import {encode} from 'he';
 import AbstractSmartComponent from "./abstract-smart-component";
 
-const createfilmDataTemplate = (filmData) => {
+const createfilmDataTemplate = (movieModel) => {
   const {
     title,
     genres,
@@ -15,9 +15,9 @@ const createfilmDataTemplate = (filmData) => {
     description,
     ratingAge,
     poster,
-    comments,
     release,
-  } = filmData;
+    comments,
+  } = movieModel;
 
   return (
     `<section class="film-details">
@@ -98,14 +98,16 @@ const createfilmDataTemplate = (filmData) => {
               ${comments.getComments().map((comment) => `
                 <li class="film-details__comment">
                 <span class="film-details__comment-emoji">
-                  <img src="${comment.emotion}" width="55" height="55" alt="emoji">
+                  ${comment.emotion ? `<img src="${comment.emotion}" width="55" height="55" alt="emoji">` : ``}
                 </span>
                 <div>
                   <p class="film-details__comment-text">${encode(comment.text)}</p>
                   <p class="film-details__comment-info">
                     <span class="film-details__comment-author">${comment.author}</span>
-                    <span class="film-details__comment-day">${comment.date}</span>
-                    <button data-id="${comment.id}" class="film-details__comment-delete">Delete</button>
+                    <span class="film-details__comment-day">${comment.humanDate}</span>
+                    <button ${comment.isDeleting ? `disabled` : ``} data-id="${comment.id}" class="film-details__comment-delete">
+                      ${comment.isDeleting ? `Deleting...` : `Delete`}
+                    </button>
                   </p>
                 </div>
               </li>
@@ -122,21 +124,21 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
   constructor() {
     super();
     this.isOpened = false;
-    this._filmData = null;
+    this._movieModel = null;
     this._element = null;
     this._closeElement = null;
   }
 
-  show(filmData) {
+  show(movieModel) {
     this.isOpened = true;
-    this._filmData = filmData;
+    this._movieModel = movieModel;
     return this;
   }
 
   hide() {
     this.isOpened = false;
     this._closeElement = null;
-    this._filmData = null;
+    this._movieModel = null;
   }
 
   recoveryListeners() {
@@ -145,7 +147,7 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createfilmDataTemplate(this._filmData);
+    return createfilmDataTemplate(this._movieModel);
   }
 
   getCloseButtonElement() {
@@ -188,8 +190,8 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
       .forEach((element) => {
         element.addEventListener(`click`, (evt) => {
           evt.preventDefault();
-          const commentId = Number(evt.target.dataset.id);
-          this._filmData.comments.deleteCommentById(commentId);
+          const commentId = evt.target.dataset.id;
+          this._movieModel.comments.deleteCommentById(commentId);
         });
       });
   }

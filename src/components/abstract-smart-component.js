@@ -5,6 +5,8 @@ export default class AbstractSmartComponent extends AbstractComponent {
 
   beforeRerender() {}
 
+  afterRerender() {}
+
   rerender() {
     this.beforeRerender();
 
@@ -18,5 +20,7 @@ export default class AbstractSmartComponent extends AbstractComponent {
     parent.replaceChild(newElement, oldElement);
 
     this.recoveryListeners();
+    
+    this.afterRerender();
   }
 }

@@ -8,7 +8,7 @@ export const random = (min, max) => {
 
 export const formatDuration = (duration) => {
   const date = new Date(0);
-  date.setSeconds(duration);
+  date.setMinutes(duration);
 
   const format = [];
   const hours = date.getUTCHours();

@@ -53,13 +53,16 @@ class EmojiPreviewComponent extends AbstractComponent {
   }
 }
 
-export default class EmojiesComponent extends AbstractSmartComponent {
-  constructor(commentModel) {
+export default class NewCommentComponent extends AbstractSmartComponent {
+  constructor() {
     super();
 
-    this._commentModel = commentModel;
     this._handleKeydown = this._handleKeydown.bind(this);
     this._handleTextChange = this._handleTextChange.bind(this);
+  }
+
+  setCommentsModel(commentModel) {
+    this._commentModel = commentModel;
   }
 
   getTemplate() {

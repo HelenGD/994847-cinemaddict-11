@@ -24,8 +24,6 @@ export default class MainController {
   }
 
   render() {
-    const movies = this._moviesModel.getMoviesByFilter();
-
     const filterController = new FilterController(
         this._container,
         this._moviesModel,
@@ -40,7 +38,7 @@ export default class MainController {
     );
 
     filmSortComponent.setSortTypeChangeHandler((sortType) => {
-      const sortedMovies = cardsSort(movies, sortType);
+      const sortedMovies = cardsSort(this._moviesModel.getMoviesByFilter(), sortType);
       this._moviesModel.setMovies(sortedMovies);
     });
 
@@ -72,6 +70,8 @@ export default class MainController {
       paginationController.render((nextMovies) => {
         cardsController.render(nextMovies);
       });
+      topRatedCardsController.render(this._moviesModel.getTopRatedMovies());
+      mostCommentedCardsController.render(this._moviesModel.getMostCommentedMovies());
     });
 
     const filmsContainerComponent = new FilmsContainerComponent();
@@ -103,24 +103,24 @@ export default class MainController {
         {
           onButtonClick: (card, buttonType) => {
             changeButtonType(card, buttonType);
-
-            topRatedCardsController.render(movies.slice(0, 2));
+            filterController.render();
+            topRatedCardsController.render(this._moviesModel.getTopRatedMovies());
           }
         }
     );
-    topRatedCardsController.render(movies.slice(0, 2));
+    topRatedCardsController.render(this._moviesModel.getTopRatedMovies());
 
     const mostCommentedCardsController = new CardsController(
         filmsListMostCommentedComponent.getContainer(),
         {
           onButtonClick: (card, buttonType) => {
             changeButtonType(card, buttonType);
-
-            mostCommentedCardsController.render(movies.slice(0, 2));
+            filterController.render();
+            mostCommentedCardsController.render(this._moviesModel.getMostCommentedMovies());
           }
         }
     );
-    mostCommentedCardsController.render(movies.slice(0, 2));
+    mostCommentedCardsController.render(this._moviesModel.getMostCommentedMovies());
 
     const cardsController = new CardsController(
         filmsListComponent.getContainer(),
@@ -145,7 +145,7 @@ export default class MainController {
 
     const changeButtonType = (card, buttonType) => {
       if (buttonType === `watchlist`) {
-        card.isAddToWatch = !card.isAddToWatch;
+        card.isWatchlist = !card.isWatchlist;
       } else if (buttonType === `watched`) {
         card.isWatched = !card.isWatched;
       } else if (buttonType === `favorite`) {

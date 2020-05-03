@@ -1,7 +1,12 @@
-import AbstractComponent from './abstract-component.js';
 import Chart from 'chart.js';
+import ChartDataLabels from 'chartsjs-plugin-data-labels';
+import AbstractSmartComponent from './abstract-smart-component.js';
+
+const BAR_HEIGHT = 50;
 
 const makeStatisticsTemplate = (moviesModel) => {
+  const topDuration = moviesModel.getTopDuration();
+
   return (
     `<section class="statistic">
       <p class="statistic__rank">
@@ -29,7 +34,11 @@ const makeStatisticsTemplate = (moviesModel) => {
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Total duration</h4>
-          <p class="statistic__item-text">130 <span class="statistic__item-description">h</span> 22 <span class="statistic__item-description">m</span></p>
+          <p class="statistic__item-text">
+            ${topDuration.hours}&nbsp;<span class="statistic__item-description">h</span>
+            &nbsp;
+            ${topDuration.minutes}&nbsp;<span class="statistic__item-description">m</span>
+          </p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
@@ -43,7 +52,7 @@ const makeStatisticsTemplate = (moviesModel) => {
   );
 };
 
-export default class StatisticComponent extends AbstractComponent {
+export default class StatisticComponent extends AbstractSmartComponent {
   constructor(moviesModel) {
     super();
     this._moviesModel = moviesModel;
@@ -62,24 +71,77 @@ export default class StatisticComponent extends AbstractComponent {
       .querySelector(`.statistic__chart`)
       .getContext(`2d`);
 
+    this._context.height = BAR_HEIGHT * 5;
+
     return this._context;
+  }
+
+  beforeRerender() {
+    this._context = null;
+  }
+
+  afterRerender() {
+    this._renderStatistics();
   }
 
   _renderStatistics() {
     const genres = this._moviesModel.getGenresStatistics();
 
     this._chart = new Chart(this._getContext(), {
-      type: `bar`,
+      plugins: [ChartDataLabels],
+      type: `horizontalBar`,
       data: {
         labels: Object.keys(genres),
         datasets: [{
-          label: ``,
           backgroundColor: `#ffe800`,
-          borderColor: `#fff`,
+          hoverBackgroundColor: `#ffe800`,
+          anchor: `start`,
           data: Object.values(genres)
         }]
       },
-      options: {}
+      options: {
+        plugins: {
+          datalabels: {
+            font: {
+              size: 20
+            },
+            color: `#ffffff`,
+            anchor: `start`,
+            align: `start`,
+            offset: 40,
+          }
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              fontColor: `#ffffff`,
+              padding: 100,
+              fontSize: 20
+            },
+            gridLines: {
+              display: false,
+              drawBorder: false
+            },
+            barThickness: 24
+          }],
+          xAxes: [{
+            ticks: {
+              display: false,
+              beginAtZero: true
+            },
+            gridLines: {
+              display: false,
+              drawBorder: false
+            },
+          }],
+        },
+        legend: {
+          display: false
+        },
+        tooltips: {
+          enabled: false
+        }
+      }
     });
   }
 

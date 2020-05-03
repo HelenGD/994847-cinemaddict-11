@@ -16,10 +16,6 @@ const filters = [
   {
     name: `Favorites`,
     type: `favorites`
-  },
-  {
-    name: `Stats`,
-    type: `stats`
   }
 ];
 
@@ -34,6 +30,7 @@ export const createFilterTemplate = (currentFilter) => {
       </a>`
     ).join(`\n`)}
     </div>
+    <a href="#stats" data-type="stats" class="main-navigation__item main-navigation__additional ${currentFilter.activeFilterType === `stats` ? `main-navigation__item--active` : ``}">Stats</a>
   </nav>`
   );
 };

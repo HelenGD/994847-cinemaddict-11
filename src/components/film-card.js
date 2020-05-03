@@ -9,10 +9,10 @@ const createFilmCardTemplate = (card) => {
     poster,
     releaseYear,
     duration,
-    descriptionShort,
+    description,
     genres,
     comments,
-    isAddToWatch,
+    isWatchlist,
     isWatched,
     isFavourite
   } = card;
@@ -20,7 +20,7 @@ const createFilmCardTemplate = (card) => {
   const buttons = [
     {
       type: `watchlist`,
-      isActive: isAddToWatch,
+      isActive: isWatchlist,
       icon: `add-to-watchlist`,
     },
     {
@@ -41,10 +41,10 @@ const createFilmCardTemplate = (card) => {
     <p class="film-card__info">
       <span class="film-card__year">${releaseYear}</span>
       <span class="film-card__duration">${duration}</span>
-      <span class="film-card__genre">${genres[0]}</span>
+      <span class="film-card__genre">${genres[0] || ``}</span>
     </p>
     <img src="${poster}" alt="${title}" class="film-card__poster">
-    <p class="film-card__description">${descriptionShort}</p>
+    <p class="film-card__description">${description}</p>
     <a class="film-card__comments">${comments.getComments().length} comment${comments.getComments().length !== 1 ? `s` : ``}</a>
     <form class="film-card__controls">
       ${buttons
