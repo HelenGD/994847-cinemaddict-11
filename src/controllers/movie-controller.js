@@ -50,7 +50,6 @@ export default class MovieController {
       newCommentComponent.setClickOnEmoji();
     });
     this._filmCardComponent = new FilmCardComponent(movieModel);
-    
     renderElement(this._container, this._filmCardComponent);
     this._filmCardComponent.setClickHandler((evt) => {
       newCommentComponent.setCommentsModel(movieModel.comments);

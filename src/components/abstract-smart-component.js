@@ -20,7 +20,6 @@ export default class AbstractSmartComponent extends AbstractComponent {
     parent.replaceChild(newElement, oldElement);
 
     this.recoveryListeners();
-    
     this.afterRerender();
   }
 }
