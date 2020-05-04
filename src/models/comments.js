@@ -45,9 +45,6 @@ export default class Comments extends Model {
   }
 
   addComment({text, emoji}) {
-    console.log('sdfsdf')
-    return Promise.reject(`sdfsdf`);
-
     return this._api.createComment(this._movieId, {
       comment: text,
       emotion: emoji,
