@@ -1,10 +1,12 @@
 import AbstractComponent from "./abstract-component.js";
 
-const createNoCardsTemplate = () => {
+const createNoCardsTemplate = (isLoading) => {
   return (
     `<section class="films">
     <section class="films-list">
-      <h2 class="films-list__title">There are no movies in our database</h2>
+      <h2 class="films-list__title">
+        ${isLoading ? `Loading...` : `There are no movies in our database`}
+      </h2>
     </section>
   </section>`
   );
@@ -12,7 +14,12 @@ const createNoCardsTemplate = () => {
 
 
 export default class NoCardsComponent extends AbstractComponent {
+  constructor(isLoading) {
+    super();
+    this._isLoading = isLoading;
+  }
+
   getTemplate() {
-    return createNoCardsTemplate();
+    return createNoCardsTemplate(this._isLoading);
   }
 }

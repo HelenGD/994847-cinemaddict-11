@@ -6,6 +6,8 @@ const MAX_LENGTH_SHOWING_COMMENT = 140;
 
 export default class CardsController {
   constructor(container) {
+
+    this._isLoading = true;
     this._container = container;
     this._movieController = new MovieController(container);
   }
@@ -14,7 +16,7 @@ export default class CardsController {
     this._container.innerHTML = ``;
 
     if (!cards.length) {
-      const noCards = new NoCardsComponent();
+      const noCards = new NoCardsComponent(this._isLoading);
       renderElement(this._container, noCards);
     }
 
@@ -36,5 +38,7 @@ export default class CardsController {
           filmCardDescriptionEl.textContent = cutDescription;
         });
     });
+
+    this._isLoading = false;
   }
 }

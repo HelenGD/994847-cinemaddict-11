@@ -45,20 +45,23 @@ export default class Comments extends Model {
   }
 
   addComment({text, emoji}) {
-    this._comments.push(new Comment({
-      comment: text,
-      id: Date.now() + Math.random(),
-      emotion: emoji,
-      date: Date.now(),
-      author: randomArrayItem(authors),
-    }));
+    console.log('sdfsdf')
+    return Promise.reject(`sdfsdf`);
 
-    this._api.createComment(this._movieId, {
+    return this._api.createComment(this._movieId, {
       comment: text,
       emotion: emoji,
       date: new Date().toISOString(),
-    });
+    }).then(() => {
+      this._comments.push(new Comment({
+        comment: text,
+        id: Date.now() + Math.random(),
+        emotion: emoji,
+        date: Date.now(),
+        author: randomArrayItem(authors),
+      }));
 
-    this.callHandlers();
+      this.callHandlers();
+    });
   }
 }

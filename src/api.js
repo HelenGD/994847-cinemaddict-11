@@ -27,7 +27,8 @@ export class Api {
         }
 
         return response.text;
-      });
+      })
+      .catch(() => []);
   }
 
   fetchMovies() {
@@ -49,7 +50,7 @@ export class Api {
     return this.fetch({
       method: Method.get,
       url: `comments/${movieId}`,
-    });
+    }).catch(() => []);
   }
 
   deleteCommentById(commentId) {

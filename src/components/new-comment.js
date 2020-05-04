@@ -57,6 +57,7 @@ export default class NewCommentComponent extends AbstractSmartComponent {
   constructor() {
     super();
 
+    this._isDisabled = false;
     this._handleKeydown = this._handleKeydown.bind(this);
     this._handleTextChange = this._handleTextChange.bind(this);
   }
@@ -110,11 +111,32 @@ export default class NewCommentComponent extends AbstractSmartComponent {
 
   _handleKeydown(evt) {
     if (evt.keyCode === 13 && evt.ctrlKey) {
-      if (this._newComment.text && this._newComment.emoji) {
-        this._commentModel.addComment(this._newComment);
-        this.clearForm();
+      if (this._newComment.text && this._newComment.emoji && !this._isDisabled) {
+        this._isDisabled = true;
+        this._commentModel
+          .addComment(this._newComment)
+          .then(() => {
+            this.clearForm();
+            this._isDisabled = false;
+          })
+          .catch(() => {
+            this._isDisabled = false;
+            this.shake();
+          });
       }
     }
+  }
+
+  shake() {
+    this
+      .getElement()
+      .classList.add(`shake`);
+
+    setTimeout(() => {
+      this
+        .getElement()
+        .classList.remove(`shake`);
+    }, 1000);
   }
 
   _handleTextChange(evt) {
