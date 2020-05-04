@@ -1,7 +1,8 @@
 const Method = {
   get: `GET`,
   delete: `DELETE`,
-  post: `POST`
+  post: `POST`,
+  put: `PUT`
 };
 
 export class Api {
@@ -14,7 +15,7 @@ export class Api {
       headers,
     };
 
-    if (method === Method.post) {
+    if ([Method.post, Method.put].includes(method)) {
       requestOptions.body = JSON.stringify(body);
       headers.append(`Content-Type`, `application/json`);
     }
@@ -33,6 +34,14 @@ export class Api {
     return this.fetch({
       method: Method.get,
       url: `movies`,
+    });
+  }
+
+  updateMovie(movieId, body) {
+    return this.fetch({
+      method: Method.put,
+      url: `movies/${movieId}`,
+      body,
     });
   }
 

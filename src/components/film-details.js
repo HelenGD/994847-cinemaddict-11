@@ -17,6 +17,9 @@ const createfilmDataTemplate = (movieModel) => {
     poster,
     release,
     comments,
+    isWatchlist,
+    isWatched,
+    isFavorite
   } = movieModel;
 
   return (
@@ -81,11 +84,11 @@ const createfilmDataTemplate = (movieModel) => {
             </div>
           </div>
           <section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+            <input ${isWatchlist ? `checked` : ``} type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" value="watchlist">
             <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+            <input ${isWatched ? `checked` : ``} type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" value="watched">
             <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+            <input ${isFavorite ? `checked` : ``} type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" value="favorite">
             <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
           </section>
         </div>
@@ -144,6 +147,7 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
   recoveryListeners() {
     this.setCloseClickHandler(this._closeHandler);
     this.setCommentDeleteHandle();
+    this.setUserDetailsChange();
   }
 
   getTemplate() {
@@ -177,6 +181,7 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
 
   afterRender() {
     this.setCommentDeleteHandle();
+    this.setUserDetailsChange();
   }
 
   beforeRerender() {
@@ -192,6 +197,17 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
           evt.preventDefault();
           const commentId = evt.target.dataset.id;
           this._movieModel.comments.deleteCommentById(commentId);
+        });
+      });
+  }
+
+  setUserDetailsChange() {
+    this
+      .getElement()
+      .querySelectorAll(`.film-details__control-input`)
+      .forEach((element) => {
+        element.addEventListener(`change`, (evt) => {
+          this._movieModel.toggleUserDetails(evt.target.value);
         });
       });
   }

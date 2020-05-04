@@ -42,7 +42,7 @@ export default class Movies extends Model {
   }
 
   getMoviesByFavorites() {
-    return this._movies.filter((movie) => movie.isFavourite);
+    return this._movies.filter((movie) => movie.isFavorite);
   }
 
   getTopRatedMovies() {
@@ -77,10 +77,14 @@ export default class Movies extends Model {
         return movie;
       }
 
-      return new Movie(movie);
+      return new Movie(this._api, movie);
     });
 
     this._movies.forEach((movie) => {
+      movie.setDataChangeHandler(() => {
+        this.callHandlers();
+      });
+
       if (!(movie.comments instanceof Comments)) {
         movie.comments = new Comments(this._api, movie.id, movie.comments);
       }

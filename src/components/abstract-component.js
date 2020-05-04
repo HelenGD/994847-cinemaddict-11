@@ -9,6 +9,7 @@ export default class AbstractComponent {
     }
 
     this._element = null;
+    this._isShow = false;
   }
 
   getTemplate() {
@@ -35,11 +36,13 @@ export default class AbstractComponent {
     if (this._element) {
       this._element.classList.remove(HIDDEN_CLASS);
     }
+    this._isShow = true;
   }
 
   hide() {
     if (this._element) {
       this._element.classList.add(HIDDEN_CLASS);
     }
+    this._isShow = false;
   }
 }

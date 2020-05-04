@@ -82,6 +82,11 @@ export default class StatisticComponent extends AbstractSmartComponent {
 
   afterRerender() {
     this._renderStatistics();
+    if (this._isShow) {
+      this.show();
+    } else {
+      this.hide();
+    }
   }
 
   _renderStatistics() {

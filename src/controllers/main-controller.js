@@ -98,42 +98,13 @@ export default class MainController {
         filmsListMostCommentedComponent
     );
 
-    const topRatedCardsController = new CardsController(
-        filmsListTopRatedComponent.getContainer(),
-        {
-          onButtonClick: (card, buttonType) => {
-            changeButtonType(card, buttonType);
-            filterController.render();
-            topRatedCardsController.render(this._moviesModel.getTopRatedMovies());
-          }
-        }
-    );
+    const topRatedCardsController = new CardsController(filmsListTopRatedComponent.getContainer());
     topRatedCardsController.render(this._moviesModel.getTopRatedMovies());
 
-    const mostCommentedCardsController = new CardsController(
-        filmsListMostCommentedComponent.getContainer(),
-        {
-          onButtonClick: (card, buttonType) => {
-            changeButtonType(card, buttonType);
-            filterController.render();
-            mostCommentedCardsController.render(this._moviesModel.getMostCommentedMovies());
-          }
-        }
-    );
+    const mostCommentedCardsController = new CardsController(filmsListMostCommentedComponent.getContainer());
     mostCommentedCardsController.render(this._moviesModel.getMostCommentedMovies());
 
-    const cardsController = new CardsController(
-        filmsListComponent.getContainer(),
-        {
-          onButtonClick: (card, buttonType) => {
-            changeButtonType(card, buttonType);
-            filterController.render();
-            paginationController.slice((nextMovies) => {
-              cardsController.render(nextMovies);
-            });
-          }
-        }
-    );
+    const cardsController = new CardsController(filmsListComponent.getContainer());
 
     const paginationController = new PaginationController(
         filmsListComponent.getElement(),
@@ -142,16 +113,6 @@ export default class MainController {
     paginationController.render((nextMovies) => {
       cardsController.render(nextMovies);
     });
-
-    const changeButtonType = (card, buttonType) => {
-      if (buttonType === `watchlist`) {
-        card.isWatchlist = !card.isWatchlist;
-      } else if (buttonType === `watched`) {
-        card.isWatched = !card.isWatched;
-      } else if (buttonType === `favorite`) {
-        card.isFavourite = !card.isFavourite;
-      }
-    };
   }
 }
 

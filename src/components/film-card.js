@@ -14,7 +14,7 @@ const createFilmCardTemplate = (card) => {
     comments,
     isWatchlist,
     isWatched,
-    isFavourite
+    isFavorite
   } = card;
 
   const buttons = [
@@ -30,7 +30,7 @@ const createFilmCardTemplate = (card) => {
     },
     {
       type: `favorite`,
-      isActive: isFavourite,
+      isActive: isFavorite,
       icon: `favorite`
     }
   ];
@@ -55,19 +55,19 @@ const createFilmCardTemplate = (card) => {
 };
 
 export default class FilmCardComponent extends AbstractComponent {
-  constructor(card) {
+  constructor(movieModel) {
     super();
 
-    this._card = card;
+    this._movieModel = movieModel;
     this._element = null;
   }
 
   getTemplate() {
-    return createFilmCardTemplate(this._card);
+    return createFilmCardTemplate(this._movieModel);
   }
 
   getCard() {
-    return this._card;
+    return this._movieModel;
   }
 
   setClickHandler(handler) {
@@ -79,7 +79,7 @@ export default class FilmCardComponent extends AbstractComponent {
     return (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
-      handler(this._card, buttonType);
+      handler(this._movieModel, buttonType);
     };
   }
 

@@ -5,15 +5,9 @@ import MovieController from "./movie-controller";
 const MAX_LENGTH_SHOWING_COMMENT = 140;
 
 export default class CardsController {
-  constructor(
-      container,
-      {onButtonClick}
-  ) {
+  constructor(container) {
     this._container = container;
-    this._movieController = new MovieController(
-        container,
-        {onButtonClick}
-    );
+    this._movieController = new MovieController(container);
   }
 
   render(cards) {

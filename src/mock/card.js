@@ -48,7 +48,7 @@ export const generateDetailsOfFilm = () => {
     comments: generateComments(random(0, MAX_COMMENTS_COUNT)),
     isWatchlist: Boolean(random(0, 1)),
     isWatched: Boolean(random(0, 1)),
-    isFavourite: Boolean(random(0, 1)),
+    isFavorite: Boolean(random(0, 1)),
   };
 };
 

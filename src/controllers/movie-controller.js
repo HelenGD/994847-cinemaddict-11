@@ -34,10 +34,9 @@ const renderFilmCardDetails = (evt, movieModel) => {
 };
 
 export default class MovieController {
-  constructor(container, {onButtonClick}) {
+  constructor(container) {
     this._container = container;
     this._filmCardComponent = null;
-    this._onButtonClick = onButtonClick;
   }
 
   render(movieModel) {
@@ -61,7 +60,9 @@ export default class MovieController {
       movieModel.comments.load();
       newCommentComponent.setClickOnEmoji();
     });
-    this._filmCardComponent.setActionHandler(this._onButtonClick);
+    this._filmCardComponent.setActionHandler((currentMovieModel, buttonType) => {
+      currentMovieModel.toggleUserDetails(buttonType);
+    });
   }
 }
 
