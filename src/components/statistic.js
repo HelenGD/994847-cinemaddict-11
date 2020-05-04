@@ -4,33 +4,33 @@ import AbstractSmartComponent from './abstract-smart-component.js';
 
 const BAR_HEIGHT = 50;
 
-const makeStatisticsTemplate = (moviesModel) => {
-  const topDuration = moviesModel.getTopDuration();
+const makeStatisticsTemplate = (moviesModel, filter) => {
+  const topDuration = moviesModel.getTopDuration(filter);
 
   return (
     `<section class="statistic">
       <p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-        <span class="statistic__rank-label">Sci-Fighter</span>
+        <span class="statistic__rank-label">${moviesModel.getRank()}</span>
       </p>
       <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
         <p class="statistic__filters-description">Show stats:</p>
-        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-all-time" value="all-time" checked>
+        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-all-time" value="all-time" ${filter === `all-time` ? `checked` : ``}>
         <label for="statistic-all-time" class="statistic__filters-label">All time</label>
-        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-today" value="today">
+        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-today" value="today" ${filter === `today` ? `checked` : ``}>
         <label for="statistic-today" class="statistic__filters-label">Today</label>
-        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-week" value="week">
+        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-week" value="week" ${filter === `week` ? `checked` : ``}>
         <label for="statistic-week" class="statistic__filters-label">Week</label>
-        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-month" value="month">
+        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-month" value="month" ${filter === `month` ? `checked` : ``}>
         <label for="statistic-month" class="statistic__filters-label">Month</label>
-        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-year" value="year">
+        <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-year" value="year" ${filter === `year` ? `checked` : ``}>
         <label for="statistic-year" class="statistic__filters-label">Year</label>
       </form>
       <ul class="statistic__text-list">
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">You watched</h4>
-          <p class="statistic__item-text">${moviesModel.getMoviesByWatched().length} <span class="statistic__item-description">movies</span></p>
+          <p class="statistic__item-text">${moviesModel.getMoviesByWatched(filter).length} <span class="statistic__item-description">movies</span></p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Total duration</h4>
@@ -42,7 +42,7 @@ const makeStatisticsTemplate = (moviesModel) => {
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
-          <p class="statistic__item-text">${moviesModel.getTopGenre()}</p>
+          <p class="statistic__item-text">${moviesModel.getTopGenre(filter) || `-`}</p>
         </li>
       </ul>
       <div class="statistic__chart-wrap">
@@ -55,11 +55,16 @@ const makeStatisticsTemplate = (moviesModel) => {
 export default class StatisticComponent extends AbstractSmartComponent {
   constructor(moviesModel) {
     super();
+    this._filter = `all-time`;
     this._moviesModel = moviesModel;
   }
 
   getTemplate() {
-    return makeStatisticsTemplate(this._moviesModel);
+    return makeStatisticsTemplate(this._moviesModel, this._filter);
+  }
+
+  recoveryListeners() {
+    this.setFilterChange();
   }
 
   _getContext() {
@@ -80,6 +85,10 @@ export default class StatisticComponent extends AbstractSmartComponent {
     this._context = null;
   }
 
+  afterRender() {
+    this.setFilterChange();
+  }
+
   afterRerender() {
     this._renderStatistics();
     if (this._isShow) {
@@ -89,8 +98,20 @@ export default class StatisticComponent extends AbstractSmartComponent {
     }
   }
 
+  setFilterChange() {
+    this
+      .getElement()
+      .querySelectorAll(`.statistic__filters-input`)
+      .forEach((element) => {
+        element.addEventListener(`change`, (evt) => {
+          this._filter = evt.target.value;
+          this.rerender();
+        });
+      });
+  }
+
   _renderStatistics() {
-    const genres = this._moviesModel.getGenresStatistics();
+    const genres = this._moviesModel.getGenresStatistics(this._filter);
 
     this._chart = new Chart(this._getContext(), {
       plugins: [ChartDataLabels],
@@ -127,7 +148,6 @@ export default class StatisticComponent extends AbstractSmartComponent {
               display: false,
               drawBorder: false
             },
-            barThickness: 24
           }],
           xAxes: [{
             ticks: {

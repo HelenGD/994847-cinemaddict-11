@@ -17,7 +17,7 @@ moviesModel.load();
 
 renderElement(
     siteHeaderEl,
-    new UserRankComponent()
+    new UserRankComponent(moviesModel)
 );
 
 const mainController = new MainController(

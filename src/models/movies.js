@@ -1,3 +1,7 @@
+import differenceInDays from 'date-fns/differenceInDays';
+import differenceInWeeks from 'date-fns/differenceInWeeks';
+import differenceInMonths from 'date-fns/differenceInMonths';
+import differenceInYears from 'date-fns/differenceInYears';
 import Model from './model';
 import Comments from './comments';
 import Movie from './movie';
@@ -37,8 +41,18 @@ export default class Movies extends Model {
     return this._movies.filter((movie) => movie.isWatchlist);
   }
 
-  getMoviesByWatched() {
-    return this._movies.filter((movie) => movie.isWatched);
+  getMoviesByWatched(filter = `all-time`) {
+    const filterMap = {
+      'today': differenceInDays,
+      'week': differenceInWeeks,
+      'month': differenceInMonths,
+      'year': differenceInYears,
+      'all-time': () => 0,
+    };
+
+    return this._movies.filter(({isWatched, watchingDate}) => {
+      return isWatched && Math.abs(filterMap[filter](Date.now(), watchingDate)) < 1;
+    });
   }
 
   getMoviesByFavorites() {
@@ -59,16 +73,18 @@ export default class Movies extends Model {
       .slice(0, 2);
   }
 
-  getTopDuration() {
-    const topDuration = this.getMoviesByWatched().reduce((total, movie) => {
+  getTopDuration(filter) {
+    const topDuration = this.getMoviesByWatched(filter).reduce((total, movie) => {
       return total + movie.runtime;
     }, 0);
 
-    const date = new Date(0);
-    date.setMinutes(topDuration);
-    const hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes();
-    return {hours, minutes};
+    const hours = parseInt(topDuration / 60, 10);
+    const minutes = topDuration - hours * 60;
+
+    return {
+      hours,
+      minutes,
+    };
   }
 
   setMovies(movies) {
@@ -106,10 +122,10 @@ export default class Movies extends Model {
     return true;
   }
 
-  getGenresStatistics() {
+  getGenresStatistics(filter) {
     const genres = {};
 
-    this._movies.forEach((movie) => {
+    this.getMoviesByWatched(filter).forEach((movie) => {
       movie.genres.forEach((genre) => {
         genres[genre] = genres[genre] === undefined
           ? 1
@@ -120,8 +136,9 @@ export default class Movies extends Model {
     return genres;
   }
 
-  getTopGenre() {
-    const genres = this.getGenresStatistics();
+  getTopGenre(filter) {
+    const genres = this.getGenresStatistics(filter);
+
     return Object
       .keys(genres)
       .reduce((topGenre, genre) => {
@@ -133,5 +150,19 @@ export default class Movies extends Model {
           ? genre
           : topGenre;
       }, ``);
+  }
+
+  getRank() {
+    const watchedCount = this.getMoviesByWatched().length;
+
+    if (watchedCount > 20) {
+      return `movie buff`;
+    } else if (watchedCount > 10) {
+      return `fan`;
+    } else if (watchedCount > 0) {
+      return `novice`;
+    }
+
+    return ``;
   }
 }

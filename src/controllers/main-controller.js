@@ -40,6 +40,10 @@ export default class MainController {
     filmSortComponent.setSortTypeChangeHandler((sortType) => {
       const sortedMovies = cardsSort(this._moviesModel.getMoviesByFilter(), sortType);
       this._moviesModel.setMovies(sortedMovies);
+      paginationController.reset();
+      paginationController.render((nextMovies) => {
+        cardsController.render(nextMovies);
+      });
     });
 
     this._filterModel.setDataChangeHandler(() => {
@@ -66,7 +70,6 @@ export default class MainController {
 
     this._moviesModel.setDataChangeHandler(() => {
       filterController.render();
-      paginationController.reset();
       paginationController.render((nextMovies) => {
         cardsController.render(nextMovies);
       });
