@@ -3,6 +3,8 @@ import AbstractSmartComponent from "./abstract-smart-component.js";
 import {renderElement, remove} from "../utils/render.js";
 
 const EMOJI_SRC = `./images/emoji/`;
+const ENTER_KEYCODE = 13;
+const MAX_SHAKE_TIME_IN_MS = 1000;
 
 const emojiList = [
   {
@@ -79,6 +81,11 @@ export default class NewCommentComponent extends AbstractSmartComponent {
   }
 
   _setSelectedEmoji(evt) {
+    if (this._isDisabled) {
+      evt.preventDefault();
+      return;
+    }
+
     if (!this._emojiPreviewComponent) {
       this._emojiPreviewComponent = new EmojiPreviewComponent();
     }
@@ -94,7 +101,7 @@ export default class NewCommentComponent extends AbstractSmartComponent {
 
   setClickOnEmoji() {
     const emojies = this.getElement().querySelectorAll(`.film-details__emoji-item`);
-    emojies.forEach((it) => it.addEventListener(`change`, (evt) => this._setSelectedEmoji(evt)));
+    emojies.forEach((it) => it.addEventListener(`click`, (evt) => this._setSelectedEmoji(evt)));
   }
 
   clearForm() {
@@ -136,7 +143,7 @@ export default class NewCommentComponent extends AbstractSmartComponent {
       this
         .getElement()
         .classList.remove(`shake`);
-    }, 1000);
+    }, MAX_SHAKE_TIME_IN_MS);
   }
 
   _handleTextChange(evt) {
@@ -144,6 +151,11 @@ export default class NewCommentComponent extends AbstractSmartComponent {
   }
 
   afterRender() {
+    document.addEventListener(`keypress`, (evt) => {
+      if (this._isDisabled) {
+        evt.preventDefault();
+      }
+    });
     document.addEventListener(`keydown`, this._handleKeydown);
     this.getElement()
       .querySelector(`.film-details__comment-input`)

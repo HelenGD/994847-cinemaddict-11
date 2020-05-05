@@ -1,4 +1,4 @@
-import formatDistance from 'date-fns/formatDistance';
+import format from 'date-fns/format';
 import Model from './model';
 
 export default class Comment extends Model {
@@ -9,12 +9,11 @@ export default class Comment extends Model {
     this.id = data.id;
     this.emotion = data.emotion ? `./images/emoji/${data.emotion}.png` : ``;
     this.date = new Date(data.date || 0);
-    this.text = data.comment || ``;
+    this.text = data.comment || `Loading...`;
     this.author = data.author || ``;
-    this.humanDate = formatDistance(
-        Date.now(),
+    this.commentDate = format(
         this.date,
-        {includeSeconds: true}
+        `yyyy/MM/dd HH:mm`
     );
   }
 }

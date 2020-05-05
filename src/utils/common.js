@@ -52,3 +52,5 @@ export const checkEscPress = (evt, action) => {
     action();
   }
 };
+
+export const isOnline = () => navigator.onLine;

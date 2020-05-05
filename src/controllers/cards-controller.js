@@ -2,7 +2,7 @@ import {renderElement} from "../utils/render";
 import NoCardsComponent from "../components/no-cards";
 import MovieController from "./movie-controller";
 
-const MAX_LENGTH_SHOWING_COMMENT = 140;
+const MAX_LENGTH_SHOWING_COMMENT = 139;
 
 export default class CardsController {
   constructor(container) {
@@ -12,8 +12,12 @@ export default class CardsController {
     this._movieController = new MovieController(container);
   }
 
-  render(cards) {
+  clear() {
     this._container.innerHTML = ``;
+  }
+
+  render(cards) {
+    this.clear();
 
     if (!cards.length) {
       const noCards = new NoCardsComponent(this._isLoading);

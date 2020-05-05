@@ -23,7 +23,7 @@ export default class Movie extends Model {
     this.genres = info.genre;
     this.poster = info.poster;
     this.releaseDate = new Date(info.release.date);
-    this.release = format(this.releaseDate, `d MMMM yyyy`);
+    this.release = format(this.releaseDate, `dd MMMM yyyy`);
     this.countries = info.release.release_country;
     this.runtime = info.runtime;
     this.title = info.title;
@@ -39,12 +39,13 @@ export default class Movie extends Model {
 
   update() {
     this._api.updateMovie(this.id, {
+      'id': this.id,
       'comments': this.comments.getComments().map(({id}) => id),
       'user_details': {
         'already_watched': this.isWatched,
         'favorite': this.isFavorite,
         'watchlist': this.isWatchlist,
-        'watching_date': this.watchingDate
+        'watching_date': this.watchingDate.toISOString()
       },
       'film_info': {
         'actors': this.actors,

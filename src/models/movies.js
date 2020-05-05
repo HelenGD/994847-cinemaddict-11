@@ -5,6 +5,13 @@ import differenceInYears from 'date-fns/differenceInYears';
 import Model from './model';
 import Comments from './comments';
 import Movie from './movie';
+import {cardsSort} from '../utils/cards-sort';
+
+const TOP_RATED_MOVIES_COUNT = 2;
+const MOST_COMMENTED_MOVIES_COUNT = 2;
+const MINUTES_PER_HOUR = 60;
+const MOVIE_BUFF_RANK = 20;
+const FAN_RANK = 10;
 
 export default class Movies extends Model {
   constructor(api, filterModel) {
@@ -16,7 +23,9 @@ export default class Movies extends Model {
 
   load() {
     this._api.fetchMovies().then((movies) => {
-      this.setMovies(movies);
+      const movieModels = movies.map((movie) => new Movie(this._api, movie));
+
+      this.setMovies(cardsSort(movieModels));
     });
   }
 
@@ -63,14 +72,14 @@ export default class Movies extends Model {
     return this._movies
       .slice()
       .sort((a, b) => b.rating - a.rating)
-      .slice(0, 2);
+      .slice(0, TOP_RATED_MOVIES_COUNT);
   }
 
   getMostCommentedMovies() {
     return this._movies
       .slice()
       .sort((a, b) => b.comments.getComments().length - a.comments.getComments().length)
-      .slice(0, 2);
+      .slice(0, MOST_COMMENTED_MOVIES_COUNT);
   }
 
   getTopDuration(filter) {
@@ -78,8 +87,8 @@ export default class Movies extends Model {
       return total + movie.runtime;
     }, 0);
 
-    const hours = parseInt(topDuration / 60, 10);
-    const minutes = topDuration - hours * 60;
+    const hours = parseInt(topDuration / MINUTES_PER_HOUR, 10);
+    const minutes = topDuration - hours * MINUTES_PER_HOUR;
 
     return {
       hours,
@@ -155,9 +164,9 @@ export default class Movies extends Model {
   getRank() {
     const watchedCount = this.getMoviesByWatched().length;
 
-    if (watchedCount > 20) {
+    if (watchedCount > MOVIE_BUFF_RANK) {
       return `movie buff`;
-    } else if (watchedCount > 10) {
+    } else if (watchedCount > FAN_RANK) {
       return `fan`;
     } else if (watchedCount > 0) {
       return `novice`;

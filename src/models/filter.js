@@ -3,7 +3,7 @@ import Model from './model';
 export default class Filter extends Model {
   constructor() {
     super();
-    this._data = `all`; // all, watchlist, history, favorites
+    this._data = `all`;
   }
 
   setFilter(newFilter) {

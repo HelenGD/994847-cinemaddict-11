@@ -1,18 +1,21 @@
 import UserRankComponent from './components/user-rank';
-import FilmStatisticsComponent from './components/statistics';
+import FilmStatisticsComponent from './components/user-statistics';
 import {renderElement} from './utils/render';
 import MainController from './controllers/main-controller';
 import Movies from './models/movies';
 import Filter from './models/filter';
-import StatisticComponent from './components/statistic';
-import {Api} from './api';
+import StatisticComponent from './components/film-count-statistic';
+import Api from './api';
+import Provider from './provider';
+import Store from './store';
 
 const siteHeaderEl = document.querySelector(`.header`);
 const mainEl = document.querySelector(`.main`);
 
-const api = new Api();
+const store = new Store(`movies`, localStorage);
+const apiWithProvider = new Provider(new Api(), store);
 const filterModel = new Filter();
-const moviesModel = new Movies(api, filterModel);
+const moviesModel = new Movies(apiWithProvider, filterModel);
 moviesModel.load();
 
 renderElement(
@@ -50,4 +53,24 @@ filterModel.setDataChangeHandler(() => {
   } else {
     statisticComponent.hide();
   }
+});
+
+window.addEventListener(`load`, () => {
+  // navigator.serviceWorker.register(`/sw.js`)
+  //   .then(() => {})
+  //   .catch(() => {});
+});
+
+window.addEventListener(`online`, () => {
+  document.title = document.title.replace(` [offline]`, ``);
+
+  apiWithProvider
+    .sync()
+    .then((movies) => {
+      moviesModel.setMovies(movies);
+    });
+});
+
+window.addEventListener(`offline`, () => {
+  document.title += ` [offline]`;
 });

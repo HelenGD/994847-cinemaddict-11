@@ -1,5 +1,6 @@
 import {encode} from 'he';
 import AbstractSmartComponent from "./abstract-smart-component";
+import {isOnline} from '../utils/common';
 
 const createfilmDataTemplate = (movieModel) => {
   const {
@@ -107,8 +108,8 @@ const createfilmDataTemplate = (movieModel) => {
                   <p class="film-details__comment-text">${encode(comment.text)}</p>
                   <p class="film-details__comment-info">
                     <span class="film-details__comment-author">${comment.author}</span>
-                    <span class="film-details__comment-day">${comment.humanDate}</span>
-                    <button ${comment.isDeleting ? `disabled` : ``} data-id="${comment.id}" class="film-details__comment-delete">
+                    <span class="film-details__comment-day">${comment.commentDate}</span>
+                    <button ${!isOnline() || comment.isDeleting ? `disabled` : ``} data-id="${comment.id}" class="film-details__comment-delete">
                       ${comment.isDeleting ? `Deleting...` : `Delete`}
                     </button>
                   </p>

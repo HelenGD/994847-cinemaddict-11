@@ -8,10 +8,6 @@ const filmCardDetails = new FilmCardDetailsComponent();
 const newCommentComponent = new NewCommentComponent();
 
 const renderFilmCardDetails = (evt, movieModel) => {
-  if (filmCardDetails.isOpened) {
-    return;
-  }
-
   renderElement(
       document.body,
       filmCardDetails.show(movieModel)

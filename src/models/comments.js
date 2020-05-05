@@ -1,7 +1,6 @@
 import Model from './model';
-import {randomArrayItem} from '../utils/common';
+import {isOnline} from '../utils/common';
 import Comment from './comment';
-import {authors} from '../mock/strings';
 
 export default class Comments extends Model {
   constructor(api, movieId, comments = []) {
@@ -39,6 +38,10 @@ export default class Comments extends Model {
       .then(() => {
         this._comments = this._comments.filter(({id}) => id !== commentId);
         this.callHandlers();
+      })
+      .catch(() => {
+        comment.isDeleting = false;
+        this.callHandlers();
       });
 
     this.callHandlers();
@@ -49,16 +52,8 @@ export default class Comments extends Model {
       comment: text,
       emotion: emoji,
       date: new Date().toISOString(),
-    }).then(() => {
-      this._comments.push(new Comment({
-        comment: text,
-        id: Date.now() + Math.random(),
-        emotion: emoji,
-        date: Date.now(),
-        author: randomArrayItem(authors),
-      }));
-
-      this.callHandlers();
+    }).then(({comments}) => {
+      this.setComments(comments);
     });
   }
 }

@@ -1,8 +1,9 @@
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartsjs-plugin-data-labels';
-import AbstractSmartComponent from './abstract-smart-component.js';
+import AbstractSmartComponent from './abstract-smart-component';
 
 const BAR_HEIGHT = 50;
+const AMOUNT_CHART_ELEMENTS = 5;
 
 const makeStatisticsTemplate = (moviesModel, filter) => {
   const topDuration = moviesModel.getTopDuration(filter);
@@ -42,7 +43,7 @@ const makeStatisticsTemplate = (moviesModel, filter) => {
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
-          <p class="statistic__item-text">${moviesModel.getTopGenre(filter) || `-`}</p>
+          <p class="statistic__item-text">${moviesModel.getTopGenre(filter) || ``}</p>
         </li>
       </ul>
       <div class="statistic__chart-wrap">
@@ -76,7 +77,7 @@ export default class StatisticComponent extends AbstractSmartComponent {
       .querySelector(`.statistic__chart`)
       .getContext(`2d`);
 
-    this._context.height = BAR_HEIGHT * 5;
+    this._context.height = BAR_HEIGHT * AMOUNT_CHART_ELEMENTS;
 
     return this._context;
   }
