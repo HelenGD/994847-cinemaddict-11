@@ -117,7 +117,7 @@ export default class NewCommentComponent extends AbstractSmartComponent {
   }
 
   _handleKeydown(evt) {
-    if (evt.keyCode === 13 && evt.ctrlKey) {
+    if (evt.keyCode === ENTER_KEYCODE && evt.ctrlKey) {
       if (this._newComment.text && this._newComment.emoji && !this._isDisabled) {
         this._isDisabled = true;
         this._commentModel

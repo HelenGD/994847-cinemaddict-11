@@ -1,5 +1,4 @@
 import Model from './model';
-import {isOnline} from '../utils/common';
 import Comment from './comment';
 
 export default class Comments extends Model {
