@@ -38,7 +38,7 @@ export default class MovieController {
   }
 
   render(movieModel) {
-    movieModel.comments.setDataChangeHandler(() => {
+    movieModel.comments.dataChangeHandler(() => {
       filmCardDetails.rerender();
       renderElement(
           filmCardDetails.getCommentsContainerElement(),
@@ -58,7 +58,7 @@ export default class MovieController {
       movieModel.comments.load();
       newCommentComponent.emojiClickHandler();
     });
-    this._filmCardComponent.setActionHandler((currentMovieModel, buttonType) => {
+    this._filmCardComponent.setButtonHandler((currentMovieModel, buttonType) => {
       currentMovieModel.toggleUserDetails(buttonType);
     });
   }

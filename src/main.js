@@ -31,7 +31,7 @@ renderElement(
 );
 mainController.render();
 
-moviesModel.setDataChangeHandler(() => {
+moviesModel.dataChangeHandler(() => {
   footerStatistics.textContent = `${moviesModel.getMoviesAll().length} movies inside`;
 });
 
@@ -43,11 +43,11 @@ renderElement(
 renderElement(main, userStatisticComponent);
 userStatisticComponent.hide();
 
-moviesModel.setDataChangeHandler(() => {
+moviesModel.dataChangeHandler(() => {
   userStatisticComponent.rerender();
 });
 
-filterModel.setDataChangeHandler(() => {
+filterModel.dataChangeHandler(() => {
   if (filterModel.getFilter() === `stats`) {
     userStatisticComponent.show();
   } else {

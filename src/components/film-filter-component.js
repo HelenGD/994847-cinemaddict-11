@@ -59,10 +59,10 @@ export default class FilmFilterComponent extends AbstractSmartComponent {
     this
       .getElement()
       .querySelectorAll(`.main-navigation__item`)
-      .forEach((it) => it.addEventListener(`click`, this._actionClickHandler(handler, it.dataset.type)));
+      .forEach((it) => it.addEventListener(`click`, this._clickHandler(handler, it.dataset.type)));
   }
 
-  _actionClickHandler(handler, filterType) {
+  _clickHandler(handler, filterType) {
     return (evt) => {
       evt.stopPropagation();
       evt.preventDefault();

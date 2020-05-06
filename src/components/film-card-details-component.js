@@ -151,8 +151,8 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
 
   recoveryListeners() {
     this.setCloseClickHandler(this._closeHandler);
-    this.setCommentDeleteHandler();
-    this.setUserDetailsChange();
+    this.commentDeleteHandler();
+    this.userDetailsChangeHandler();
   }
 
   show(movieModel) {
@@ -168,15 +168,15 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
   }
 
   afterRender() {
-    this.setCommentDeleteHandler();
-    this.setUserDetailsChange();
+    this.commentDeleteHandler();
+    this.userDetailsChangeHandler();
   }
 
   beforeRerender() {
     this._closeElement = null;
   }
 
-  _actionClickHandler(handler) {
+  _clickHandler(handler) {
     return (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
@@ -186,10 +186,10 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
 
   setCloseClickHandler(handler) {
     this._closeHandler = handler;
-    this.getCloseButtonElement().addEventListener(`click`, this._actionClickHandler(this._closeHandler));
+    this.getCloseButtonElement().addEventListener(`click`, this._clickHandler(this._closeHandler));
   }
 
-  setCommentDeleteHandler() {
+  commentDeleteHandler() {
     this
       .getElement()
       .querySelectorAll(`.film-details__comment-delete`)
@@ -202,7 +202,7 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
       });
   }
 
-  setUserDetailsChange() {
+  userDetailsChangeHandler() {
     this
       .getElement()
       .querySelectorAll(`.film-details__control-input`)

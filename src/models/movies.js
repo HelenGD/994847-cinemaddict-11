@@ -142,7 +142,7 @@ export default class Movies extends Model {
     });
 
     this._movies.forEach((movie) => {
-      movie.setDataChangeHandler(() => {
+      movie.dataChangeHandler(() => {
         this.callHandlers();
       });
 

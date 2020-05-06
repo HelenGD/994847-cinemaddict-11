@@ -65,7 +65,7 @@ export default class UserStatisticComponent extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setFilterChange();
+    this.filterChangeHandler();
   }
 
   beforeRerender() {
@@ -73,7 +73,7 @@ export default class UserStatisticComponent extends AbstractSmartComponent {
   }
 
   afterRender() {
-    this.setFilterChange();
+    this.filterChangeHandler();
   }
 
   afterRerender() {
@@ -162,7 +162,7 @@ export default class UserStatisticComponent extends AbstractSmartComponent {
       }
     });
   }
-  setFilterChange() {
+  filterChangeHandler() {
     this
       .getElement()
       .querySelectorAll(`.statistic__filters-input`)

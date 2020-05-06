@@ -29,14 +29,14 @@ export default class FilmSortComponent extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setSortTypeChangeHandler(this.handler);
+    this.sortTypeChangeHandler(this.handler);
   }
 
   reset() {
     this._currenSortType = SortType.DEFAULT;
   }
 
-  setSortTypeChangeHandler(handler) {
+  sortTypeChangeHandler(handler) {
     this.handler = handler;
 
     this
