@@ -1,5 +1,5 @@
 import {renderElement} from "../utils/render";
-import FilmFilterComponent from "../components/filter";
+import FilmFilterComponent from "../components/film-filter-component";
 
 export default class FilterController {
   constructor(container, moviesModel, filterModel) {
@@ -20,7 +20,7 @@ export default class FilterController {
       );
     }
 
-    this._filterComponent.setClickHandle((filterType) => {
+    this._filterComponent.setClickHandler((filterType) => {
       this._filterModel.setFilter(filterType);
     });
 

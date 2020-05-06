@@ -1,4 +1,4 @@
-import AbstractSmartComponent from "./abstract-smart-component.js";
+import AbstractSmartComponent from "./abstract-smart-component";
 
 const filters = [
   {
@@ -19,7 +19,7 @@ const filters = [
   }
 ];
 
-export const createFilterTemplate = (currentFilter) => {
+const createFilterTemplate = (currentFilter) => {
   return (
     `<nav class="main-navigation">
     <div class="main-navigation__items">
@@ -43,8 +43,6 @@ export default class FilmFilterComponent extends AbstractSmartComponent {
     this._filterModel = filterModel;
   }
 
-  recoveryListeners() {}
-
   getTemplate() {
     const currentFilter = {
       activeFilterType: this._filterModel.getFilter(),
@@ -55,19 +53,22 @@ export default class FilmFilterComponent extends AbstractSmartComponent {
     return createFilterTemplate(currentFilter);
   }
 
-  _handleActionClick(handler, filterType) {
+  recoveryListeners() {}
+
+  setClickHandler(handler) {
+    this
+      .getElement()
+      .querySelectorAll(`.main-navigation__item`)
+      .forEach((it) => it.addEventListener(`click`, this._actionClickHandler(handler, it.dataset.type)));
+  }
+
+  _actionClickHandler(handler, filterType) {
     return (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
       handler(filterType);
     };
   }
-
-  setClickHandle(handler) {
-    this
-      .getElement()
-      .querySelectorAll(`.main-navigation__item`)
-      .forEach((it) => it.addEventListener(`click`, this._handleActionClick(handler, it.dataset.type)));
-  }
 }
 
+export {createFilterTemplate};

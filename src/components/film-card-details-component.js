@@ -133,24 +133,6 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
     this._closeElement = null;
   }
 
-  show(movieModel) {
-    this.isOpened = true;
-    this._movieModel = movieModel;
-    return this;
-  }
-
-  hide() {
-    this.isOpened = false;
-    this._closeElement = null;
-    this._movieModel = null;
-  }
-
-  recoveryListeners() {
-    this.setCloseClickHandler(this._closeHandler);
-    this.setCommentDeleteHandle();
-    this.setUserDetailsChange();
-  }
-
   getTemplate() {
     return createfilmDataTemplate(this._movieModel);
   }
@@ -167,7 +149,34 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
     return this.getElement().querySelector(`.film-details__comments-wrap`);
   }
 
-  _handleActionClick(handler) {
+  recoveryListeners() {
+    this.setCloseClickHandler(this._closeHandler);
+    this.setCommentDeleteHandler();
+    this.setUserDetailsChange();
+  }
+
+  show(movieModel) {
+    this.isOpened = true;
+    this._movieModel = movieModel;
+    return this;
+  }
+
+  hide() {
+    this.isOpened = false;
+    this._closeElement = null;
+    this._movieModel = null;
+  }
+
+  afterRender() {
+    this.setCommentDeleteHandler();
+    this.setUserDetailsChange();
+  }
+
+  beforeRerender() {
+    this._closeElement = null;
+  }
+
+  _actionClickHandler(handler) {
     return (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
@@ -177,19 +186,10 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
 
   setCloseClickHandler(handler) {
     this._closeHandler = handler;
-    this.getCloseButtonElement().addEventListener(`click`, this._handleActionClick(this._closeHandler));
+    this.getCloseButtonElement().addEventListener(`click`, this._actionClickHandler(this._closeHandler));
   }
 
-  afterRender() {
-    this.setCommentDeleteHandle();
-    this.setUserDetailsChange();
-  }
-
-  beforeRerender() {
-    this._closeElement = null;
-  }
-
-  setCommentDeleteHandle() {
+  setCommentDeleteHandler() {
     this
       .getElement()
       .querySelectorAll(`.film-details__comment-delete`)

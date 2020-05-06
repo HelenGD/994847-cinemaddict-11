@@ -1,11 +1,11 @@
 import {renderElement} from "../utils/render";
-import FilmSortComponent from "../components/sort";
+import FilmSortComponent from "../components/film-sort-component";
 import {cardsSort} from "../utils/cards-sort";
 import CardsController from "./cards-controller";
-import FilmsContainerComponent from "../components/films-container";
-import FilmsListComponent from "../components/films-list";
+import FilmsContainerComponent from "../components/films-container-component";
+import FilmsListComponent from "../components/films-list-component";
 import PaginationController from "./pagination-controller";
-import FilmsListExtraComponent from "../components/films-list-extra";
+import FilmsListExtraComponent from "../components/films-list-extra-component";
 import FilterController from "./filter-controller";
 
 export default class MainController {

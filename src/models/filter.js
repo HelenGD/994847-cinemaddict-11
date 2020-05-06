@@ -6,12 +6,12 @@ export default class Filter extends Model {
     this._data = `all`;
   }
 
+  getFilter() {
+    return this._data;
+  }
+
   setFilter(newFilter) {
     this._data = newFilter;
     this.callHandlers();
-  }
-
-  getFilter() {
-    return this._data;
   }
 }

@@ -9,7 +9,7 @@ const AUTHORIZATION = `Basic ef7ac57523`;
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 
 export default class Api {
-  fetch({method, url, body}) {
+  _fetch({method, url, body}) {
     const headers = new Headers();
     headers.append(`Authorization`, AUTHORIZATION);
 
@@ -28,14 +28,14 @@ export default class Api {
   }
 
   fetchMovies() {
-    return this.fetch({
+    return this._fetch({
       method: Method.get,
       url: `movies`,
     }).then((response) => response.json());
   }
 
   updateMovie(movieId, body) {
-    return this.fetch({
+    return this._fetch({
       method: Method.put,
       url: `movies/${movieId}`,
       body,
@@ -43,21 +43,21 @@ export default class Api {
   }
 
   fetchComments(movieId) {
-    return this.fetch({
+    return this._fetch({
       method: Method.get,
       url: `comments/${movieId}`,
     }).then((response) => response.json());
   }
 
   deleteCommentById(commentId) {
-    return this.fetch({
+    return this._fetch({
       method: Method.delete,
       url: `comments/${commentId}`,
     });
   }
 
   createComment(movieId, comment) {
-    return this.fetch({
+    return this._fetch({
       method: Method.post,
       url: `comments/${movieId}`,
       body: comment,
@@ -65,7 +65,7 @@ export default class Api {
   }
 
   sync(movies) {
-    return this.fetch({
+    return this._fetch({
       method: Method.post,
       url: `movies/sync`,
       body: movies,

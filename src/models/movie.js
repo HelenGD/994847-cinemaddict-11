@@ -1,18 +1,23 @@
 import format from 'date-fns/format';
 import Model from './model';
 import {formatDuration} from '../utils/common';
+import Comments from './comments';
 
 export default class Movie extends Model {
-  constructor(api, data) {
+  constructor(api, rawMovie) {
     super();
 
     this._api = api;
 
-    const info = data.film_info;
-    const comments = data.comments;
-    const id = data.id;
-    const details = data.user_details;
+    const id = rawMovie.id;
+    const info = rawMovie.film_info;
+    const comments = new Comments(this._api, id, rawMovie.comments);
 
+    comments.setDataChangeHandler(() => {
+      this.callHandlers();
+    });
+
+    const details = rawMovie.user_details;
     this.id = id;
     this.comments = comments;
     this.actors = info.actors;

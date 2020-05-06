@@ -9,12 +9,8 @@ export default class Comments extends Model {
     this._comments = comments.map((id) => new Comment({id}));
   }
 
-  load() {
-    this._api
-      .fetchComments(this._movieId)
-      .then((comments) => {
-        this.setComments(comments);
-      });
+  getComments() {
+    return this._comments;
   }
 
   setComments(comments) {
@@ -25,8 +21,22 @@ export default class Comments extends Model {
     this.callHandlers();
   }
 
-  getComments() {
-    return this._comments;
+  load() {
+    this._api
+      .fetchComments(this._movieId)
+      .then((comments) => {
+        this.setComments(comments);
+      });
+  }
+
+  addComment({text, emoji}) {
+    return this._api.createComment(this._movieId, {
+      comment: text,
+      emotion: emoji,
+      date: new Date().toISOString(),
+    }).then(({comments}) => {
+      this.setComments(comments);
+    });
   }
 
   deleteCommentById(commentId) {
@@ -44,15 +54,5 @@ export default class Comments extends Model {
       });
 
     this.callHandlers();
-  }
-
-  addComment({text, emoji}) {
-    return this._api.createComment(this._movieId, {
-      comment: text,
-      emotion: emoji,
-      date: new Date().toISOString(),
-    }).then(({comments}) => {
-      this.setComments(comments);
-    });
   }
 }

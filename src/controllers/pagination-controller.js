@@ -1,12 +1,12 @@
 import {renderElement, remove} from "../utils/render";
-import ShowMoreButtonComponent from "../components/show-more-button";
+import ShowMoreButtonComponent from "../components/show-more-button-component";
 
 const SHOWING_CARDS_COUNT_BY_BUTTON = 5;
 const SHOWING_CARDS_COUNT_ON_START = 5;
 
 export default class PaginationController {
   constructor(container, moviesModel) {
-    this._isNextShowing = false;
+    this._isNextShowing = true;
     this._container = container;
     this._currentCardsCount = SHOWING_CARDS_COUNT_ON_START;
     this._moviesModel = moviesModel;
@@ -14,7 +14,7 @@ export default class PaginationController {
   }
 
   reset() {
-    this._isNextShowing = false;
+    this._isNextShowing = true;
     this._currentCardsCount = SHOWING_CARDS_COUNT_ON_START;
   }
 
@@ -31,12 +31,11 @@ export default class PaginationController {
       return;
     }
 
-    if (!this._isNextShowing) {
+    if (this._isNextShowing) {
       renderElement(
           this._container,
           this._showMoreButtonComponent
       );
-      this._isNextShowing = true;
 
       this._showMoreButtonComponent.setClickHandler(() => {
         const movies = this._moviesModel.getMoviesByFilter();

@@ -10,8 +10,8 @@ import {cardsSort} from '../utils/cards-sort';
 const TOP_RATED_MOVIES_COUNT = 2;
 const MOST_COMMENTED_MOVIES_COUNT = 2;
 const MINUTES_PER_HOUR = 60;
-const MOVIE_BUFF_RANK = 20;
-const FAN_RANK = 10;
+const MAX_FAN = 20;
+const MAX_NOVICE = 10;
 
 export default class Movies extends Model {
   constructor(api, filterModel) {
@@ -19,14 +19,6 @@ export default class Movies extends Model {
     this._movies = [];
     this._api = api;
     this._filterModel = filterModel;
-  }
-
-  load() {
-    this._api.fetchMovies().then((movies) => {
-      const movieModels = movies.map((movie) => new Movie(this._api, movie));
-
-      this.setMovies(cardsSort(movieModels));
-    });
   }
 
   getMoviesAll() {
@@ -96,41 +88,6 @@ export default class Movies extends Model {
     };
   }
 
-  setMovies(movies) {
-    this._movies = movies.map((movie) => {
-      if (movie instanceof Movie) {
-        return movie;
-      }
-
-      return new Movie(this._api, movie);
-    });
-
-    this._movies.forEach((movie) => {
-      movie.setDataChangeHandler(() => {
-        this.callHandlers();
-      });
-
-      if (!(movie.comments instanceof Comments)) {
-        movie.comments = new Comments(this._api, movie.id, movie.comments);
-      }
-    });
-    this.callHandlers();
-  }
-
-  updateMovie(id, movie) {
-    const index = this._movies.findIndex((it) => it.id === id);
-
-    if (index === -1) {
-      return false;
-    }
-
-    this._movies = [].concat(this._movies.slice(0, index), movie, this._movies.slice(index + 1));
-
-    this.callHandlers();
-
-    return true;
-  }
-
   getGenresStatistics(filter) {
     const genres = {};
 
@@ -164,14 +121,57 @@ export default class Movies extends Model {
   getRank() {
     const watchedCount = this.getMoviesByWatched().length;
 
-    if (watchedCount > MOVIE_BUFF_RANK) {
+    if (watchedCount > MAX_FAN) {
       return `movie buff`;
-    } else if (watchedCount > FAN_RANK) {
+    } else if (watchedCount > MAX_NOVICE) {
       return `fan`;
     } else if (watchedCount > 0) {
       return `novice`;
     }
 
     return ``;
+  }
+
+  setMovies(movies) {
+    this._movies = movies.map((movie) => {
+      if (movie instanceof Movie) {
+        return movie;
+      }
+
+      return new Movie(this._api, movie);
+    });
+
+    this._movies.forEach((movie) => {
+      movie.setDataChangeHandler(() => {
+        this.callHandlers();
+      });
+
+      if (!(movie.comments instanceof Comments)) {
+        movie.comments = new Comments(this._api, movie.id, movie.comments);
+      }
+    });
+    this.callHandlers();
+  }
+
+  load() {
+    this._api.fetchMovies().then((movies) => {
+      const movieModels = movies.map((movie) => new Movie(this._api, movie));
+
+      this.setMovies(cardsSort(movieModels));
+    });
+  }
+
+  updateMovie(id, movie) {
+    const index = this._movies.findIndex((it) => it.id === id);
+
+    if (index === -1) {
+      return false;
+    }
+
+    this._movies = [].concat(this._movies.slice(0, index), movie, this._movies.slice(index + 1));
+
+    this.callHandlers();
+
+    return true;
   }
 }

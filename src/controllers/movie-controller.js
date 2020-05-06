@@ -1,8 +1,8 @@
-import FilmCardComponent from "../components/film-card";
+import FilmCardComponent from "../components/film-card-component";
 import {renderElement, remove} from "../utils/render";
 import {checkEscPress} from "../utils/common";
-import FilmCardDetailsComponent from "../components/film-details";
-import NewCommentComponent from "../components/new-comment";
+import FilmCardDetailsComponent from "../components/film-card-details-component";
+import NewCommentComponent from "../components/new-comment-component";
 
 const filmCardDetails = new FilmCardDetailsComponent();
 const newCommentComponent = new NewCommentComponent();
@@ -12,21 +12,23 @@ const renderFilmCardDetails = (evt, movieModel) => {
       document.body,
       filmCardDetails.show(movieModel)
   );
+  newCommentComponent.clearForm();
 
-  const onClosePopup = () => {
+  const closeHandler = () => {
     newCommentComponent.clearForm();
     filmCardDetails.hide();
     remove(filmCardDetails);
-    document.removeEventListener(`keydown`, onPopupEscPress);
+    document.removeEventListener(`keydown`, escPressHandler);
+    newCommentComponent.removeListeners();
   };
 
-  const onPopupEscPress = (event) => {
-    checkEscPress(event, onClosePopup);
+  const escPressHandler = (event) => {
+    checkEscPress(event, closeHandler);
   };
 
-  filmCardDetails.setCloseClickHandler(onClosePopup);
+  filmCardDetails.setCloseClickHandler(closeHandler);
 
-  document.addEventListener(`keydown`, onPopupEscPress);
+  document.addEventListener(`keydown`, escPressHandler);
 };
 
 export default class MovieController {
@@ -42,7 +44,7 @@ export default class MovieController {
           filmCardDetails.getCommentsContainerElement(),
           newCommentComponent
       );
-      newCommentComponent.setClickOnEmoji();
+      newCommentComponent.emojiClickHandler();
     });
     this._filmCardComponent = new FilmCardComponent(movieModel);
     renderElement(this._container, this._filmCardComponent);
@@ -54,7 +56,7 @@ export default class MovieController {
           newCommentComponent
       );
       movieModel.comments.load();
-      newCommentComponent.setClickOnEmoji();
+      newCommentComponent.emojiClickHandler();
     });
     this._filmCardComponent.setActionHandler((currentMovieModel, buttonType) => {
       currentMovieModel.toggleUserDetails(buttonType);

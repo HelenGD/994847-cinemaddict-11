@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract-component.js";
+import AbstractComponent from "./abstract-component";
 
 const ACTIVE_CLASS_NAME = `film-card__controls-item--active`;
 
@@ -70,12 +70,7 @@ export default class FilmCardComponent extends AbstractComponent {
     return this._movieModel;
   }
 
-  setClickHandler(handler) {
-    const clicks = this.getElement().querySelectorAll(`.film-card__poster`);
-    clicks.forEach((it) => it.addEventListener(`click`, this._handleActionClick(handler)));
-  }
-
-  _handleActionClick(handler, buttonType) {
+  _actionClickHandler(handler, buttonType) {
     return (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
@@ -83,8 +78,13 @@ export default class FilmCardComponent extends AbstractComponent {
     };
   }
 
+  setClickHandler(handler) {
+    const clicks = this.getElement().querySelectorAll(`.film-card__poster`);
+    clicks.forEach((it) => it.addEventListener(`click`, this._actionClickHandler(handler)));
+  }
+
   setActionHandler(handler) {
     const buttons = this.getElement().querySelectorAll(`.film-card__controls-item`);
-    buttons.forEach((it) => it.addEventListener(`click`, this._handleActionClick(handler, it.dataset.type)));
+    buttons.forEach((it) => it.addEventListener(`click`, this._actionClickHandler(handler, it.dataset.type)));
   }
 }

@@ -53,7 +53,7 @@ const makeStatisticsTemplate = (moviesModel, filter) => {
   );
 };
 
-export default class StatisticComponent extends AbstractSmartComponent {
+export default class UserStatisticComponent extends AbstractSmartComponent {
   constructor(moviesModel) {
     super();
     this._filter = `all-time`;
@@ -66,20 +66,6 @@ export default class StatisticComponent extends AbstractSmartComponent {
 
   recoveryListeners() {
     this.setFilterChange();
-  }
-
-  _getContext() {
-    if (this._context) {
-      return this._context;
-    }
-
-    this._context = this.getElement()
-      .querySelector(`.statistic__chart`)
-      .getContext(`2d`);
-
-    this._context.height = BAR_HEIGHT * AMOUNT_CHART_ELEMENTS;
-
-    return this._context;
   }
 
   beforeRerender() {
@@ -99,16 +85,22 @@ export default class StatisticComponent extends AbstractSmartComponent {
     }
   }
 
-  setFilterChange() {
-    this
-      .getElement()
-      .querySelectorAll(`.statistic__filters-input`)
-      .forEach((element) => {
-        element.addEventListener(`change`, (evt) => {
-          this._filter = evt.target.value;
-          this.rerender();
-        });
-      });
+  afterRender() {
+    this._renderStatistics();
+  }
+
+  _getContext() {
+    if (this._context) {
+      return this._context;
+    }
+
+    this._context = this.getElement()
+      .querySelector(`.statistic__chart`)
+      .getContext(`2d`);
+
+    this._context.height = BAR_HEIGHT * AMOUNT_CHART_ELEMENTS;
+
+    return this._context;
   }
 
   _renderStatistics() {
@@ -170,8 +162,15 @@ export default class StatisticComponent extends AbstractSmartComponent {
       }
     });
   }
-
-  afterRender() {
-    this._renderStatistics();
+  setFilterChange() {
+    this
+      .getElement()
+      .querySelectorAll(`.statistic__filters-input`)
+      .forEach((element) => {
+        element.addEventListener(`change`, (evt) => {
+          this._filter = evt.target.value;
+          this.rerender();
+        });
+      });
   }
 }

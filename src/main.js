@@ -1,57 +1,57 @@
-import UserRankComponent from './components/user-rank';
-import FilmStatisticsComponent from './components/user-statistics';
+import UserRankComponent from './components/user-rank-component';
+import FilmStatisticsComponent from './components/film-statistic-component';
 import {renderElement} from './utils/render';
 import MainController from './controllers/main-controller';
 import Movies from './models/movies';
 import Filter from './models/filter';
-import StatisticComponent from './components/film-count-statistic';
+import UserStatisticComponent from './components/user-statistic-component';
 import Api from './api';
 import Provider from './provider';
 import Store from './store';
 
-const siteHeaderEl = document.querySelector(`.header`);
-const mainEl = document.querySelector(`.main`);
+const siteHeader = document.querySelector(`.header`);
+const main = document.querySelector(`.main`);
 
 const store = new Store(`movies`, localStorage);
 const apiWithProvider = new Provider(new Api(), store);
 const filterModel = new Filter();
 const moviesModel = new Movies(apiWithProvider, filterModel);
-moviesModel.load();
-
-renderElement(
-    siteHeaderEl,
-    new UserRankComponent(moviesModel)
-);
-
+const footerStatistics = document.querySelector(`.footer__statistics`);
+const userStatisticComponent = new UserStatisticComponent(moviesModel);
 const mainController = new MainController(
-    mainEl,
+    main,
     moviesModel,
     filterModel
 );
+moviesModel.load();
+
+renderElement(
+    siteHeader,
+    new UserRankComponent(moviesModel)
+);
 mainController.render();
 
-const footerStatisticsEl = document.querySelector(`.footer__statistics`);
 moviesModel.setDataChangeHandler(() => {
-  footerStatisticsEl.textContent = `${moviesModel.getMoviesAll().length} movies inside`;
+  footerStatistics.textContent = `${moviesModel.getMoviesAll().length} movies inside`;
 });
 
 renderElement(
-    footerStatisticsEl,
+    footerStatistics,
     new FilmStatisticsComponent()
 );
-const statisticComponent = new StatisticComponent(moviesModel);
-renderElement(mainEl, statisticComponent);
-statisticComponent.hide();
+
+renderElement(main, userStatisticComponent);
+userStatisticComponent.hide();
 
 moviesModel.setDataChangeHandler(() => {
-  statisticComponent.rerender();
+  userStatisticComponent.rerender();
 });
 
 filterModel.setDataChangeHandler(() => {
   if (filterModel.getFilter() === `stats`) {
-    statisticComponent.show();
+    userStatisticComponent.show();
   } else {
-    statisticComponent.hide();
+    userStatisticComponent.hide();
   }
 });
 

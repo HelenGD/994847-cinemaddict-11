@@ -1,5 +1,5 @@
 import {renderElement} from "../utils/render";
-import NoCardsComponent from "../components/no-cards";
+import NoCardsComponent from "../components/no-cards-component";
 import MovieController from "./movie-controller";
 
 const MAX_LENGTH_SHOWING_COMMENT = 139;
@@ -29,8 +29,8 @@ export default class CardsController {
         this._movieController.render(card);
       });
 
-    const filmsListContainersEl = document.querySelectorAll(`.films-list--extra .films-list__container`);
-    filmsListContainersEl.forEach(() => {
+    const filmsListContainers = document.querySelectorAll(`.films-list--extra .films-list__container`);
+    filmsListContainers.forEach(() => {
       document
         .querySelectorAll(`.film-card__description`)
         .forEach((filmCardDescriptionEl) => {

@@ -1,50 +1,22 @@
 const ESC_KEYCODE = 27;
 
-export const random = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
 export const formatDuration = (duration) => {
   const date = new Date(0);
   date.setMinutes(duration);
 
-  const format = [];
+  const formats = [];
   const hours = date.getUTCHours();
   const minutes = date.getUTCMinutes();
 
   if (hours) {
-    format.push(`${hours}h`);
+    formats.push(`${hours}h`);
   }
 
   if (minutes) {
-    format.push(`${minutes}m`);
+    formats.push(`${minutes}m`);
   }
 
-  return format.join(` `);
-};
-
-export const decimalRandom = (min, max, decimalPlaces) => {
-  const rand = Math.random() < 0.5 ? ((1 - Math.random()) * (max - min) + min) : (Math.random() * (max - min) + min);
-  const power = Math.pow(10, decimalPlaces);
-  return Math.floor(rand * power) / power;
-};
-
-export const randomArrayItem = (array) => array[random(0, array.length - 1)];
-
-export const onOutsideClick = (element, callback) => {
-  const onOutsidePress = (evt) => {
-    const isClickInside = element.contains(evt.target);
-
-    if (!isClickInside) {
-      callback(evt);
-    }
-  };
-
-  document.addEventListener(`click`, onOutsidePress);
-
-  return () => document.removeEventListener(`click`, onOutsidePress);
+  return formats.join(` `);
 };
 
 export const checkEscPress = (evt, action) => {
