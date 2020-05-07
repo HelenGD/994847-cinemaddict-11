@@ -181,9 +181,7 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
       if (evt) {
         evt.stopPropagation();
         evt.preventDefault();
-      }
-      
-      handler(this._card);
+      } handler(this._card);
     };
   }
 
