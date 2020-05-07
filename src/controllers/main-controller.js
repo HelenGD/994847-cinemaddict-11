@@ -76,7 +76,17 @@ export default class MainController {
         cardsController.render(nextMovies);
       });
       topRatedCardsController.render(this._moviesModel.getTopRatedMovies());
+      if (this._moviesModel.getTopRatedMovies().length > 0) {
+        filmsListTopRatedComponent.show();
+      } else {
+        filmsListTopRatedComponent.hide();
+      }
       mostCommentedCardsController.render(this._moviesModel.getMostCommentedMovies());
+      if (this._moviesModel.getMostCommentedMovies().length > 0) {
+        filmsListMostCommentedComponent.show();
+      } else {
+        filmsListMostCommentedComponent.hide();
+      }
     });
 
     const filmsContainerComponent = new FilmsContainerComponent();
@@ -96,19 +106,17 @@ export default class MainController {
         filmsContainerComponent.getElement(),
         filmsListTopRatedComponent
     );
+    filmsListTopRatedComponent.hide();
 
     const filmsListMostCommentedComponent = new FilmsListExtraComponent({title: `Most commented`});
     renderElement(
         filmsContainerComponent.getElement(),
         filmsListMostCommentedComponent
     );
+    filmsListMostCommentedComponent.hide();
 
     const topRatedCardsController = new CardsController(filmsListTopRatedComponent.getContainer());
-    topRatedCardsController.render(this._moviesModel.getTopRatedMovies());
-
     const mostCommentedCardsController = new CardsController(filmsListMostCommentedComponent.getContainer());
-    mostCommentedCardsController.render(this._moviesModel.getMostCommentedMovies());
-
     const cardsController = new CardsController(filmsListComponent.getContainer());
 
     const paginationController = new PaginationController(
