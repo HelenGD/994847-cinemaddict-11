@@ -31,10 +31,6 @@ renderElement(
 );
 mainController.render();
 
-moviesModel.dataChangeHandler(() => {
-  footerStatistics.textContent = `${moviesModel.getMoviesAll().length} movies inside`;
-});
-
 renderElement(
     footerStatistics,
     new FilmStatisticsComponent()
@@ -42,6 +38,10 @@ renderElement(
 
 renderElement(main, userStatisticComponent);
 userStatisticComponent.hide();
+
+moviesModel.dataChangeHandler(() => {
+  footerStatistics.textContent = `${moviesModel.getMoviesAll().length} movies inside`;
+});
 
 moviesModel.dataChangeHandler(() => {
   userStatisticComponent.rerender();
@@ -56,9 +56,9 @@ filterModel.dataChangeHandler(() => {
 });
 
 window.addEventListener(`load`, () => {
-  // navigator.serviceWorker.register(`/sw.js`)
-  //   .then(() => {})
-  //   .catch(() => {});
+  navigator.serviceWorker.register(`/sw.js`)
+    .then(() => {})
+    .catch(() => {});
 });
 
 window.addEventListener(`online`, () => {

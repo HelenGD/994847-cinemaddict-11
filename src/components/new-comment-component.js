@@ -63,6 +63,7 @@ export default class NewCommentComponent extends AbstractSmartComponent {
     super();
 
     this._isDisabled = false;
+    console.warn(this._isDisabled)
     this._keydownHandler = this._keydownHandler.bind(this);
     this._textChangeHandler = this._textChangeHandler.bind(this);
   }
@@ -144,6 +145,7 @@ export default class NewCommentComponent extends AbstractSmartComponent {
   _keydownHandler(evt) {
     if (evt.keyCode === ENTER_KEYCODE && evt.ctrlKey) {
       if (this._newComment.text && this._newComment.emoji && !this._isDisabled) {
+        console.warn(isDisabled)
         this._isDisabled = true;
         this._commentModel
           .addComment(this._newComment)

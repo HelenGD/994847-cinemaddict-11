@@ -128,7 +128,6 @@ export default class Movies extends Model {
     } else if (watchedCount > 0) {
       return `novice`;
     }
-
     return ``;
   }
 

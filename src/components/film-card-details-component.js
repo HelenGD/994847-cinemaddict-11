@@ -150,7 +150,7 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.setCloseClickHandler(this._closeHandler);
+    this.closeClickHandler(this._closeHandler);
     this.commentDeleteHandler();
     this.userDetailsChangeHandler();
   }
@@ -184,7 +184,7 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
     };
   }
 
-  setCloseClickHandler(handler) {
+  closeClickHandler(handler) {
     this._closeHandler = handler;
     this.getCloseButtonElement().addEventListener(`click`, this._clickHandler(this._closeHandler));
   }

@@ -26,7 +26,7 @@ const renderFilmCardDetails = (evt, movieModel) => {
     checkEscPress(event, closeHandler);
   };
 
-  filmCardDetails.setCloseClickHandler(closeHandler);
+  filmCardDetails.closeClickHandler(closeHandler);
 
   document.addEventListener(`keydown`, escPressHandler);
 };
@@ -58,7 +58,7 @@ export default class MovieController {
       movieModel.comments.load();
       newCommentComponent.emojiClickHandler();
     });
-    this._filmCardComponent.setButtonHandler((currentMovieModel, buttonType) => {
+    this._filmCardComponent.buttonClickHandler((currentMovieModel, buttonType) => {
       currentMovieModel.toggleUserDetails(buttonType);
     });
   }

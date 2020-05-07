@@ -83,7 +83,7 @@ export default class FilmCardComponent extends AbstractComponent {
     clicks.forEach((it) => it.addEventListener(`click`, this._clickHandler(handler)));
   }
 
-  setButtonHandler(handler) {
+  buttonClickHandler(handler) {
     const buttons = this.getElement().querySelectorAll(`.film-card__controls-item`);
     buttons.forEach((it) => it.addEventListener(`click`, this._clickHandler(handler, it.dataset.type)));
   }
