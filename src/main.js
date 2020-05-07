@@ -56,9 +56,9 @@ filterModel.dataChangeHandler(() => {
 });
 
 window.addEventListener(`load`, () => {
-  navigator.serviceWorker.register(`/sw.js`)
-    .then(() => {})
-    .catch(() => {});
+  // navigator.serviceWorker.register(`/sw.js`)
+  //   .then(() => {})
+  //   .catch(() => {});
 });
 
 window.addEventListener(`online`, () => {

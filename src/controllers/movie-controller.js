@@ -7,27 +7,35 @@ import NewCommentComponent from "../components/new-comment-component";
 const filmCardDetails = new FilmCardDetailsComponent();
 const newCommentComponent = new NewCommentComponent();
 
+const escPressHandlers = [];
+
 const renderFilmCardDetails = (evt, movieModel) => {
+  while (escPressHandlers.length > 0) {
+    const handler = escPressHandlers.pop();
+    document.removeEventListener(`keydown`, handler);
+  }
+
+  const closeHandler = () => {
+    newCommentComponent.clearForm();
+    filmCardDetails.hide();
+    newCommentComponent.removeListeners();
+    remove(filmCardDetails);
+  };
+
+  const escPressHandler = (event) => {
+    checkEscPress(event, closeHandler);
+    document.removeEventListener(`keydown`, escPressHandler);
+  };
+
+  escPressHandlers.push(escPressHandler);
+
   renderElement(
       document.body,
       filmCardDetails.show(movieModel)
   );
   newCommentComponent.clearForm();
 
-  const closeHandler = () => {
-    newCommentComponent.clearForm();
-    filmCardDetails.hide();
-    remove(filmCardDetails);
-    document.removeEventListener(`keydown`, escPressHandler);
-    newCommentComponent.removeListeners();
-  };
-
-  const escPressHandler = (event) => {
-    checkEscPress(event, closeHandler);
-  };
-
   filmCardDetails.closeClickHandler(closeHandler);
-
   document.addEventListener(`keydown`, escPressHandler);
 };
 
@@ -50,7 +58,7 @@ export default class MovieController {
     renderElement(this._container, this._filmCardComponent);
     this._filmCardComponent.setClickHandler((evt) => {
       newCommentComponent.setCommentsModel(movieModel.comments);
-      renderFilmCardDetails(evt, movieModel, newCommentComponent);
+      renderFilmCardDetails(evt, movieModel);
       renderElement(
           filmCardDetails.getCommentsContainerElement(),
           newCommentComponent

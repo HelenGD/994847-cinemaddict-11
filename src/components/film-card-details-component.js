@@ -178,15 +178,22 @@ export default class FilmCardDetailsComponent extends AbstractSmartComponent {
 
   _clickHandler(handler) {
     return (evt) => {
-      evt.stopPropagation();
-      evt.preventDefault();
+      if (evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+      }
+      
       handler(this._card);
     };
   }
 
   closeClickHandler(handler) {
-    this._closeHandler = handler;
-    this.getCloseButtonElement().addEventListener(`click`, this._clickHandler(this._closeHandler));
+    if (this._closeHandler) {
+      this.getCloseButtonElement().removeEventListener(`click`, this._closeHandler);
+    }
+
+    this._closeHandler = this._clickHandler(handler);
+    this.getCloseButtonElement().addEventListener(`click`, this._closeHandler);
   }
 
   commentDeleteHandler() {
