@@ -13,7 +13,7 @@ export default class Movie extends Model {
     const info = rawMovie.film_info;
     const comments = new Comments(this._api, id, rawMovie.comments);
 
-    comments.dataChangeHandler(() => {
+    comments.addDataChangeHandler(() => {
       this.callHandlers();
     });
 

@@ -35,7 +35,7 @@ const renderFilmCardDetails = (evt, movieModel) => {
   );
   newCommentComponent.clearForm();
 
-  filmCardDetails.closeClickHandler(closeHandler);
+  filmCardDetails.addCloseClickHandler(closeHandler);
   document.addEventListener(`keydown`, escPressHandler);
 };
 
@@ -46,17 +46,17 @@ export default class MovieController {
   }
 
   render(movieModel) {
-    movieModel.comments.dataChangeHandler(() => {
+    movieModel.comments.addDataChangeHandler(() => {
       filmCardDetails.rerender();
       renderElement(
           filmCardDetails.getCommentsContainerElement(),
           newCommentComponent
       );
-      newCommentComponent.emojiClickHandler();
+      newCommentComponent.addEmojiClickHandler();
     });
     this._filmCardComponent = new FilmCardComponent(movieModel);
     renderElement(this._container, this._filmCardComponent);
-    this._filmCardComponent.setClickHandler((evt) => {
+    this._filmCardComponent.addClickHandler((evt) => {
       newCommentComponent.setCommentsModel(movieModel.comments);
       renderFilmCardDetails(evt, movieModel);
       renderElement(
@@ -64,9 +64,9 @@ export default class MovieController {
           newCommentComponent
       );
       movieModel.comments.load();
-      newCommentComponent.emojiClickHandler();
+      newCommentComponent.addEmojiClickHandler();
     });
-    this._filmCardComponent.buttonClickHandler((currentMovieModel, buttonType) => {
+    this._filmCardComponent.addButtonClickHandler((currentMovieModel, buttonType) => {
       currentMovieModel.toggleUserDetails(buttonType);
     });
   }

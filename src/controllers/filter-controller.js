@@ -20,7 +20,7 @@ export default class FilterController {
       );
     }
 
-    this._filterComponent.setClickHandler((filterType) => {
+    this._filterComponent.addClickHandler((filterType) => {
       this._filterModel.setFilter(filterType);
     });
 

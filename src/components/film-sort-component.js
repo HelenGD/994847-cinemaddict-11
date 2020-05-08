@@ -29,20 +29,20 @@ export default class FilmSortComponent extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.sortTypeChangeHandler(this.handler);
+    this.addSortTypeChangeHandler(this._handler);
   }
 
   reset() {
     this._currenSortType = SortType.DEFAULT;
   }
 
-  sortTypeChangeHandler(handler) {
-    this.handler = handler;
+  addSortTypeChangeHandler(handler) {
+    this._handler = handler;
 
     this
       .getElement()
       .querySelectorAll(`.sort__button`)
-      .forEach((sortButtonEl, index, sortButtonEls) => {
+      .forEach((sortButtonEl, _, sortButtonEls) => {
         sortButtonEl.addEventListener(`click`, (evt) => {
           evt.preventDefault();
           const sortType = evt.target.dataset.sortType;
@@ -55,7 +55,7 @@ export default class FilmSortComponent extends AbstractSmartComponent {
 
           sortButtonEls.forEach((item) => item.classList.remove(ACTIVE_CLASS_NAME));
           evt.target.classList.add(ACTIVE_CLASS_NAME);
-          handler(sortType);
+          this._handler(sortType);
         });
       });
   }

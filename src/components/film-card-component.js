@@ -70,7 +70,7 @@ export default class FilmCardComponent extends AbstractComponent {
     return this._movieModel;
   }
 
-  _clickHandler(handler, buttonType) {
+  _getClickHandler(handler, buttonType) {
     return (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
@@ -78,13 +78,13 @@ export default class FilmCardComponent extends AbstractComponent {
     };
   }
 
-  setClickHandler(handler) {
+  addClickHandler(handler) {
     const clicks = this.getElement().querySelectorAll(`.film-card__poster`);
-    clicks.forEach((it) => it.addEventListener(`click`, this._clickHandler(handler)));
+    clicks.forEach((it) => it.addEventListener(`click`, this._getClickHandler(handler)));
   }
 
-  buttonClickHandler(handler) {
+  addButtonClickHandler(handler) {
     const buttons = this.getElement().querySelectorAll(`.film-card__controls-item`);
-    buttons.forEach((it) => it.addEventListener(`click`, this._clickHandler(handler, it.dataset.type)));
+    buttons.forEach((it) => it.addEventListener(`click`, this._getClickHandler(handler, it.dataset.type)));
   }
 }

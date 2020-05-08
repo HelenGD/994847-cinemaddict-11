@@ -37,7 +37,7 @@ export default class PaginationController {
           this._showMoreButtonComponent
       );
 
-      this._showMoreButtonComponent.setClickHandler(() => {
+      this._showMoreButtonComponent.addClickHandler(() => {
         const movies = this._moviesModel.getMoviesByFilter();
         this._currentCardsCount += SHOWING_CARDS_COUNT_BY_BUTTON;
         if (this._currentCardsCount >= movies.length) {

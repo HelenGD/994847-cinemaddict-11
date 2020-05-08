@@ -63,9 +63,9 @@ export default class NewCommentComponent extends AbstractSmartComponent {
     super();
 
     this._isDisabled = false;
-    this._keydownHandler = this._keydownHandler.bind(this);
-    this._keypressHandler = this._keypressHandler.bind(this);
-    this._textChangeHandler = this._textChangeHandler.bind(this);
+    this._addKeydownHandler = this._addKeydownHandler.bind(this);
+    this._addKeypressHandler = this._addKeypressHandler.bind(this);
+    this._addTextChangeHandler = this._addTextChangeHandler.bind(this);
   }
 
   getTemplate() {
@@ -81,12 +81,12 @@ export default class NewCommentComponent extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    this.emojiClickHandler();
+    this.addEmojiClickHandler();
   }
 
   removeListeners() {
-    document.removeEventListener(`keydown`, this._keydownHandler);
-    document.removeEventListener(`keypress`, this._keypressHandler);
+    document.removeEventListener(`keydown`, this._addKeydownHandler);
+    document.removeEventListener(`keypress`, this._addKeypressHandler);
   }
 
   clearForm() {
@@ -113,17 +113,17 @@ export default class NewCommentComponent extends AbstractSmartComponent {
     }, MAX_SHAKE_TIME_IN_MS);
   }
 
-  afterRender() {
-    document.addEventListener(`keypress`, this._keypressHandler);
-    document.addEventListener(`keydown`, this._keydownHandler);
+  renderAfter() {
+    document.addEventListener(`keypress`, this._addKeypressHandler);
+    document.addEventListener(`keydown`, this._addKeydownHandler);
     this.getElement()
       .querySelector(`.film-details__comment-input`)
-      .addEventListener(`input`, this._textChangeHandler);
+      .addEventListener(`input`, this._addTextChangeHandler);
 
     this._newComment = {};
   }
 
-  _setSelectedEmoji(evt) {
+  _addSelectedEmoji(evt) {
     if (this._isDisabled || !isOnline()) {
       evt.preventDefault();
       return;
@@ -142,7 +142,7 @@ export default class NewCommentComponent extends AbstractSmartComponent {
     this._newComment.emoji = evt.target.value;
   }
 
-  _keydownHandler(evt) {
+  _addKeydownHandler(evt) {
     if (evt.keyCode === ENTER_KEYCODE && evt.ctrlKey) {
       if (this._newComment.text && this._newComment.emoji && !this._isDisabled) {
         this._isDisabled = true;
@@ -160,18 +160,18 @@ export default class NewCommentComponent extends AbstractSmartComponent {
     }
   }
 
-  _textChangeHandler(evt) {
+  _addTextChangeHandler(evt) {
     this._newComment.text = evt.target.value;
   }
 
-  _keypressHandler(evt) {
+  _addKeypressHandler(evt) {
     if (this._isDisabled || !isOnline()) {
       evt.preventDefault();
     }
   }
 
-  emojiClickHandler() {
+  addEmojiClickHandler() {
     const emojies = this.getElement().querySelectorAll(`.film-details__emoji-item`);
-    emojies.forEach((it) => it.addEventListener(`click`, (evt) => this._setSelectedEmoji(evt)));
+    emojies.forEach((it) => it.addEventListener(`click`, (evt) => this._addSelectedEmoji(evt)));
   }
 }

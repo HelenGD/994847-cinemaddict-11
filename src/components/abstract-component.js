@@ -24,13 +24,13 @@ export default class AbstractComponent {
     return this._element;
   }
 
-  beforeRemove() {}
+  removeBefore() {}
 
   removeElement() {
     this._element = null;
   }
 
-  afterRender() {}
+  renderAfter() {}
 
   show() {
     if (this._element) {

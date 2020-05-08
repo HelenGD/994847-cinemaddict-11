@@ -9,11 +9,11 @@ export default class ShowMoreButtonComponent extends AbstractComponent {
     return createShowMoreButtonTemplate();
   }
 
-  beforeRemove() {
+  removeBefore() {
     this._handler = null;
   }
 
-  setClickHandler(handler) {
+  addClickHandler(handler) {
     if (this._handler) {
       return;
     }

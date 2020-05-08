@@ -55,19 +55,19 @@ export default class FilmFilterComponent extends AbstractSmartComponent {
 
   recoveryListeners() {}
 
-  setClickHandler(handler) {
-    this
-      .getElement()
-      .querySelectorAll(`.main-navigation__item`)
-      .forEach((it) => it.addEventListener(`click`, this._clickHandler(handler, it.dataset.type)));
-  }
-
-  _clickHandler(handler, filterType) {
+  _getClickHandler(handler, filterType) {
     return (evt) => {
       evt.stopPropagation();
       evt.preventDefault();
       handler(filterType);
     };
+  }
+
+  addClickHandler(handler) {
+    this
+      .getElement()
+      .querySelectorAll(`.main-navigation__item`)
+      .forEach((it) => it.addEventListener(`click`, this._getClickHandler(handler, it.dataset.type)));
   }
 }
 

@@ -3,7 +3,7 @@ export default class Model {
     this._dataChangeHandlers = [];
   }
 
-  dataChangeHandler(handler) {
+  addDataChangeHandler(handler) {
     this._dataChangeHandlers.push(handler);
   }
 

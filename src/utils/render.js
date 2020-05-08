@@ -13,7 +13,7 @@ export const renderElement = (container, component, place = RenderPosition.BEFOR
       break;
   }
 
-  component.afterRender();
+  component.renderAfter();
 };
 
 export const createElement = (template) => {
@@ -24,7 +24,7 @@ export const createElement = (template) => {
 };
 
 export const remove = (component) => {
-  component.beforeRemove();
+  component.removeBefore();
   component.getElement().remove();
   component.removeElement();
 };

@@ -15,7 +15,7 @@ export default class UserRankComponent extends AbstractSmartComponent {
 
     this._moviesModel = moviesModel;
 
-    moviesModel.dataChangeHandler(() => {
+    moviesModel.addDataChangeHandler(() => {
       this.rerender();
     });
   }
