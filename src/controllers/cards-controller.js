@@ -2,8 +2,6 @@ import {renderElement} from "../utils/render";
 import NoCardsComponent from "../components/no-cards-component";
 import MovieController from "./movie-controller";
 
-const MAX_LENGTH_SHOWING_COMMENT = 139;
-
 export default class CardsController {
   constructor(container) {
 
@@ -28,20 +26,6 @@ export default class CardsController {
       .forEach((card) => {
         this._movieController.render(card);
       });
-
-    const filmsListContainers = document.querySelectorAll(`.films-list--extra .films-list__container`);
-    filmsListContainers.forEach(() => {
-      document
-        .querySelectorAll(`.film-card__description`)
-        .forEach((filmCardDescriptionEl) => {
-          const filmCardDescription = filmCardDescriptionEl.textContent;
-          let cutDescription = filmCardDescription.substring(0, MAX_LENGTH_SHOWING_COMMENT);
-          if (cutDescription.length < filmCardDescription.length) {
-            cutDescription += `...`;
-          }
-          filmCardDescriptionEl.textContent = cutDescription;
-        });
-    });
 
     this._isLoading = false;
   }

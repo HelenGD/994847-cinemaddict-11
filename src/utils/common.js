@@ -26,3 +26,11 @@ export const checkEscPress = (evt, action) => {
 };
 
 export const isOnline = () => navigator.onLine;
+
+export const toClamp = (fullText, maxLength) => {
+  const shortText = fullText.substring(0, maxLength);
+
+  return shortText.length < fullText.length
+    ? `${shortText}...`
+    : shortText;
+};

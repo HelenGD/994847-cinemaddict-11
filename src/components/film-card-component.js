@@ -9,7 +9,7 @@ const createFilmCardTemplate = (card) => {
     poster,
     releaseYear,
     duration,
-    description,
+    descriptionClamped,
     genres,
     comments,
     isWatchlist,
@@ -44,7 +44,7 @@ const createFilmCardTemplate = (card) => {
       <span class="film-card__genre">${genres[0] || ``}</span>
     </p>
     <img src="${poster}" alt="${title}" class="film-card__poster">
-    <p class="film-card__description">${description}</p>
+    <p class="film-card__description">${descriptionClamped}</p>
     <a class="film-card__comments">${comments.getComments().length} comment${comments.getComments().length !== 1 ? `s` : ``}</a>
     <form class="film-card__controls">
       ${buttons

@@ -1,7 +1,9 @@
 import format from 'date-fns/format';
 import Model from './model';
-import {formatDuration} from '../utils/common';
+import {formatDuration, toClamp} from '../utils/common';
 import Comments from './comments';
+
+const MAX_LENGTH_SHOWING_COMMENT = 139;
 
 export default class Movie extends Model {
   constructor(api, rawMovie) {
@@ -24,6 +26,7 @@ export default class Movie extends Model {
     this.ratingAge = info.age_rating;
     this.originalTitle = info.alternative_title;
     this.description = info.description;
+    this.descriptionClamped = toClamp(info.description, MAX_LENGTH_SHOWING_COMMENT);
     this.director = info.director;
     this.genres = info.genre;
     this.poster = info.poster;
