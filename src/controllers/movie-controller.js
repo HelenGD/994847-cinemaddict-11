@@ -47,12 +47,16 @@ export default class MovieController {
 
   render(movieModel) {
     movieModel.comments.addDataChangeHandler(() => {
+      if (!filmCardDetails.isOpened) {
+        return;
+      }
+
       filmCardDetails.rerender();
       renderElement(
           filmCardDetails.getCommentsContainerElement(),
           newCommentComponent
       );
-      newCommentComponent.addEmojiClickHandler();
+      newCommentComponent.recoveryListeners();
     });
     this._filmCardComponent = new FilmCardComponent(movieModel);
     renderElement(this._container, this._filmCardComponent);

@@ -82,6 +82,7 @@ export default class NewCommentComponent extends AbstractSmartComponent {
 
   recoveryListeners() {
     this.addEmojiClickHandler();
+    this.addInputHandler();
   }
 
   removeListeners() {
@@ -114,13 +115,7 @@ export default class NewCommentComponent extends AbstractSmartComponent {
   }
 
   renderAfter() {
-    document.addEventListener(`keypress`, this._addKeypressHandler);
-    document.addEventListener(`keydown`, this._addKeydownHandler);
-    this.getElement()
-      .querySelector(`.film-details__comment-input`)
-      .addEventListener(`input`, this._addTextChangeHandler);
-
-    this._newComment = {};
+    this.addInputHandler();
   }
 
   _addSelectedEmoji(evt) {
@@ -156,6 +151,8 @@ export default class NewCommentComponent extends AbstractSmartComponent {
             this._isDisabled = false;
             this.shake();
           });
+      } else {
+        this.shake();
       }
     }
   }
@@ -173,5 +170,13 @@ export default class NewCommentComponent extends AbstractSmartComponent {
   addEmojiClickHandler() {
     const emojies = this.getElement().querySelectorAll(`.film-details__emoji-item`);
     emojies.forEach((it) => it.addEventListener(`click`, (evt) => this._addSelectedEmoji(evt)));
+  }
+
+  addInputHandler() {
+    document.addEventListener(`keypress`, this._addKeypressHandler);
+    document.addEventListener(`keydown`, this._addKeydownHandler);
+    this.getElement()
+      .querySelector(`.film-details__comment-input`)
+      .addEventListener(`input`, this._addTextChangeHandler);
   }
 }
