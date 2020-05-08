@@ -10,9 +10,9 @@ const createfilmDataTemplate = (movieModel) => {
     duration,
     rating,
     originalTitle,
-    directors,
+    director,
     actors,
-    countries,
+    country,
     description,
     ratingAge,
     poster,
@@ -48,17 +48,17 @@ const createfilmDataTemplate = (movieModel) => {
               <table class="film-details__table">
                 <tr class="film-details__row">
                   <td class="film-details__term">Director</td>
-                  <td class="film-details__cell">${directors}</td>
+                  <td class="film-details__cell">${director}</td>
                 </tr>
                 <tr class="film-details__row">
-                  <td class="film-details__term">Writers</td>
+                  <td class="film-details__term">Writer${writers.length !== 1 ? `s` : ``}</td>
                   <td class="film-details__cell">
-                    ${writers}
+                    ${writers.map((writer) => ` ` + writer)}
                   </td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Actors</td>
-                  <td class="film-details__cell film-details__cell-actors">${actors}</td>
+                  <td class="film-details__cell film-details__cell-actors">${actors.map((actor) => ` ` + actor)}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
@@ -72,7 +72,7 @@ const createfilmDataTemplate = (movieModel) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Country</td>
-                  <td class="film-details__cell film-details__cell-country">${countries}</td>
+                  <td class="film-details__cell film-details__cell-country">${country}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Genre${genres.length > 1 ? `s` : ``}</td>
@@ -96,7 +96,7 @@ const createfilmDataTemplate = (movieModel) => {
         <div class="form-details__bottom-container">
           <section class="film-details__comments-wrap">
             <h3 class="film-details__comments-title">
-              Comment${comments.getComments().length > 1 ? `s` : ``} <span class="film-details__comments-count">${comments.getComments().length}</span>
+              Comment${comments.getComments().length !== 1 ? `s` : ``} <span class="film-details__comments-count">${comments.getComments().length}</span>
             </h3>
             <ul class="film-details__comments-list">
               ${comments.getComments().map((comment) => `

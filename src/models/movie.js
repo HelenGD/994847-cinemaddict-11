@@ -24,12 +24,12 @@ export default class Movie extends Model {
     this.ratingAge = info.age_rating;
     this.originalTitle = info.alternative_title;
     this.description = info.description;
-    this.directors = info.director;
+    this.director = info.director;
     this.genres = info.genre;
     this.poster = info.poster;
     this.releaseDate = new Date(info.release.date);
     this.release = format(this.releaseDate, `dd MMMM yyyy`);
-    this.countries = info.release.release_country;
+    this.country = info.release.release_country;
     this.runtime = info.runtime;
     this.title = info.title;
     this.rating = info.total_rating;
@@ -57,12 +57,12 @@ export default class Movie extends Model {
         'age_rating': this.ratingAge,
         'alternative_title': this.originalTitle,
         'description': this.description,
-        'director': this.directors,
+        'director': this.director,
         'genre': this.genres,
         'poster': this.poster,
         'release': {
           'date': this.releaseDate.toISOString(),
-          'release_country': this.countries
+          'release_country': this.country
         },
         'runtime': this.runtime,
         'title': this.title,

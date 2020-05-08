@@ -20,11 +20,11 @@ const renderFilmCardDetails = (evt, movieModel) => {
     filmCardDetails.hide();
     newCommentComponent.removeListeners();
     remove(filmCardDetails);
+    document.removeEventListener(`keydown`, escPressHandler);
   };
 
   const escPressHandler = (event) => {
     checkEscPress(event, closeHandler);
-    document.removeEventListener(`keydown`, escPressHandler);
   };
 
   escPressHandlers.push(escPressHandler);
