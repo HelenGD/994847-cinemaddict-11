@@ -51,3 +51,4 @@ export default class PaginationController {
     this.slice(callback);
   }
 }
+

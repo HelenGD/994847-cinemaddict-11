@@ -5,7 +5,7 @@ import differenceInYears from 'date-fns/differenceInYears';
 import Model from './model';
 import Comments from './comments';
 import Movie from './movie';
-import {cardsSort} from '../utils/cards-sort';
+import {sortCards} from '../utils/sort-cards';
 
 const TOP_RATED_MOVIES_COUNT = 2;
 const MOST_COMMENTED_MOVIES_COUNT = 2;
@@ -157,7 +157,7 @@ export default class Movies extends Model {
       .then((movies) => {
         const movieModels = movies.map((movie) => new Movie(this._api, movie));
 
-        this.setMovies(cardsSort(movieModels));
+        this.setMovies(sortCards(movieModels));
       })
       .catch(() => {});
   }

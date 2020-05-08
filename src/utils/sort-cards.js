@@ -4,7 +4,7 @@ export const SortType = {
   RATING: `rating`,
 };
 
-export const cardsSort = (cards, sortType = SortType.DEFAULT) => {
+export const sortCards = (cards, sortType = SortType.DEFAULT) => {
   const sortedCards = cards.slice();
 
   switch (sortType) {

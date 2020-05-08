@@ -71,4 +71,3 @@ export default class FilmFilterComponent extends AbstractSmartComponent {
   }
 }
 
-export {createFilterTemplate};

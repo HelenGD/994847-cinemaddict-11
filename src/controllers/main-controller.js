@@ -1,6 +1,6 @@
 import {renderElement} from "../utils/render";
 import FilmSortComponent from "../components/film-sort-component";
-import {cardsSort} from "../utils/cards-sort";
+import {sortCards} from "../utils/sort-cards";
 import CardsController from "./cards-controller";
 import FilmsContainerComponent from "../components/films-container-component";
 import FilmsListComponent from "../components/films-list-component";
@@ -38,7 +38,7 @@ export default class MainController {
     );
 
     filmSortComponent.addSortTypeChangeHandler((sortType) => {
-      const sortedMovies = cardsSort(this._moviesModel.getMoviesAll(), sortType);
+      const sortedMovies = sortCards(this._moviesModel.getMoviesAll(), sortType);
       this._moviesModel.setMovies(sortedMovies);
       paginationController.reset();
       paginationController.render((nextMovies) => {
@@ -47,7 +47,7 @@ export default class MainController {
     });
 
     this._filterModel.addDataChangeHandler(() => {
-      const defaultSortedMovies = cardsSort(this._moviesModel.getMoviesAll());
+      const defaultSortedMovies = sortCards(this._moviesModel.getMoviesAll());
       this._moviesModel.setMovies(defaultSortedMovies);
       filmSortComponent.reset();
       filmSortComponent.rerender();

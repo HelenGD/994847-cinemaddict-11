@@ -1,4 +1,4 @@
-import {SortType} from "../utils/cards-sort.js";
+import {SortType} from "../utils/sort-cards.js";
 import AbstractSmartComponent from "./abstract-smart-component.js";
 
 const ACTIVE_CLASS_NAME = `sort__button--active`;
