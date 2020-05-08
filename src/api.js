@@ -23,15 +23,15 @@ export default class Api {
       headers.append(`Content-Type`, `application/json`);
     }
 
-    return fetch(`${END_POINT}/${url}`, requestOptions)
-      .catch(() => []);
+    return fetch(`${END_POINT}/${url}`, requestOptions);
   }
 
   fetchMovies() {
     return this.fetch({
       method: Method.get,
       url: `movies`,
-    }).then((response) => response.json());
+    })
+    .then((response) => response.json());
   }
 
   updateMovie(movieId, body) {
@@ -39,14 +39,16 @@ export default class Api {
       method: Method.put,
       url: `movies/${movieId}`,
       body,
-    }).then((response) => response.text);
+    })
+    .then((response) => response.text);
   }
 
   fetchComments(movieId) {
     return this.fetch({
       method: Method.get,
       url: `comments/${movieId}`,
-    }).then((response) => response.json());
+    })
+    .then((response) => response.json());
   }
 
   deleteCommentById(commentId) {
@@ -61,7 +63,8 @@ export default class Api {
       method: Method.post,
       url: `comments/${movieId}`,
       body: comment,
-    }).then((response) => response.json());
+    })
+    .then((response) => response.json());
   }
 
   sync(movies) {
@@ -69,6 +72,7 @@ export default class Api {
       method: Method.post,
       url: `movies/sync`,
       body: movies,
-    }).then((response) => response.json());
+    })
+    .then((response) => response.json());
   }
 }

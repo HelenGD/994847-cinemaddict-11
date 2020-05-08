@@ -68,7 +68,8 @@ window.addEventListener(`online`, () => {
     .sync()
     .then((movies) => {
       moviesModel.setMovies(movies);
-    });
+    })
+    .catch(() => {});
 });
 
 window.addEventListener(`offline`, () => {

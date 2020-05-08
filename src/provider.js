@@ -38,7 +38,8 @@ export default class Provider {
           this._store.setItems(localMovies);
 
           return movie;
-        });
+        })
+        .catch(() => {});
     }
 
     const localMovies = this._store.getItems();

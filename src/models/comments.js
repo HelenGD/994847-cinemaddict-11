@@ -26,7 +26,8 @@ export default class Comments extends Model {
       .fetchComments(this._movieId)
       .then((comments) => {
         this.setComments(comments);
-      });
+      })
+      .catch(() => {});
   }
 
   addComment({text, emoji}) {
@@ -36,7 +37,7 @@ export default class Comments extends Model {
       date: new Date().toISOString(),
     }).then(({comments}) => {
       this.setComments(comments);
-    });
+    }).catch(() => {});
   }
 
   deleteCommentById(commentId) {

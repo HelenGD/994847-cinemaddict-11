@@ -153,11 +153,13 @@ export default class Movies extends Model {
   }
 
   load() {
-    this._api.fetchMovies().then((movies) => {
-      const movieModels = movies.map((movie) => new Movie(this._api, movie));
+    this._api.fetchMovies()
+      .then((movies) => {
+        const movieModels = movies.map((movie) => new Movie(this._api, movie));
 
-      this.setMovies(cardsSort(movieModels));
-    });
+        this.setMovies(cardsSort(movieModels));
+      })
+      .catch(() => {});
   }
 
   updateMovie(id, movie) {
