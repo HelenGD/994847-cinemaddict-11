@@ -162,6 +162,7 @@ export default class UserStatisticComponent extends AbstractSmartComponent {
       }
     });
   }
+
   filterChangeHandler() {
     this
       .getElement()

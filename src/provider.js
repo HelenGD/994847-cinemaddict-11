@@ -52,12 +52,12 @@ export default class Provider {
     return this._api.fetchComments(movieId);
   }
 
-  deleteCommentById(commentId) {
-    return this._api.deleteCommentById(commentId);
-  }
-
   createComment(movieId, comment) {
     return this._api.createComment(movieId, comment);
+  }
+
+  deleteCommentById(commentId) {
+    return this._api.deleteCommentById(commentId);
   }
 
   sync() {

@@ -53,12 +53,12 @@ const createfilmDataTemplate = (movieModel) => {
                 <tr class="film-details__row">
                   <td class="film-details__term">Writer${writers.length !== 1 ? `s` : ``}</td>
                   <td class="film-details__cell">
-                    ${writers.map((writer) => ` ` + writer)}
+                    ${writers.join(`, `)}
                   </td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Actors</td>
-                  <td class="film-details__cell film-details__cell-actors">${actors.map((actor) => ` ` + actor)}</td>
+                  <td class="film-details__cell film-details__cell-actors">${actors.join(`, `)}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
